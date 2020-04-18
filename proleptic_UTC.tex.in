@@ -1,0 +1,779 @@
+\documentclass[letterpaper,twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+%\usepackage{libertine}
+\usepackage[english]{babel}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{embedfile}
+\usepackage{enumitem}
+\usepackage[super]{nth}
+\usepackage{fancyhdr}
+\usepackage{xfrac}
+\usepackage{fnpct}
+\usepackage{siunitx}
+\usepackage{graphics}
+\usepackage{natbib}
+\usepackage{microtype}
+\usepackage{hyperxmp}
+\usepackage[pdfencoding=unicode,pagebackref]{hyperref}
+\bibliographystyle{plainnat}
+\setcitestyle{numbers,square}
+% Pages styles
+\setlength{\headheight}{22.5pt}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[LE]{\thepage}
+\fancyhead[CE]{{\scshape John Sauter}}
+\fancyhead[CO]{{\scshape Extending Coordinated Universal Time \\
+    to Dates Before 1972}}
+\fancyhead[RO]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot{}
+\setlength\tabcolsep{1mm}
+\renewcommand\arraystretch{1.3}
+\begin{document}
+\embedfile[desc={Extending Coordinated Universal Time to Dates Before 1972},
+  mimetype={text/pdflatex}]{@builddir@/proleptic_UTC.tex}
+\title{Extending Coordinated Universal Time \\ to Dates Before
+  1972\footnote{Copyright {\copyright} 2020 by John Sauter.
+  This paper is made available under a
+  Creative Commons Attribution-ShareAlike 4.0 International License.
+  You can read a human-readable summary of the license at
+  \url{http://creativecommons.org/licenses/by-sa/4.0}, which contains
+  a link to the full text of the license.
+  See also section \ref{section:Licensing} of this paper.}
+}
+\author{John Sauter\footnote{
+    System Eyes Computer Store,
+    20A Northwest Blvd.  Ste 345,
+    Nashua, NH  03063-4066,
+    e-mail: John\_Sauter@systemeyescomputerstore.com,
+    telephone: (603) 424-1188}}
+\hypersetup{unicode=true,
+  pdfauthor={John Sauter},
+  pdftitle={Extending Coordinated Universal Time to Dates Before 1972},
+  pdfsubject={Extending Coordinated Universal Time to Dates Before 1972},
+  pdfkeywords={Coordinated Universal Time, UTC, proleptic UTC,
+    leap seconds, delta T, ΔT, Gregorian calendar, proleptic Gregorian calendar,
+    proleptic UTC with leap seconds},
+  pdfcontactaddress={System Eyes Computer Store, 20A Northwest Blvd.  Ste 345},
+  pdfcontactcity={Nashua},
+  pdfcontactcountry={USA},
+  pdfcontactemail={John\_Sauter@systemeyescomputerstore.com},
+  pdfcontactphone={603-424-1188},
+  pdfcontactpostcode={03063-4066},
+  pdfcontactregion={New Hampshire},
+  pdfcontacturl={https://www.systemeyescomputerstore.com},
+  pdfcopyright={Copyright {\copyright} 2020 by John Sauter},
+  pdfdate={2020-04-18},
+  pdflicenseurl={http://creativecommons.org/licenses/by-sa/4.0},
+  pdfmetalang={en-US}
+}
+\date{2020-04-18}
+\maketitle
+\begin{abstract}
+  Using ancient observations of the Sun and Moon, construct a time scale
+  using the modern definition of Coordinated Universal Time to cover the
+  past \num{4000} years.  Use that time scale to construct a table of
+  leap seconds.
+\end{abstract}
+\begin{description}
+\item[Keywords:]Coordinated Universal Time; UTC; proleptic UTC;
+  Gregorian calendar; proleptic Gregorian calendar; leap seconds;
+  delta T; $\Delta$T; proleptic UTC with leap seconds.
+\end{description}
+  
+%\tableofcontents
+\newpage
+\section{Civil Timekeeping}
+Coordinated Universal Time (UTC) is the basis of civil time in the world
+today.  Local time is defined as an offset from UTC.  In places which
+observe daylight saving time, the offset changes when daylight saving
+time begins and ends.
+
+UTC is based on the SI second, which is a fixed interval of time,
+independent of the motions of the Earth.  However, for civil purposes
+timekeeping has always been based on the days and the seasons.  The
+duration of Earth's day is not fixed: it has small
+random variations, and is gradually increasing as the rotation of the
+Earth slows.  In addition, the year is not an integral number of days
+in length.  There is a complex system of timekeeping to reconcile a
+fixed time interval with the changing length of the day, and the days
+with the seasons. 
+
+\section{The Gregorian Calendar}
+To fit days into years we use the Gregorian calendar, which provides 12
+months of 28 to 31 days each, for a total of 365 or 366 days in a year.
+The 366-day years add a day after February 28 called February 29.
+The rule for adding February 29 is that every year evenly divisible
+by 4 shall have a February 29, unless the year is also evenly divisible
+by 100.  However, if the year is also evenly divisible by 400 it shall
+have a February 29.
+
+\section{Matching SI Seconds to the Rotation of the Earth}
+To fit the SI second into days, UTC starts a new day every \num{86399},
+\num{86400} or \num{86401} seconds.
+Most days are ordinary days with \num{86400} seconds.
+The last day of a month can be an extraordinary day, with
+\num{86399} or \num{86401} seconds.
+In an extraordinary day with \num{86399} seconds, the last second
+of the day is called 23:59:58.
+In an ordinary day with \num{86400} seconds, the last second of the
+day is called 23:59:59.
+In an extraordinary day with \num{86401} seconds, the last second
+of the day is called 23:59:60.
+
+The extraordinary days are scheduled by the International Earth
+Rotation and Reference Systems Service
+(IERS)\footnote{\url{https://www.iers.org/IERS/EN/Home/home_node.html}}
+based on observation of the Earth's rotation.  A long day is
+used when UTC is counting faster than the Earth is rotating, and a
+short day is used when UTC is counting slower than the Earth is
+rotating.
+
+\section{A Brief History of Timekeeping}
+The Gregorian calendar was adopted starting in 1582 because the seasons
+had slowly changed their dates under the previous calendar.  The
+changeover included dropping 10 days from the calendar to correct the
+accumulated error.  Since the adoption of the Gregorian calendar, the
+years 1700, 1800 and 1900 have not included February 29, but the years
+1600 and 2000 have.
+
+The IERS began scheduling extraordinary days in 1972 so that civil time could
+use the SI second rather than a variable-length second.  At the time of
+this writing, in April of 2020, there have been \num{27} days of \num{86401}
+seconds and \num{0} days of \num{86399} seconds.
+
+Before 1972 there was a time scale also called UTC, but which used a
+different method of matching the Earth's rotation.  In this paper
+the term ``UTC'' refers to the UTC used since 1972.
+
+\section{Proleptic Gregorian Calendar}
+For some purposes, it is useful to extend the rules of the Gregorian
+calendar to dates before 1582.  For example, when describing Mayan
+culture for a general audience, the mythical creation date of 13
+b'ak'tuns, 0 k'atuns, 0 tuns, 0 winals, 0 kins (4 Ajaw 8
+Kumk'u) is translated as August 11, 3114 BCE.  Mayan
+scholars generally translate Mayan dates into Proleptic Gregorian
+rather than the Julian calendar used for civil timekeeping in Europe at
+the time of the Mayan civilization because there was no cultural
+contact between the classic Mayans and the people of Europe.
+
+\section{Proleptic UTC}
+If we are to specify ancient times with a greater precision than a day,
+it will also be useful for some purposes to extend the rules of UTC to
+times before 1972.  To do this, we need two things: a time scale and
+the rotation rate of the Earth in the past.
+\subsection{Time Scale}
+For a time scale to be useful for measuring events, it must be based
+on some physical property that can be measured.  UTC is based on the
+SI second, which is defined as the duration of \num{9192631770} periods of the
+radiation corresponding to the transition between the two hyperfine levels of
+the ground state of the cesium~133 atom when it is at rest with respect to
+the Earth, at a temperature of 0~Kelvin, and located at mean sea level.
+These measurements are made continuously by national laboratories around the
+world.  The data is sent to the
+\href{https://en.wikipedia.org/wiki/International_Bureau_of_Weights_and_Measures}
+{International Bureau of Weights and Measures}, which combines the information
+and disseminates
+\href{https://en.wikipedia.org/wiki/International_Atomic_Time}
+     {International Atomic Time}, upon which UTC is based.
+
+A time scale used for scientific measurements must be rigorously defined
+and robustly measured, as International Atomic Time is.  If we try to extend
+this definition backward into ancient times, we run into the problem that
+there were no atomic clocks before 1955, and therefore nobody was measuring
+the SI second as it is presently defined.
+
+However, when describing ancient events, we do not need to actually measure
+time, we can instead imagine that we are measuring it.  For example, we say
+that the Big Bang that marked the start of the Universe took place
+\num{13.82}~billion
+years ago.  In this context, ``years'' does not refer to the number of times
+that the Earth has gone around the Sun since the Big Bang, because the Earth
+has only been in existence for the last \num{4.54}~billion years.
+Instead, we take the present duration of a year and project it back in time,
+thus imagining that we are measuring time using the year as it presently
+exists.
+
+Similarly, we can imagine that atomic clocks have been measuring time for
+the last \num{4000} years, and use that as our time scale.  This imaginary time
+scale does not have the precision of International Atomic Time, since
+there were not, in fact, atomic clocks \num{4000} years ago, but it is
+sufficient for our limited purpose.
+\subsection{Rotation Rate of the Earth}
+The Earth revolves around the Sun at a constant rate, so the schedule of
+366-day years is predictable.  The Earth's rotation rate, on the other hand,
+is unpredictable, and must be observed.  That observation is described
+as \href{https://en.wikipedia.org/wiki/%CE%94T}{$\Delta$T}, which is the
+  difference between
+  \href{https://en.wikipedia.org/wiki/Terrestrial_Time}{Terrestrial Time}%
+  \footnote{Terrestrial Time differs from International Atomic Time by
+    \num{32.184} seconds.}and UTC.
+Using historical records of astronomical
+observations, F.~R.~Stephenson, L.~V.~Morrison and C.~Y.~Hohenkerk have
+estimated the values of $\Delta$T from the year \num{-2000} to
+\num{2500}\citep{Stephenson20160404}%
+\embedfile[desc={Measurement of the Earth's Rotation: 720 BC to AD 2500},
+  mimetype={application/PDF}]{@srcdir@/20160404.full.pdf}.
+The table below is based on the data calculated in that paper,
+presented at \url{http://astro.ukho.gov.uk/nao/lvm/}, as updated in
+September 2018.
+Where the data
+presented two different values of $\Delta$T for the same date,
+I have averaged the values.  In the table below I have presented
+$\Delta$T as seconds, omitted the estimated error, and added a column
+showing the Julian Day Number for each date.
+The Julian Day Number is the count of days since November 24, \num{-4713},
+so using it to measure time avoids the complexity of the Gregorian calendar.
+The Julian Day starts at noon, so adding \num{0.5} means the midnight
+which starts the next day.
+
+\input{delta_t.tex}
+\embedfile[desc={Table of historical Delta T values},
+  mimetype={application/latex}]{@builddir@/delta_t.tex}.
+
+\section{Schedule of Extraordinary Days}
+Using this information we can schedule extraordinary days as though UTC
+were being used prior to 1972.  In 2006 Tony Finch created a proleptic
+UTC back to 1958 using US Naval Observatory
+tables\footnote{\url{http://fanf.livejournal.com/69586.html}}
+so I will follow his lead for those dates.
+
+To schedule extraordinary days, we establish an anchor point
+and march forward through time, observing the deviation of
+$\Delta$T from the value at the anchor point.
+Before the deviation reaches \num{0.9} seconds, we must designate
+an extraordinary day.
+If the interval includes a June~30 or December~31,
+we will designate that day.  If it does not, the next dates to choose
+will be March~31 and September~30, and if they are not available
+we will designate the last day of any month.
+Details of this process are in file {\ttfamily read\_delta\_t.py},
+which is embedded in this PDF file, as described in section
+\ref{section:EmbeddedFiles}.  The process is based on the formal definition of
+UTC.\footnote{The definition of UTC
+  is maintained by the International Telecommunications Union as their document
+  ITU-R TF.460-6, which you can see at
+  \url{https://www.itu.int/dms\_pubrec/itu-r/rec/tf/R-REC-TF.460-6-200202-I!!PDF-E.pdf}
+  \embedfile[desc={ITR-R TF.460-6},mimetype={application/PDF}]
+            {@srcdir@/R-REC-TF.460-6-200202-I!!PDF-E.pdf}
+}
+
+At the end of each extraordinary day, the difference between UTC and
+International Atomic Time changes by one second.  That difference is
+called DTAI, and it is defined to be \num{0} at the beginning of
+January~1, 1958.
+
+The result of the scheduling process is too large for this paper, but
+here are the extraordinary days from 1700 to 2100.
+The complete table is embedded in this
+PDF under the name {\ttfamily extraordinary\_days.dat},
+as described in section \ref{section:EmbeddedFiles}.
+Extraordinary days before 1958 are computed based on the estimates of
+$\Delta$T, as described above.  From 1958 through 1971 the dates are
+from Tony Finch.  From 1972 to the present they are the official days
+scheduled by the International Earth Rotation and Reference Systems
+Service
+(IERS)\footnote{\url{https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html}}.
+The schedule for the future is based on projections from the IERS
+and the United States Naval
+Obsevatory\footnote{\url{http://maia.usno.navy.mil/ser7/predcoef.out}},
+and from the estimates of $\Delta$T.
+
+\embedfile[desc={Schedule the Extraordinary Days from Delta T},
+  mimetype={application/python}]{@srcdir@/read_delta_t.py}
+\embedfile[desc={Reformat the Delta T data into a LaTeX table},
+  mimetype={application/python}]{@srcdir@/reformat_delta_t.py}
+\embedfile[desc={Estimates of Delta T, as a CSV file},
+  mimetype={text/csv}]{@srcdir@/values_of_delta_T.csv}
+\embedfile[desc={Measurements of Delta T, as a CSV file, from the IERS},
+  mimetype={text/csv}]{@srcdir@/finals.all.csv}
+\embedfile[desc={IERS Bulletin A, which has the formula for projecting UT1-UTC},
+  mimetype={text/csv}]{@srcdir@/6_BULLETIN_A_V2013_016.txt}
+\embedfile[desc={Estimates of Delta T, as a LibreOffice spreadsheet file},
+  mimetype={Application/LibreOffice}]{@srcdir@/values_of_delta_T.ods}
+\embedfile[desc={Delta T information from the US Naval Observatory},
+  mimetype={text/csv}]{@srcdir@/USNO_delta_T.csv}
+\embedfile[desc={Projections of Delta T from the US Naval Observatory},
+  mimetype={text/csv}]{@srcdir@/USNO_deltat_preds.csv}
+\embedfile[desc={Table of Extraordinary Days},
+  mimetype={text/plain}]{@builddir@/extraordinary_days.dat}
+\embedfile[desc={Read the Extraordinary Days Table},
+  mimetype={application/python}]{@srcdir@/read_extraordinary_days_table.py}
+\embedfile[desc={GNU General Public License (GPL), version 3}.
+  mimetype={text/plain}]{@srcdir@/gpl.txt}
+\embedfile[desc={LaTeX Source Created by Reading the Table of Extraordinary
+    Days},
+  mimetype={application/latex}]{@builddir@/extraordinary_days.tex}
+\input{extraordinary_days.tex}
+
+Another way of presenting the change in DTAI over time is by a
+series of charts.
+Figure \ref{figure:DTAI} shows DTAI from the year \num{-2000} to \num{2500},
+\ref{figure:DTAI_since_1500} from \num{1500} to \num{2050},
+\ref{figure:DTAI_since_1600} from \num{1600} to \num{2050},
+\ref{figure:DTAI_since_1700} from \num{1700} to \num{2050},
+\ref{figure:DTAI_since_1800} from \num{1800} to \num{2050},
+\ref{figure:DTAI_since_1900} from \num{1900} to \num{2050},
+\ref{figure:DTAI_since_1950} from \num{1950} to \num{2050} and
+\ref{figure:DTAI_since_2000} from \num{2000} to \num{2100}.
+
+The first chart shows only a smooth line.  Subsequent charts focus closer
+to the present and so show the randomness in the Earth's rate of rotation
+that has been measurable since the invention of the telescope and the
+pendulum clock.
+
+\embedfile[desc={Values of DTAI since the year \num{-2000}},
+  mimetype=(application/pdf)]{@builddir@/values_of_DTAI.pdf}
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI}
+    \caption{Values of DTAI from \num{-2000} to \num{2500}}
+    \label{figure:DTAI}
+  \end{center}
+\end{figure}
+
+\embedfile[desc={Values of DTAI since 1500},
+  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_1500.pdf}
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_1500}
+    \caption{Values of DTAI since 1500}
+    \label{figure:DTAI_since_1500}
+  \end{center}
+\end{figure}
+
+\embedfile[desc={Values of DTAI since 1600},
+  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_1600.pdf}
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_1600}
+    \caption{Values of DTAI since 1600}
+    \label{figure:DTAI_since_1600}
+  \end{center}
+\end{figure}
+
+\embedfile[desc={Values of DTAI since 1700},
+  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_1700.pdf}
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_1700}
+    \caption{Values of DTAI since 1700}
+    \label{figure:DTAI_since_1700}
+  \end{center}
+\end{figure}
+
+\embedfile[desc={Values of DTAI since 1800},
+  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_1800.pdf}
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_1800}
+    \caption{Values of DTAI since 1800}
+    \label{figure:DTAI_since_1800}
+  \end{center}
+\end{figure}
+
+\embedfile[desc={Values of DTAI since 1900},
+  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_1900.pdf}
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_1900}
+    \caption{Values of DTAI since 1900}
+    \label{figure:DTAI_since_1900}
+  \end{center}
+\end{figure}
+
+\embedfile[desc={Values of DTAI since 1950},
+  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_1950.pdf}
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_1950}
+    \caption{Values of DTAI since 1950}
+    \label{figure:DTAI_since_1950}
+  \end{center}
+\end{figure}
+
+\embedfile[desc={Values of DTAI since 2000},
+  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_2000.pdf}
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_2000}
+    \caption{Values of DTAI from \num{2000} to \num{2100}}
+    \label{figure:DTAI_since_2000}
+  \end{center}
+\end{figure}
+
+\section{POSIX}
+POSIX is a portable operating system interface based on Unix, intended
+to maintain compatibility between operating systems\footnote{
+  \url{http://pubs.opengroup.org/onlinepubs/9699919799/}}.
+The way POSIX represents time has been criticized for not handling UTC
+well.\footnote{
+  \url{http://stackoverflow.com/questions/16539436/unix-time-and-leap-seconds}}%
+\footnote{
+  \url{https://news.ycombinator.com/item?id=4112566}}
+Markus Kuhn\footnote{\url{http://www.cl.cam.ac.uk/~mgk25/time/c/}}
+and David Madore\footnote{
+  \url{http://www.madore.org/~david/computers/unix-leap-seconds.html}}
+have made proposals to improve the way POSIX deals with extraordinary days.
+These proposals require a table of extraordinary days.  Implementations
+of these proposals which wish to deal with dates before \num{1972} can
+use table \ref{table:JDN_DTAI}.
+    
+\section{Conclusion}
+The exact choice of when to have days with \num{86399} or \num{86401}
+seconds in ancient times is somewhat arbitrary, since we don't have
+sufficiently accurate records of the Earth's rotation
+rate before the invention of the telescope and the pendulum clock.
+Indeed, prior to the invention of atomic chronometers in 1955 there
+were no practically available clocks which were as stable as the
+rotation of the Earth.  Nevertheless, this time scale
+can be useful for translating ancient times more precise than days into
+modern terminology for the general reader.
+
+I propose to name this time scale ``proleptic UTC with leap seconds''.
+
+\section{Acknowledgments}
+I am grateful to the participants of the
+leapseconds\footnote{
+  \url{https://pairlist6.pair.net/mailman/listinfo/leapsecs}}
+mailing list for their comments on a previous draft of this paper.
+Zefram\footnote{See more work by Zefram at
+  \url{https://www.fysh.org/~zefram/},
+  especially \href{https://www.fysh.org/~zefram/time/prog_on_time_scales.pdf}
+  {Programming Perspective on Time Scales}.}, in particular,
+provided an extensive and detailed review, which improved the paper
+considerably.
+
+\section{Further Reading}
+Many good research papers are hidden behind ``paywalls'' and hence are
+not accessible to an unaffilited reader of modest means.  Where I have been able
+to locate a downloadable copy of these articles, the References section
+contains the URL.
+\begin{itemize}
+\item{F. Richard Stephenson,
+  \em Historical Eclipses and Earth's Rotation: 700 BC--AD 1600}
+  \citep{2011ASSP...23....3S}
+
+ Abstract: For the whole of the pre-telescopic period, eclipse observations
+ have proved to be by far the best data with which to determine changes in the
+ Earth's rate of rotation.  These changes -- on the scale of
+ milliseconds -- are produced by both the tides and a variety of non-tidal
+ mechanisms.  Each individual observation leads to a result for $\Delta$T (the
+ cumulative effect of changes in the Earth's spin rate). Over a period of many
+ centuries, this parameter can attain several hours and thus can be determined
+ using fairly crude observations.
+ 
+ Recently I have extended previous investigations by introducing hitherto
+ unused observations and reinterpreting some of the more reliable existing
+ data: especially in the periods from 700 BC to 50 BC and from AD 300 to 800.
+ This has led to the derivation of revised $\Delta$T values over much of the
+ historical period.
+  
+\item{D. D. McCarthy and A. K. Babcock,
+  \em The length of day since 1656}
+  \citep{1986PEPI...44..281M}
+
+  Abstract: Observed values of the difference between the time determined
+  using the rotation of the Earth and a uniform time scale are available
+  since 1627, with useful observations becoming available in 1656.
+  These early data were recorded with low precision and must be smoothed
+  numerically in order to be useful for the derivation of estimates of the
+  difference between the actual length of the day and the standard 24 h,
+  known as excess length of day, or the Earth's rotational speed.
+  Modern data requires no smoothing. The observational data have been adjusted
+  to be consistent with one estimate of the lunar acceleration and smoothed
+  so that the internal and external precision of the observations are
+  approximately equal. The final values along with the derived excess length
+  of day are presented and their spectra are
+  discussed.
+
+\item{Dennis D. Mccarthy and Brian J. Luzum,
+  \em An Analysis of Tidal Variations in the Length of Day}
+  \citep{Mccarthy01081993}
+
+  Summary: Observations of the length of day, corrected for the effects of
+  variations in the angular momentum due to changes in wind velocity and
+  atmospheric pressure, ocean-tide heights and currents, and solid-Earth
+  zonal tides, were analysed. The (1992) IERS Standards model for the effects
+  of zonal tides on the Earth's rotation, which includes ocean-tidal effects,
+  adequately accounts for the observations of the high-frequency
+  (periods between one and 30 days) variations in the length of day at the
+  present level of accuracy. A currently unexplained semi-annual variation
+  in the length of day remains, but this may be due to the unmodelled effects
+  of stratospheric winds. The power spectrum of the remaining variations
+  with periods less than 20 days is essentially that of a white-noise process.
+  The amplitudes of the remaining unexplained variations in length of day are
+  less than 30 microseconds.
+
+\item{C. Jordi, L. V. Morrison, R. D. Rosen, D. A. Salstein and G. Rosseló,
+  \em Fluctuations in the Earth's rotation since 1830 from high-resolution
+  astronomical data}
+  \citep{Jordi01061994}
+  
+  Summary: Fluctuations in the Earth's rotation since 1830, as evidenced by
+             changes in the length of the day, are derived from astronomical
+	     data having subannual resolution. Before 1955.5, timings of lunar
+	     occultations are used; after 1955.5, the data are taken from the
+	     time series TAI-UT1.
+
+             Although the data in the earliest period,
+	     1830–90, display decade fluctuations in the length of the day,
+	     they are not accurate enough to reveal interannual variations.
+	     In this regard, also, the results from 1890–1925 are somewhat
+	     dubious. The quality of the data after 1925, though, is such
+	     that the temporal behaviour of the interannual fluctuations in
+	     the length of the day can be traced with confidence. We present
+	     plots of the interannual fluctuations in the period 1890–1987
+	     and the longer-term decade fluctuations in the period 1830–1983.
+
+             The interannual fluctuations in the length of the day since 1925
+	     are compared with an index of the El Niño/Southern Oscillation
+	     (ENSO) phenomenon in the ocean-atmosphere system and are
+	     subjected to spectral analysis. The results support the
+	     conclusions reached by other authors that these fluctuations are
+	     linked to circulation changes in the atmosphere associated with
+	     ENSO, and in part to the quasi-biennial oscillation in the
+	     equatorial stratosphere's zonal winds. A spectral analysis of our
+	     62 yr series of length of day values since 1925 reveals two
+	     significant peaks in the interannual range 2–4 yr.
+	     One is roughly biennial and the other is about twice this period,
+	     broadly supporting results obtained previously from shorter
+	     records.
+
+             Our analysis of high-resolution data, therefore,
+	     contributes to ongoing efforts to establish a close relationship
+	     between the length of the day and aspects of the global climate
+	     system in the period before modern data became available in
+	     1955.5.
+
+\end{itemize}
+
+\section{Embedded Files}
+\label{section:EmbeddedFiles}
+For the convenience of the reader, there are some files embedded in
+the PDF of this paper.  You can extract them using
+{\href{https://okular.kde.org/}{okular}}.
+You can also try to use Adobe Acrobat Reader, but it may refuse to extract
+some attachments.
+Except as noted, the embedded files are covered by the same license as
+this paper.
+
+\begin{enumerate}
+\item{File {\ttfamily 20160404.full.pdf}, which is the main research paper
+  on reducing historical records to $\Delta$T and
+  {\ttfamily R-REC-TF.460-6-200202-I!!PDF-E.pdf}, the definition
+  of UTC.  They are referenced in this paper by name and with a hyperlink.
+  The files are embedded in this PDF in case the hyperlinks become
+  broken.  I do not assert copyright on these files.}
+\item{A spreadsheet named {\ttfamily values\_of\_delta\_T.ods}
+  containing the values of $\Delta$T shown in table \ref{table:delta_t}.}
+  Also included is the same data in a CSV file.
+\item{A plain text file, downloaded from the
+  Creative Commons web site:
+  \url{http://creativecommons.org/licenses/by-sa/4.0/legalcode.txt}.
+  In this file is the legal code for the license for this paper,
+  in case the hyperlink in section \ref{section:Licensing} should fail.
+  I do not assert copyright on this file.}
+\item{A plain text file named {\ttfamily extraordinary\_days.dat}
+  which lists the extraordinary days
+  using the form shown in table \ref{table:JDN_DTAI}.  This file lists all
+  of the extraordinary days plotted in figure \ref{figure:DTAI},
+  not just the subset in table \ref{table:JDN_DTAI}.}
+\item{A program named
+  {\ttfamily read\_extraordinary\_days\_table}
+  which reads the {\ttfamily extraordinary\_days.dat}
+  data file.  This program is provided as an example
+  of how to read the data file.  It will optionally write the
+  {\LaTeX} code for table \ref{table:JDN_DTAI} and a GNUplot data file
+  for the figures.
+  This program is licensed under the GPL.}
+\item{A plain text copy of the GNU General Public License (GPL), version 3.}
+\item{The source files for this paper.
+  The main file is {\ttfamily proleptic\_UTC.tex}.
+  That file reads {\LaTeX} files {\ttfamily extraordinary\_days.tex}
+  and {\ttfamily delta\_t.tex},
+  the {\ttfamily .pdf} files for the figures and
+  {\ttfamily proleptic\_UTC.bbl} directly, and copies all the embedded files
+  to the output file, {\ttfamily proleptic\_UTC.pdf}.
+  You can use these files if you
+  wish to publish a derivative of this paper, perhaps with errors
+  corrected and your own ideas added.
+  To reproduce this PDF, extract all the files and run
+  pdflatex on {\ttfamily proleptic\_UTC.tex}.  You will have
+  to run it more than once to get the forward references to resolve.
+
+  Also included is a Makefile which automates the
+  rebuilding process.  To re-create this PDF file from its sources,
+  type {\ttfamily ./configure}s, optionally
+  {\ttfamily make download} to get the latest UT1 data from
+  the IERS, and {\ttfamily make} to compute the leap seconds and
+  build the PDF.
+  You will need Python, {\LaTeX} and GNUplot.
+  \embedfile[desc={configure for the current build system},
+    mimetype={application/make}]{@srcdir@/configure.ac}
+  \embedfile[desc={rebuild proleptic\_UTC.pdf from its sources},
+    mimetype={application/make}]{@srcdir@/Makefile.am}
+  \embedfile[desc={rebuild proleptic\_UTC.pdf from its sources},
+    mimetype={application/make}]{@srcdir@/Makefile.in}
+  \embedfile[desc={extract information from the IERS Bulletin A},
+    mimetype={text/plain}]{@srcdir@/parse_bulletin_A.py}
+  \embedfile[desc={extract information from the IERS Bulletin C},
+    mimetype={text/plain}]{@srcdir@/parse_bulletin_C.py}
+  \embedfile[desc={IERS Bulletin C used for this PDF},
+    mimetype={text/plain}]{@srcdir@/16_BULLETIN_C16.txt}
+
+  If you modify, add or remove any of the literature references,
+  update file {\ttfamily references.bib},
+  run pdflatex, then run bibtex on {\ttfamily proleptic\_UTC}, and finally
+  run pdflatex twice more.  The PDF embeds file {\ttfamily proleptic\_UTC.bbl}
+  so you won't need bibtex if you don't change any literature references,
+  so you will need an empty file by this name if you don't have an
+  old copy.  The Makefile does this automatically.
+  
+  If you wish to change the algorithm for converting $\Delta$T to
+  extraordinary
+  days, change {\ttfamily read\_delta\_t.py} to implement your new
+  algorithm and run it to create the data lines for file
+  {\ttfamily extraordinary\_days.dat}.  The exact command line is in
+  the Makefile.
+
+  If you wish to update the values of $\Delta$T, for example to take
+  advantage of new research, if you have LibreOffice you can update
+  {\ttfamily values\_of\_delta\_T.ods} and save a copy as
+  {\ttfamily values\_of\_delta\_T.csv}. If you don't have LibreOffice
+  you can use a text editor to update file {\ttfamily values\_of\_delta\_T.csv}
+  directly.  Then re-run {\ttfamily read\_delta\_t} as above
+  and run {\ttfamily reformat\_delta\_t} as follows:
+
+  {\ttfamily python3 reformat\_delta\_t.py values\_of\_delta\_T.csv
+    delta\_t.tex}
+  
+  Use a text editor to edit the comments for file
+  {\ttfamily extraordinary\_days.dat} in file {\ttfamily exdays\_01.dat}.
+  See the Makefile for the mechanics of recreating file
+  {\ttfamily extraordinary\_days.dat}, and for creating files
+  {\ttfamily gnuplot.dat} and {\ttfamily extraordinary\_days.tex}
+  from it.
+  \embedfile[desc={file for constructing extraordinary\_days.dat},
+    mimetype={text/plain}]{@srcdir@/exdays_01.dat}
+  \embedfile[desc={file for constructing extraordinary\_days.dat},
+    mimetype={text/plain}]{@srcdir@/exdays_04.dat}
+  \embedfile[desc={program to extract the expiraton date from IERS Bulletin C},
+    mimetype={text/plain}]{@srcdir@/parse_Bulletin_C.py}
+  \embedfile[desc={program to extract the UT1-UTC projection
+      from IERS Bulletin A},
+    mimetype={text/plain}]{@srcdir@/parse_Bulletin_A.py}
+
+  To update the figures after changing the schedule of extraordinary days
+  you will need GNUplot.  All of the files needed are embedded in this PDF.
+  See the Makefile for details.}
+
+  \embedfile[desc={GNUplot output of read\_extraordinary\_days},
+    mimetype={text/plain}]{@builddir@/gnuplot.dat}
+  
+  \embedfile[desc={Plot Extraordinary Days},
+    mimetype={application/gnuplot}]{@builddir@/plot_extraordinary_days.gnuplot}
+  
+  \embedfile[desc={Plot Extraordinary Days since 1500},
+    mimetype={application/gnuplot}]
+            {@builddir@/plot_extraordinary_days_since_1500.gnuplot}
+  
+  \embedfile[desc={Plot Extraordinary Days since 1600},
+    mimetype={application/gnuplot}]
+            {@builddir@/plot_extraordinary_days_since_1600.gnuplot}
+  
+  \embedfile[desc={Plot Extraordinary Days since 1700},
+    mimetype={application/gnuplot}]
+            {@builddir@/plot_extraordinary_days_since_1700.gnuplot}
+  
+  \embedfile[desc={Plot Extraordinary Days since 1800},
+    mimetype={application/gnuplot}]
+            {@builddir@/plot_extraordinary_days_since_1800.gnuplot}
+  
+  \embedfile[desc={Plot Extraordinary Days since 1900},
+    mimetype={application/gnuplot}]
+            {@builddir@/plot_extraordinary_days_since_1900.gnuplot}
+
+  \embedfile[desc={Plot Extraordinary Days since 1950},
+    mimetype={application/gnuplot}]
+            {@builddir@/plot_extraordinary_days_since_1950.gnuplot}
+  
+  \embedfile[desc={Plot Extraordinary Days since 2000},
+    mimetype={application/gnuplot}]
+            {@builddir@/plot_extraordinary_days_since_2000.gnuplot}
+  
+  \embedfile[desc={program to write one xtics file},
+    mimetype=(application/python)]{@srcdir@/build_xtic_labels.py}
+
+  \embedfile[desc={program to write one xtics file},
+    mimetype=(application/python)]{@srcdir@/build_xtic_monthly_labels.py}
+  
+\end{enumerate}
+
+\section{Licensing}
+\label{section:Licensing}
+As noted on the first page, this paper is licensed under a Creative
+Commons Attribution-ShareAlike 4.0 International License.
+The full text of the license is at
+\url{http://creativecommons.org/licenses/by-sa/4.0/legalcode}%
+\embedfile[desc={Plaintext version of Creative Commons BY-SA 4.0 license},
+  mimetype={text/plain}]{@srcdir@/legalcode.txt}.
+This section is a human-readable summary of it.
+
+\subsection{You are free to:}
+\begin{description}
+\item[Share ---]copy and redistribute the material in any medium or format, and
+\item[Adapt ---]remix, transform, and build upon the material
+\end{description}
+for any purpose, even commercially.  The licensor cannot revoke these
+freedoms as long as you follow the license terms.
+\subsection{Under the following terms:}
+\begin{description}
+\item[Attribution ---]You must give appropriate credit\footnote{If supplied,
+  you must provide the name of the creator and attribution parties,
+  a copyright notice, a license notice, a disclaimer notice, and a link
+  to the material.}, provide a link to
+  the license, and indicate if changes were made\footnote{You must indicate if
+    you modified the material and retain an indication of previous
+    modifications.}.  You may do so in any
+  reasonable manner, but not in any that suggests the licensor endorses you
+  or your use.
+\item[ShareAlike ---]If you remix, transform, or build upon the material,
+  you must distribute your contributions under the same
+  license\footnote{You may also use any of the licenses listed as compatible
+    at the following web site:
+    \url{https://creativecommons.org/compatiblelicenses}}
+  as the original.
+\item[No additional restrictions ---]You may not apply legal terms or
+  technological measures\footnote{The license prohibits application of
+    effective technological measures, defined with reference to Article 11
+    of the WIPO Copyright Treaty.}
+  that legally restrict others from doing anything
+  the license permits.
+\end{description}
+\subsection{Notices:}
+\begin{itemize}
+\item{You do not have to comply with the license for elements of the
+  material in the public domain or where your use is permitted by an
+  exception or limitation.}
+\item{No warranties are given.  The license may not give you all of the
+  permissions necessary for your intended use.  For example, other rights
+  such as publicity, privacy or moral rights may limit how you use the
+  material.}
+\end{itemize}
+
+\newpage
+
+\bibliography{@srcdir@/references}
+\embedfile[desc={Bibliography},mimetype={text/biblatex}]
+          {@srcdir@/references.bib}
+\embedfile[desc={Bibliography references},
+  mimetype={text/biblatex}]{@builddir@/proleptic_UTC.bbl}
+
+\end{document}

@@ -1,0 +1,62 @@
+#
+# Table of Extraordinary Days, last modified April 16, 2020.
+#
+# Copyright © 2020 by John Sauter.
+# Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
+# license.  See https://creativecommons.org/license/by-sa/4.0/.
+#
+# A program that wishes to measure the time between two dates needs to know
+# the length of each day.  Most days are ordinary days, of 86,400 seconds,
+# but a few have 86,399 or 86,401 seconds, to keep clocks synchronized with
+# the rotation of the Earth.  For dates since 1972, the IERS maintains a
+# list of extraordinary days.  For earlier dates, we must imagine that
+# current timekeeping rules were in effect and project a list of extraordinary
+# days.  See "Extending Coordinated Universal Time to Dates Before 1972."
+#
+# This table of extraordinary days can be read by any program that needs
+# the information.  It uses a simple format with three kinds of lines:
+# (1) empty lines, like this one.  Note that any line can end with a comment,
+# which starts with "#".  (2) symbol=value lines, which assign a value to
+# a symbol.  Certain symbols have meaning, as described below.  (3) data lines,
+# formatted as three numbers: the Julian Day Number of the extraordinary day,
+# the length of that day in seconds, and the value of DTAI at the end of that
+# day.  Data lines must be ascending: earlier dates must come before later ones.
+#
+# The Julian Day Number is a simple count of days, starting on
+# November 24, -4713.  This file contains only the integer part of the
+# Julian Day number: to get a proper Julian Day Number add 0.5.  If you
+# prefer to use Modified Julian Days (MJD) subtract 2400000.
+#
+# DTAI is the difference between International Atomic
+# Time (TAI) and Coordinated Universal Time (UTC).  That difference is 0
+# on January 1, 1958.  Every extraordinary day changes the value of DTAI
+# at its end by +1 second for days with 86,401 seconds, or -1 second for
+# days with 86,399 seconds.  Since the data lines must be ordered,
+# each will have a DTAI that differs from the preceeding and succeeding line
+# by plus or minus 1.
+#
+# The symbols used in this file are as follows:
+#
+# START_DATE the Julian Day Number of the beginning of the data.  There may
+# be extraordinary days before this date, but they are not recorded in this
+# file.  An attempt to determine the time between two dates, either of which
+# is before the START_DATE, is likely to be inaccurate.
+#
+# END_DATE is the Julian Day Number of the end of the data.  There may be
+# extraordinary days after this date, but they are not recorded in this file.
+# An attempt to determine the time between two dates, either of which is
+# after the END_DATE, is likely to be inaccurate.
+#
+# EXPIRATION_DATE is the Julian Day Number after which this file should have
+# been updated.  If you find yourself using this file after its EXPIRATION_DATE,
+# look for an updated version of the file.  If necessary you can update it
+# yourself, using IERS Bulletin C.  Extraordinary days after the expiration date
+# are projections, and are subject to change in later revisions of this file.
+#
+# CHECKSUM is 64 hex digits of the SHA256 hash of this file, excluding the
+# CHECKSUM line.  The sample reading software verifies the checksum, to
+# defend against accidental corruption.  It also displays the correct checksum
+# in case you are updating the file yourself.
+#
+START_DATE=990574       # 1 Jan -2000
+END_DATE=2634166        # 1 Jan 2500

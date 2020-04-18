@@ -1,0 +1,18 @@
+set style data steps
+set grid xtics
+set grid ytics
+set xtics rotate by 90
+set xtics right
+set title "Values of DATI 2400 to 2410"
+set xlabel "Date"
+set ylabel "DTAI"
+set xrange [2597641:2601294]
+set yrange [530:570]
+load "@builddir@/set_xtics_001yr.gnuplot"
+set nokey
+set xtic rotate by 45
+set terminal pdfcairo size 5,3
+set output "values_of_DTAI_since_2400.pdf"
+plot 'gnuplot.dat' using 1:2
+
+
