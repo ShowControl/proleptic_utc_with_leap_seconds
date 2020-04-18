@@ -5,14 +5,16 @@ Summary:        Schedule leap seconds
 
 License:        GPLv3+
 URL:            https://github.com/ShowControl/proleptic_UTC_with_leap_seconds
-Source0:        https://github.com/ShowControl/proleptic_UTC_with_leap_seconds-%{version}.tar.gz
-
+Source0:        https://github.com/ShowControl/proleptic_utc_with_leap_seconds/blob/master/proleptic_utc_with_leap_seconds-%{version}.tar.gz
+                
 BuildArch: noarch
 
 BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  python3 >= 3.5
 BuildRequires:  git
+BuildRequires:  python3-jdcal
+BuildRequires:  python3-pandas
 
 %global _hardened_build 1
 
