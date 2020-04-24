@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8
 #
 # Parse the text file of IERS Bulletin A.

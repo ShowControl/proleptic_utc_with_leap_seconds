@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: April 18, 2020.
+# File: Makefile.am, author: John Sauter, date: April 20, 2020.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -25,16 +25,39 @@
 #     telephone: (603) 424-1188
 #     e-mail: John_Sauter@systemeyescomputerstore.com
 
-txtdir = ${datadir}/data
-dist_txt_DATA = extraordinary_days.dat
-dist_doc_DATA = proleptic_UTC.pdf
+all: extraordinary_days.dat
+.PHONEY: all
 
-dist_bin_SCRIPTS =  \
-build_xtic_labels.py build_xtic_monthly_labels.py \
-parse_bulletin_A.py parse_bulletin_C.py read_delta_t.py \
-read_extraordinary_days_table.py reformat_delta_t.py 
+# Distribute the main file.
+txtdir = ${datadir}/proleptic_utc_with_leap_seconds/data/
+dist_txt_DATA = extraordinary_days.dat
+
+# Also distribute a man file.
+dist_man_MANS = extraordinary_days.dat.5
+
+# Include the following documentation files in the distribution.
+dist_doc_DATA = \
+	README \
+	COPYING \
+	LICENSE \
+	AUTHORS \
+	ChangeLog \
+	INSTALL \
+	NEWS
+
+# Conditionally build the PDF.
+# Doing this will require texlive-scheme-full and gnuplot.
+if ENABLE_PDF
+  dist_doc_DATA += proleptic_UTC.pdf
+endif
 
 EXTRA_DIST = \
+build_xtic_labels.py build_xtic_monthly_labels.py \
+parse_bulletin_A.py parse_bulletin_C.py read_delta_t.py \
+read_extraordinary_days_table.py reformat_delta_t.py \
+proleptic_UTC.tex.in
+
+EXTRA_DIST += \
 references.bib exdays_01.dat exdays_04.dat finals.all.csv \
 6_BULLETIN_A_V2013_016.txt 16_BULLETIN_C16.txt \
 values_of_delta_T.csv USNO_delta_T.csv plot_extraordinary_days.gnuplot \
@@ -54,10 +77,21 @@ R-REC-TF.460-6-200202-I!!PDF-E.pdf \
 legalcode.txt values_of_delta_T.ods\
 USNO_deltat_preds.csv gpl.txt
 
+# Distribute the shell script which builds the RPMs.
+EXTRA_DIST += build_RPMs.sh
+
+# Run it if the developer types "make RPMs".
+.phoney: RPMs
+RPMs:
+	bash build_RPMs.sh
+
+# The spec file is ueed to build RPMs for RPM-based distributions
+# of GNU/Linux, including RHEL and Fedora.
 EXTRA_DIST += proleptic_utc_with_leap_seconds.spec
 
 # Run pdfLaTeX three times to get the forward references right
-proleptic_UTC.pdf : proleptic_UTC.tex proleptic_UTC.bbl \
+proleptic_UTC.pdf : proleptic_UTC.tex proleptic_UTC.tex.in \
+proleptic_UTC.bbl \
 delta_t.tex extraordinary_days.tex values_of_DTAI.pdf \
 values_of_DTAI_since_1500.pdf values_of_DTAI_since_1600.pdf \
 values_of_DTAI_since_1700.pdf values_of_DTAI_since_1800.pdf \
@@ -73,7 +107,8 @@ finals.all.csv
 # copy of the .bbl file for the .tex file to embed, in case
 # it doesn't exist.  Embedding doesn't change the page numbers,
 # so doing that won't hurt the .aux file.
-proleptic_UTC.bbl : proleptic_UTC.tex references.bib \
+proleptic_UTC.bbl : proleptic_UTC.tex proleptic_UTC.tex.in \
+references.bib \
 delta_t.tex extraordinary_days.tex values_of_DTAI.pdf \
 values_of_DTAI_since_1500.pdf values_of_DTAI_since_1600.pdf \
 values_of_DTAI_since_1700.pdf values_of_DTAI_since_1800.pdf \
@@ -330,6 +365,10 @@ values_of_DTAI_since_2490.pdf : gnuplot.dat \
 plot_extraordinary_days_since_2490.gnuplot set_xtics_006mo.gnuplot
 	gnuplot plot_extraordinary_days_since_2490.gnuplot
 
+# Buld the PDF on demand, if requested.
+pdf-local: proleptic_UTC.pdf
+.PHONEY: pdf-local
+
 # When removing files, also remove the followins:
 CLEANFILES = \
 delta_t.tex \
@@ -360,8 +399,12 @@ proleptic_UTC.bbl \
 proleptic_UTC.log \
 proleptic_UTC.aux \
 proleptic_UTC.out \
-proleptic_UTC.pdf \
 proleptic_UTC.blg \
-proleptic_UTC.brf
+proleptic_UTC.brf \
+proleptic_UTC.pdf
+
+clean-local:
+	rm -rf autom4te.cache
+	rm -f *~
 
 # end of file Makefile.am

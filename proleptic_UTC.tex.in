@@ -38,12 +38,14 @@
 \begin{document}
 \embedfile[desc={Extending Coordinated Universal Time to Dates Before 1972},
   mimetype={text/pdflatex}]{@builddir@/proleptic_UTC.tex}
+\embedfile[desc={Extending Coordinated Universal Time to Dates Before 1972},
+  mimetype={text/pdflatex}]{@srcdir@/proleptic_UTC.tex.in}
 \title{Extending Coordinated Universal Time \\ to Dates Before
   1972\footnote{Copyright {\copyright} 2020 by John Sauter.
   This paper is made available under a
   Creative Commons Attribution-ShareAlike 4.0 International License.
   You can read a human-readable summary of the license at
-  \url{http://creativecommons.org/licenses/by-sa/4.0}, which contains
+  \url{https://creativecommons.org/licenses/by-sa/4.0}, which contains
   a link to the full text of the license.
   See also section \ref{section:Licensing} of this paper.}
 }
@@ -69,11 +71,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2020 by John Sauter},
-  pdfdate={2020-04-18},
-  pdflicenseurl={http://creativecommons.org/licenses/by-sa/4.0},
+  pdfdate={2020-04-23},
+  pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
-\date{2020-04-18}
+\date{2020-04-23}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -136,6 +138,7 @@ short day is used when UTC is counting slower than the Earth is
 rotating.
 
 \section{A Brief History of Timekeeping}
+\label{section:A_Brief_History_of_Timekeeping}
 The Gregorian calendar was adopted starting in 1582 because the seasons
 had slowly changed their dates under the previous calendar.  The
 changeover included dropping 10 days from the calendar to correct the
@@ -221,7 +224,7 @@ estimated the values of $\Delta$T from the year \num{-2000} to
 \embedfile[desc={Measurement of the Earth's Rotation: 720 BC to AD 2500},
   mimetype={application/PDF}]{@srcdir@/20160404.full.pdf}.
 The table below is based on the data calculated in that paper,
-presented at \url{http://astro.ukho.gov.uk/nao/lvm/}, as updated in
+presented at \url{https://astro.ukho.gov.uk/nao/lvm/}, as updated in
 September 2018.
 Where the data
 presented two different values of $\Delta$T for the same date,
@@ -241,7 +244,7 @@ which starts the next day.
 Using this information we can schedule extraordinary days as though UTC
 were being used prior to 1972.  In 2006 Tony Finch created a proleptic
 UTC back to 1958 using US Naval Observatory
-tables\footnote{\url{http://fanf.livejournal.com/69586.html}}
+tables\footnote{\url{https://fanf.livejournal.com/69586.html}}
 so I will follow his lead for those dates.
 
 To schedule extraordinary days, we establish an anchor point
@@ -281,10 +284,7 @@ scheduled by the International Earth Rotation and Reference Systems
 Service
 (IERS)\footnote{\url{https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html}}.
 The schedule for the future is based on projections from the IERS
-and the United States Naval
-Obsevatory\footnote{\url{http://maia.usno.navy.mil/ser7/predcoef.out}},
-and from the estimates of $\Delta$T.
-
+and astronomical projections of $\Delta$T.
 \embedfile[desc={Schedule the Extraordinary Days from Delta T},
   mimetype={application/python}]{@srcdir@/read_delta_t.py}
 \embedfile[desc={Reformat the Delta T data into a LaTeX table},
@@ -411,13 +411,13 @@ pendulum clock.
 \section{POSIX}
 POSIX is a portable operating system interface based on Unix, intended
 to maintain compatibility between operating systems\footnote{
-  \url{http://pubs.opengroup.org/onlinepubs/9699919799/}}.
+  \url{https://pubs.opengroup.org/onlinepubs/9699919799/}}.
 The way POSIX represents time has been criticized for not handling UTC
 well.\footnote{
-  \url{http://stackoverflow.com/questions/16539436/unix-time-and-leap-seconds}}%
+ \url{https://stackoverflow.com/questions/16539436/unix-time-and-leap-seconds}}%
 \footnote{
   \url{https://news.ycombinator.com/item?id=4112566}}
-Markus Kuhn\footnote{\url{http://www.cl.cam.ac.uk/~mgk25/time/c/}}
+Markus Kuhn\footnote{\url{https://www.cl.cam.ac.uk/~mgk25/time/c/}}
 and David Madore\footnote{
   \url{http://www.madore.org/~david/computers/unix-leap-seconds.html}}
 have made proposals to improve the way POSIX deals with extraordinary days.
@@ -565,36 +565,36 @@ Except as noted, the embedded files are covered by the same license as
 this paper.
 
 \begin{enumerate}
-\item{File {\ttfamily 20160404.full.pdf}, which is the main research paper
-  on reducing historical records to $\Delta$T and
+\item Files {\ttfamily 20160404.full.pdf}, which is the main research paper
+  on reducing historical records to {$\Delta$T}, and
   {\ttfamily R-REC-TF.460-6-200202-I!!PDF-E.pdf}, the definition
   of UTC.  They are referenced in this paper by name and with a hyperlink.
   The files are embedded in this PDF in case the hyperlinks become
-  broken.  I do not assert copyright on these files.}
-\item{A spreadsheet named {\ttfamily values\_of\_delta\_T.ods}
-  containing the values of $\Delta$T shown in table \ref{table:delta_t}.}
+  broken.  I do not assert copyright on these files.
+\item A spreadsheet named {\ttfamily values\_of\_delta\_T.ods}
+  containing the values of $\Delta$T shown in table \ref{table:delta_t}.
   Also included is the same data in a CSV file.
-\item{A plain text file, downloaded from the
+\item A plain text file, downloaded from the
   Creative Commons web site:
-  \url{http://creativecommons.org/licenses/by-sa/4.0/legalcode.txt}.
+  \url{https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt}.
   In this file is the legal code for the license for this paper,
   in case the hyperlink in section \ref{section:Licensing} should fail.
-  I do not assert copyright on this file.}
-\item{A plain text file named {\ttfamily extraordinary\_days.dat}
+  I do not assert copyright on this file.
+\item A plain text file named {\ttfamily extraordinary\_days.dat}
   which lists the extraordinary days
   using the form shown in table \ref{table:JDN_DTAI}.  This file lists all
   of the extraordinary days plotted in figure \ref{figure:DTAI},
-  not just the subset in table \ref{table:JDN_DTAI}.}
-\item{A program named
+  not just the subset in table \ref{table:JDN_DTAI}.
+\item A program named
   {\ttfamily read\_extraordinary\_days\_table}
   which reads the {\ttfamily extraordinary\_days.dat}
   data file.  This program is provided as an example
   of how to read the data file.  It will optionally write the
   {\LaTeX} code for table \ref{table:JDN_DTAI} and a GNUplot data file
   for the figures.
-  This program is licensed under the GPL.}
-\item{A plain text copy of the GNU General Public License (GPL), version 3.}
-\item{The source files for this paper.
+  This program is licensed under the GPL.
+\item A plain text copy of the GNU General Public License (GPL), version 3.
+\item The source files for this paper.
   The main file is {\ttfamily proleptic\_UTC.tex}.
   That file reads {\LaTeX} files {\ttfamily extraordinary\_days.tex}
   and {\ttfamily delta\_t.tex},
@@ -607,14 +607,65 @@ this paper.
   To reproduce this PDF, extract all the files and run
   pdflatex on {\ttfamily proleptic\_UTC.tex}.  You will have
   to run it more than once to get the forward references to resolve.
+\item Also included are files to automate the creation of this paper and
+  file {\ttfamily extraordinary\_days.dat} when the
+  IERS updates its information about the Earth's rotation.
+  The IERS publishes new information on Thursday, so to keep
+  up with its latest information, do the following late on Thursday:
 
-  Also included is a Makefile which automates the
-  rebuilding process.  To re-create this PDF file from its sources,
-  type {\ttfamily ./configure}s, optionally
-  {\ttfamily make download} to get the latest UT1 data from
-  the IERS, and {\ttfamily make} to compute the leap seconds and
-  build the PDF.
-  You will need Python, {\LaTeX} and GNUplot.
+  \begin{enumerate}
+  \item Edit the revision dates in files
+    {\ttfamily proleptic\_UTC.tex.in}, {\ttfamily configure.ac},
+    {\ttfamily exdays\_01.dat} and {\ttfamily references.bib}.
+  \item Update the ``time of this writing'' phrase in
+    secton {\ref{section:A_Brief_History_of_Timekeeping}}
+    if the previous update was in an earlier month.
+  \item Update the revision history in file {\ttfamily NEWS}.
+  \item Update file {\ttfamily proleptic\_utc\_with\_leap\_seconds.spec}
+    to show the revision date as the version number, and add to
+    the change log.
+  \item Type {\ttfamily ./autogen.sh {-}{-}download} to re-create
+    file {\ttfamily configure} from file {\ttfamily configure.ac}
+    and file {\ttfamily Makefile.in} from file {\ttfamily Makefile.am}.
+  \item Type {\ttfamily ./configure {-}{-}prefix=/usr} to re-create
+    several files,
+    including file {\ttfamily Makefile}, from their {\ttfamily .in} templates.
+  \item Type {\ttfamily make download} to download the latest
+    Earth rotation information from the IERS.
+    Bulletin C, which announces leap seconds, is updated every six months.
+    Bulletin A, which lists the time it took for the Earth to rotate each day,
+    is updated every week.
+  \item \label{step:make} Type {\ttfamily make} to create file
+    {\ttfamily extraordinary\_days.dat}.
+  \item Type {\ttfamily make pdf} to create file
+    {\ttfamily proleptic\_UTC.pdf}.
+  \item Type {\ttfamily rm *.gz} to delete the old source tarball.
+  \item Type {\ttfamily make dist} to create a new source tarball.
+  \item Type {\ttfamily rm *.rpm} to delete the old source RPM file.
+  \item Type {\ttfamily make RPMs} to create a new source RPM file.
+    See the comments in file {\ttfamily build\_RPM.sh} for details.
+  \item Type {\ttfamily make distcheck} to validate the source tarball.
+  \item Type {\ttfamily sudo make install} to copy file
+    {\ttfamily extraordinary\_days.dat} to directory
+    {\ttfamily /usr/share/proleptic\_utc\_with\_leap\_seconds/data}
+    so other programs can find it.
+  \item If file {\ttfamily extraordinary\_days.dat} has changed:
+    \begin{enumerate}
+      \item Rebuild everything that depends on it, so those programs can
+        be apprised of the new leap second schedule.
+      \item Update files 
+        {\ttfamily proleptic\_utc\_with\_leap\_seconds.spec}
+        and {\ttfamily NEWS} to describe
+        the changes in file {\ttfamily extraordinary\_days.dat}.
+      \item Create a new source tarball using this procedure
+        by starting at step {\ref{step:make}}.
+    \end{enumerate}
+  \end{enumerate}
+  
+  You will need Autotools, Python, {\LaTeX} and GNUplot.
+  Details of the dependencies are in file
+  {\ttfamily proleptic\_utc\_with\_leap\_seconds.spec}.
+  
   \embedfile[desc={configure for the current build system},
     mimetype={application/make}]{@srcdir@/configure.ac}
   \embedfile[desc={rebuild proleptic\_UTC.pdf from its sources},
@@ -630,18 +681,13 @@ this paper.
 
   If you modify, add or remove any of the literature references,
   update file {\ttfamily references.bib},
-  run pdflatex, then run bibtex on {\ttfamily proleptic\_UTC}, and finally
-  run pdflatex twice more.  The PDF embeds file {\ttfamily proleptic\_UTC.bbl}
-  so you won't need bibtex if you don't change any literature references,
-  so you will need an empty file by this name if you don't have an
-  old copy.  The Makefile does this automatically.
   
   If you wish to change the algorithm for converting $\Delta$T to
   extraordinary
   days, change {\ttfamily read\_delta\_t.py} to implement your new
   algorithm and run it to create the data lines for file
   {\ttfamily extraordinary\_days.dat}.  The exact command line is in
-  the Makefile.
+  file {\ttfamily Makefile.am}.
 
   If you wish to update the values of $\Delta$T, for example to take
   advantage of new research, if you have LibreOffice you can update
@@ -656,7 +702,7 @@ this paper.
   
   Use a text editor to edit the comments for file
   {\ttfamily extraordinary\_days.dat} in file {\ttfamily exdays\_01.dat}.
-  See the Makefile for the mechanics of recreating file
+  See file {\ttfamily Makefile.am} for the mechanics of recreating file
   {\ttfamily extraordinary\_days.dat}, and for creating files
   {\ttfamily gnuplot.dat} and {\ttfamily extraordinary\_days.tex}
   from it.
@@ -672,7 +718,7 @@ this paper.
 
   To update the figures after changing the schedule of extraordinary days
   you will need GNUplot.  All of the files needed are embedded in this PDF.
-  See the Makefile for details.}
+  See file {\ttfamily Makefile.am} for details.
 
   \embedfile[desc={GNUplot output of read\_extraordinary\_days},
     mimetype={text/plain}]{@builddir@/gnuplot.dat}
@@ -721,7 +767,7 @@ this paper.
 As noted on the first page, this paper is licensed under a Creative
 Commons Attribution-ShareAlike 4.0 International License.
 The full text of the license is at
-\url{http://creativecommons.org/licenses/by-sa/4.0/legalcode}%
+\url{https://creativecommons.org/licenses/by-sa/4.0/legalcode}%
 \embedfile[desc={Plaintext version of Creative Commons BY-SA 4.0 license},
   mimetype={text/plain}]{@srcdir@/legalcode.txt}.
 This section is a human-readable summary of it.

@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am, author: John Sauter, date: April 18, 2020.
+# File: Makefile.am, author: John Sauter, date: April 20, 2020.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -40,7 +40,6 @@
 #     Nashua, NH  03063-4066
 #     telephone: (603) 424-1188
 #     e-mail: John_Sauter@systemeyescomputerstore.com
-
 
 VPATH = @srcdir@
 am__is_gnu_make = { \
@@ -114,13 +113,17 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+
+# Conditionally build the PDF.
+# Doing this will require texlive-scheme-full and gnuplot.
+@ENABLE_PDF_TRUE@am__append_1 = proleptic_UTC.pdf
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(top_srcdir)/configure \
-	$(am__configure_deps) $(dist_bin_SCRIPTS) $(dist_doc_DATA) \
+	$(am__configure_deps) $(am__dist_doc_DATA_DIST) \
 	$(dist_txt_DATA) $(am__DIST_COMMON)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
@@ -137,6 +140,25 @@ CONFIG_CLEAN_FILES = plot_extraordinary_days.gnuplot \
 	plot_extraordinary_days_since_2400.gnuplot \
 	plot_extraordinary_days_since_2490.gnuplot proleptic_UTC.tex
 CONFIG_CLEAN_VPATH_FILES =
+AM_V_P = $(am__v_P_@AM_V@)
+am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
+am__v_P_0 = false
+am__v_P_1 = :
+AM_V_GEN = $(am__v_GEN_@AM_V@)
+am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
+am__v_GEN_0 = @echo "  GEN     " $@;
+am__v_GEN_1 = 
+AM_V_at = $(am__v_at_@AM_V@)
+am__v_at_ = $(am__v_at_@AM_DEFAULT_V@)
+am__v_at_0 = @
+am__v_at_1 = 
+SOURCES =
+DIST_SOURCES =
+am__can_run_installinfo = \
+  case $$AM_UPDATE_INFO_DIR in \
+    n|no|NO) false;; \
+    *) (install-info --version) >/dev/null 2>&1;; \
+  esac
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -164,31 +186,16 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(docdir)" \
+man5dir = $(mandir)/man5
+am__installdirs = "$(DESTDIR)$(man5dir)" "$(DESTDIR)$(docdir)" \
 	"$(DESTDIR)$(txtdir)"
-SCRIPTS = $(dist_bin_SCRIPTS)
-AM_V_P = $(am__v_P_@AM_V@)
-am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
-am__v_P_0 = false
-am__v_P_1 = :
-AM_V_GEN = $(am__v_GEN_@AM_V@)
-am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
-am__v_GEN_0 = @echo "  GEN     " $@;
-am__v_GEN_1 = 
-AM_V_at = $(am__v_at_@AM_V@)
-am__v_at_ = $(am__v_at_@AM_DEFAULT_V@)
-am__v_at_0 = @
-am__v_at_1 = 
-SOURCES =
-DIST_SOURCES =
-am__can_run_installinfo = \
-  case $$AM_UPDATE_INFO_DIR in \
-    n|no|NO) false;; \
-    *) (install-info --version) >/dev/null 2>&1;; \
-  esac
+NROFF = nroff
+MANS = $(dist_man_MANS)
+am__dist_doc_DATA_DIST = README COPYING LICENSE AUTHORS ChangeLog \
+	INSTALL NEWS proleptic_UTC.pdf
 DATA = $(dist_doc_DATA) $(dist_txt_DATA)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
-am__DIST_COMMON = $(srcdir)/Makefile.in \
+am__DIST_COMMON = $(dist_man_MANS) $(srcdir)/Makefile.in \
 	$(srcdir)/plot_extraordinary_days.gnuplot.in \
 	$(srcdir)/plot_extraordinary_days_since_1500.gnuplot.in \
 	$(srcdir)/plot_extraordinary_days_since_1600.gnuplot.in \
@@ -302,17 +309,28 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-txtdir = ${datadir}/data
-dist_txt_DATA = extraordinary_days.dat
-dist_doc_DATA = proleptic_UTC.pdf
-dist_bin_SCRIPTS = \
-build_xtic_labels.py build_xtic_monthly_labels.py \
-parse_bulletin_A.py parse_bulletin_C.py read_delta_t.py \
-read_extraordinary_days_table.py reformat_delta_t.py 
 
-EXTRA_DIST = references.bib exdays_01.dat exdays_04.dat finals.all.csv \
-	6_BULLETIN_A_V2013_016.txt 16_BULLETIN_C16.txt \
-	values_of_delta_T.csv USNO_delta_T.csv \
+# Distribute the main file.
+txtdir = ${datadir}/proleptic_utc_with_leap_seconds/data/
+dist_txt_DATA = extraordinary_days.dat
+
+# Also distribute a man file.
+dist_man_MANS = extraordinary_days.dat.5
+
+# Include the following documentation files in the distribution.
+dist_doc_DATA = README COPYING LICENSE AUTHORS ChangeLog INSTALL NEWS \
+	$(am__append_1)
+
+# Distribute the shell script which builds the RPMs.
+
+# The spec file is ueed to build RPMs for RPM-based distributions
+# of GNU/Linux, including RHEL and Fedora.
+EXTRA_DIST = build_xtic_labels.py build_xtic_monthly_labels.py \
+	parse_bulletin_A.py parse_bulletin_C.py read_delta_t.py \
+	read_extraordinary_days_table.py reformat_delta_t.py \
+	proleptic_UTC.tex.in references.bib exdays_01.dat \
+	exdays_04.dat finals.all.csv 6_BULLETIN_A_V2013_016.txt \
+	16_BULLETIN_C16.txt values_of_delta_T.csv USNO_delta_T.csv \
 	plot_extraordinary_days.gnuplot \
 	plot_extraordinary_days_since_1500.gnuplot \
 	plot_extraordinary_days_since_1600.gnuplot \
@@ -326,7 +344,7 @@ EXTRA_DIST = references.bib exdays_01.dat exdays_04.dat finals.all.csv \
 	plot_extraordinary_days_since_2490.gnuplot 20160404.full.pdf \
 	R-REC-TF.460-6-200202-I!!PDF-E.pdf legalcode.txt \
 	values_of_delta_T.ods USNO_deltat_preds.csv gpl.txt \
-	proleptic_utc_with_leap_seconds.spec
+	build_RPMs.sh proleptic_utc_with_leap_seconds.spec
 
 # When removing files, also remove the followins:
 CLEANFILES = \
@@ -358,9 +376,9 @@ proleptic_UTC.bbl \
 proleptic_UTC.log \
 proleptic_UTC.aux \
 proleptic_UTC.out \
-proleptic_UTC.pdf \
 proleptic_UTC.blg \
-proleptic_UTC.brf
+proleptic_UTC.brf \
+proleptic_UTC.pdf
 
 all: all-am
 
@@ -422,41 +440,49 @@ plot_extraordinary_days_since_2490.gnuplot: $(top_builddir)/config.status $(srcd
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 proleptic_UTC.tex: $(top_builddir)/config.status $(srcdir)/proleptic_UTC.tex.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-install-dist_binSCRIPTS: $(dist_bin_SCRIPTS)
+install-man5: $(dist_man_MANS)
 	@$(NORMAL_INSTALL)
-	@list='$(dist_bin_SCRIPTS)'; test -n "$(bindir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(bindir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(bindir)" || exit 1; \
+	@list1=''; \
+	list2='$(dist_man_MANS)'; \
+	test -n "$(man5dir)" \
+	  && test -n "`echo $$list1$$list2`" \
+	  || exit 0; \
+	echo " $(MKDIR_P) '$(DESTDIR)$(man5dir)'"; \
+	$(MKDIR_P) "$(DESTDIR)$(man5dir)" || exit 1; \
+	{ for i in $$list1; do echo "$$i"; done;  \
+	if test -n "$$list2"; then \
+	  for i in $$list2; do echo "$$i"; done \
+	    | sed -n '/\.5[a-z]*$$/p'; \
 	fi; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
+	} | while read p; do \
+	  if test -f $$p; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; echo "$$p"; \
 	done | \
-	sed -e 'p;s,.*/,,;n' \
-	    -e 'h;s|.*|.|' \
-	    -e 'p;x;s,.*/,,;$(transform)' | sed 'N;N;N;s,\n, ,g' | \
-	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1; } \
-	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
-	    if ($$2 == $$4) { files[d] = files[d] " " $$1; \
-	      if (++n[d] == $(am__install_max)) { \
-		print "f", d, files[d]; n[d] = 0; files[d] = "" } } \
-	    else { print "f", d "/" $$4, $$1 } } \
-	  END { for (d in files) print "f", d, files[d] }' | \
-	while read type dir files; do \
-	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
-	     test -z "$$files" || { \
-	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(bindir)$$dir'"; \
-	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
-	     } \
-	; done
+	sed -e 'n;s,.*/,,;p;h;s,.*\.,,;s,^[^5][0-9a-z]*$$,5,;x' \
+	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,' | \
+	sed 'N;N;s,\n, ,g' | { \
+	list=; while read file base inst; do \
+	  if test "$$base" = "$$inst"; then list="$$list $$file"; else \
+	    echo " $(INSTALL_DATA) '$$file' '$(DESTDIR)$(man5dir)/$$inst'"; \
+	    $(INSTALL_DATA) "$$file" "$(DESTDIR)$(man5dir)/$$inst" || exit $$?; \
+	  fi; \
+	done; \
+	for i in $$list; do echo "$$i"; done | $(am__base_list) | \
+	while read files; do \
+	  test -z "$$files" || { \
+	    echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(man5dir)'"; \
+	    $(INSTALL_DATA) $$files "$(DESTDIR)$(man5dir)" || exit $$?; }; \
+	done; }
 
-uninstall-dist_binSCRIPTS:
+uninstall-man5:
 	@$(NORMAL_UNINSTALL)
-	@list='$(dist_bin_SCRIPTS)'; test -n "$(bindir)" || exit 0; \
-	files=`for p in $$list; do echo "$$p"; done | \
-	       sed -e 's,.*/,,;$(transform)'`; \
-	dir='$(DESTDIR)$(bindir)'; $(am__uninstall_files_from_dir)
+	@list=''; test -n "$(man5dir)" || exit 0; \
+	files=`{ for i in $$list; do echo "$$i"; done; \
+	l2='$(dist_man_MANS)'; for i in $$l2; do echo "$$i"; done | \
+	  sed -n '/\.5[a-z]*$$/p'; \
+	} | sed -e 's,.*/,,;h;s,.*\.,,;s,^[^5][0-9a-z]*$$,5,;x' \
+	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,'`; \
+	dir='$(DESTDIR)$(man5dir)'; $(am__uninstall_files_from_dir)
 install-dist_docDATA: $(dist_doc_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(dist_doc_DATA)'; test -n "$(docdir)" || list=; \
@@ -674,9 +700,9 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(SCRIPTS) $(DATA)
+all-am: Makefile $(MANS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(docdir)" "$(DESTDIR)$(txtdir)"; do \
+	for dir in "$(DESTDIR)$(man5dir)" "$(DESTDIR)$(docdir)" "$(DESTDIR)$(txtdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -712,7 +738,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic mostlyclean-am
+clean-am: clean-generic clean-local mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
@@ -731,13 +757,13 @@ info: info-am
 
 info-am:
 
-install-data-am: install-dist_docDATA install-dist_txtDATA
+install-data-am: install-dist_docDATA install-dist_txtDATA install-man
 
 install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am: install-dist_binSCRIPTS
+install-exec-am:
 
 install-html: install-html-am
 
@@ -747,7 +773,7 @@ install-info: install-info-am
 
 install-info-am:
 
-install-man:
+install-man: install-man5
 
 install-pdf: install-pdf-am
 
@@ -771,39 +797,49 @@ mostlyclean-am: mostlyclean-generic
 
 pdf: pdf-am
 
-pdf-am:
+pdf-am: pdf-local
 
 ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-dist_binSCRIPTS uninstall-dist_docDATA \
-	uninstall-dist_txtDATA
+uninstall-am: uninstall-dist_docDATA uninstall-dist_txtDATA \
+	uninstall-man
+
+uninstall-man: uninstall-man5
 
 .MAKE: install-am install-strip
 
 .PHONY: all all-am am--refresh check check-am clean clean-generic \
-	cscopelist-am ctags-am dist dist-all dist-bzip2 dist-gzip \
-	dist-lzip dist-shar dist-tarZ dist-xz dist-zip distcheck \
-	distclean distclean-generic distcleancheck distdir \
+	clean-local cscopelist-am ctags-am dist dist-all dist-bzip2 \
+	dist-gzip dist-lzip dist-shar dist-tarZ dist-xz dist-zip \
+	distcheck distclean distclean-generic distcleancheck distdir \
 	distuninstallcheck dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am \
-	install-dist_binSCRIPTS install-dist_docDATA \
-	install-dist_txtDATA install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am tags-am uninstall uninstall-am \
-	uninstall-dist_binSCRIPTS uninstall-dist_docDATA \
-	uninstall-dist_txtDATA
+	install-dist_docDATA install-dist_txtDATA install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-man5 install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic pdf pdf-am pdf-local ps ps-am \
+	tags-am uninstall uninstall-am uninstall-dist_docDATA \
+	uninstall-dist_txtDATA uninstall-man uninstall-man5
 
 .PRECIOUS: Makefile
 
 
+all: extraordinary_days.dat
+.PHONEY: all
+
+# Run it if the developer types "make RPMs".
+.phoney: RPMs
+RPMs:
+	bash build_RPMs.sh
+
 # Run pdfLaTeX three times to get the forward references right
-proleptic_UTC.pdf : proleptic_UTC.tex proleptic_UTC.bbl \
+proleptic_UTC.pdf : proleptic_UTC.tex proleptic_UTC.tex.in \
+proleptic_UTC.bbl \
 delta_t.tex extraordinary_days.tex values_of_DTAI.pdf \
 values_of_DTAI_since_1500.pdf values_of_DTAI_since_1600.pdf \
 values_of_DTAI_since_1700.pdf values_of_DTAI_since_1800.pdf \
@@ -819,7 +855,8 @@ finals.all.csv
 # copy of the .bbl file for the .tex file to embed, in case
 # it doesn't exist.  Embedding doesn't change the page numbers,
 # so doing that won't hurt the .aux file.
-proleptic_UTC.bbl : proleptic_UTC.tex references.bib \
+proleptic_UTC.bbl : proleptic_UTC.tex proleptic_UTC.tex.in \
+references.bib \
 delta_t.tex extraordinary_days.tex values_of_DTAI.pdf \
 values_of_DTAI_since_1500.pdf values_of_DTAI_since_1600.pdf \
 values_of_DTAI_since_1700.pdf values_of_DTAI_since_1800.pdf \
@@ -1075,6 +1112,14 @@ plot_extraordinary_days_since_2400.gnuplot set_xtics_001yr.gnuplot
 values_of_DTAI_since_2490.pdf : gnuplot.dat \
 plot_extraordinary_days_since_2490.gnuplot set_xtics_006mo.gnuplot
 	gnuplot plot_extraordinary_days_since_2490.gnuplot
+
+# Buld the PDF on demand, if requested.
+pdf-local: proleptic_UTC.pdf
+.PHONEY: pdf-local
+
+clean-local:
+	rm -rf autom4te.cache
+	rm -f *~
 
 # end of file Makefile.am
 
