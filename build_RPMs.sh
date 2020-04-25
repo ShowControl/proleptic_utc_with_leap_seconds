@@ -1,15 +1,16 @@
 #!/bin/bash
-# File: build_RPMs.sh, author: John Sauter, date: April 23, 2020.
+# File: build_RPMs.sh, author: John Sauter, date: April 25, 2020.
 # Build the RPMs for proleptic_UTC_with_leap_seconds.
 
 # Requires fedora-packager, rpmdevtools, copr-cli.
 # Don't forget to tell copr-cli about your copr API token.
 # See https://developer.fedoraproject.org/deployment/copr/copr-cli.html.
 
+rm -rf ~/rpmbuild
 mkdir -p ~/rpmbuild
 mkdir -p ~/rpmbuild/SOURCES
 mkdir -p ~/rpmbuild/SRPMS
-mkdir -p ~/rpmbuild/RPMS/x84_64
+mkdir -p ~/rpmbuild/RPMS/noarch
 
 pushd ~/rpmbuild
 # Set the umask so files created will not have strange permissions.
@@ -17,7 +18,7 @@ umask 022
 # Clean out any old versions of the application.
 rm -f SOURCES/*
 rm -f SRPMS/*
-rm -f RPMS/x86_64/*
+rm -f RPMS/noarch/*
 # Copy in the new tarball.
 popd
 cp -v proleptic_utc_with_leap_seconds-*.tar.gz ~/rpmbuild/SOURCES/
@@ -37,6 +38,7 @@ rpmlint proleptic_utc_with_leap_seconds-*.rpm
 popd
 mock -r fedora-31-x86_64 proleptic_utc_with_leap_seconds-*.src.rpm
 # now that all local tests have passed, build it in copr.
-copr-cli build proleptic_utc_with_leap_seconds proleptic_utc_with_leap_seconds-*.src.rpm
+copr-cli build proleptic_utc_with_leap_seconds \
+	 proleptic_utc_with_leap_seconds-*.src.rpm
 
 # End of file build_RPMs.sh

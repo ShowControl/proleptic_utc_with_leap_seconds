@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: April 20, 2020.
+# File: Makefile.am, author: John Sauter, date: April 24, 2020.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -55,7 +55,7 @@ EXTRA_DIST = \
 build_xtic_labels.py build_xtic_monthly_labels.py \
 parse_bulletin_A.py parse_bulletin_C.py read_delta_t.py \
 read_extraordinary_days_table.py reformat_delta_t.py \
-proleptic_UTC.tex.in
+proleptic_UTC.tex.in fix_files.sh autogen.sh
 
 EXTRA_DIST += \
 references.bib exdays_01.dat exdays_04.dat finals.all.csv \
@@ -161,7 +161,7 @@ download:
 exdays_05.dat : read_delta_t.py values_of_delta_T.csv finals.all.csv \
 6_BULLETIN_A_V2013_016.txt
 	python3 ${srcdir}/read_delta_t.py ${srcdir}/values_of_delta_T.csv \
-${DESTDIR}exdays_05.dat \
+${builddir}/exdays_05.dat \
 --latex-output ${builddir}/IERS_delta_t.tex \
 --csv-output ${builddir}/delta_T.csv  \
 --IERS-final=${srcdir}/finals.all.csv --Tony-Finch-leaps --IERS-leaps \
@@ -188,7 +188,7 @@ ${srcdir}/values_of_delta_T.csv ${builddir}/delta_t.tex
 
 extraordinary_days.dat : exdays_01.dat exdays_02.dat exdays_03.dat \
 exdays_04.dat exdays_05.dat
-	cat ${srcdir}/exdays_01.dat ${DESTDIR}exdays_02.dat \
+	cat ${srcdir}/exdays_01.dat ${builddir}/exdays_02.dat \
 ${builddir}/exdays_03.dat ${srcdir}/exdays_04.dat \
 ${builddir}/exdays_05.dat > ${builddir}/extraordinary_days.dat
 

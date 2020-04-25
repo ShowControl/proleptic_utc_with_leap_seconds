@@ -71,11 +71,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2020 by John Sauter},
-  pdfdate={2020-04-23},
+  pdfdate={2020-04-24},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
-\date{2020-04-23}
+\date{2020-04-24}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -303,6 +303,8 @@ and astronomical projections of $\Delta$T.
   mimetype={text/csv}]{@srcdir@/USNO_deltat_preds.csv}
 \embedfile[desc={Table of Extraordinary Days},
   mimetype={text/plain}]{@builddir@/extraordinary_days.dat}
+\embedfile[desc={MAN file},
+  mimetype={text/plain}]{@srcdir@/extraordinary_days.dat.5}
 \embedfile[desc={Read the Extraordinary Days Table},
   mimetype={application/python}]{@srcdir@/read_extraordinary_days_table.py}
 \embedfile[desc={GNU General Public License (GPL), version 3}.
@@ -614,6 +616,9 @@ this paper.
   up with its latest information, do the following late on Thursday:
 
   \begin{enumerate}
+  \item After extracting the files, type {\ttfamily bash fix\_files.sh}
+    to get the modes of the files set correctly, since they are lost
+    when embedded in the PDF.
   \item Edit the revision dates in files
     {\ttfamily proleptic\_UTC.tex.in}, {\ttfamily configure.ac},
     {\ttfamily exdays\_01.dat} and {\ttfamily references.bib}.
@@ -659,15 +664,52 @@ this paper.
         the changes in file {\ttfamily extraordinary\_days.dat}.
       \item Create a new source tarball using this procedure
         by starting at step {\ref{step:make}}.
+        This will only need to be done once, as file
+        {\ttfamily extraordinary\_days.dat} will not have changed.
     \end{enumerate}
+    If file {\ttfamily extraordinary\_days.dat} has not changed,
+    there is little need to publish the updated PDF.  The only changes
+    will be in the embedded files which were downloaded from the IERS.
   \end{enumerate}
   
   You will need Autotools, Python, {\LaTeX} and GNUplot.
   Details of the dependencies are in file
   {\ttfamily proleptic\_utc\_with\_leap\_seconds.spec}.
   
+  \embedfile[desc={correct the modes of extracted files},
+    mimetype={text/plain}]{@srcdir@/fix_files.sh}
+  \embedfile[desc={run autotools to create configure and Makefile.in},
+    mimetype={text/plain}]{@srcdir@/autogen.sh}
+  \embedfile[desc={read this file after unpacking the source tarball},
+    mimetype={text/plain}]{@srcdir@/README}
+  \embedfile[desc={license for this program},
+    mimetype={text/plain}]{@srcdir@/COPYING}
+  \embedfile[desc={license for this program},
+    mimetype={text/plain}]{@srcdir@/LICENSE}
+  \embedfile[desc={authors of this program},
+    mimetype={text/plain}]{@srcdir@/AUTHORS}
+  \embedfile[desc={change log for this program},
+    mimetype={text/plain}]{@srcdir@/ChangeLog}
+  \embedfile[desc={installation instructions},
+    mimetype={text/plain}]{@srcdir@/INSTALL}
+  \embedfile[desc={historical information},
+    mimetype={text/plain}]{@srcdir@/NEWS}
   \embedfile[desc={configure for the current build system},
-    mimetype={application/make}]{@srcdir@/configure.ac}
+    mimetype={application/make}]{@srcdir@/configure}
+  \embedfile[desc={configure for the current build system},
+    mimetype={text/plain}]{@srcdir@/configure.ac}
+  \embedfile[desc={used by Autotools},
+    mimetype={text/plain}]{@srcdir@/compile}
+  \embedfile[desc={used by Autotools},
+    mimetype={text/plain}]{@srcdir@/depcomp}
+  \embedfile[desc={used by Autotools},
+    mimetype={text/plain}]{@srcdir@/install-sh}
+  \embedfile[desc={used by Autotools},
+    mimetype={text/plain}]{@srcdir@/missing}
+  \embedfile[desc={turn the source tarball into source and binary RPMs},
+    mimetype={text/plain}]{@srcdir@/build_RPMs.sh}
+  \embedfile[desc={specification file for building RPMs},
+    mimetype={text/plain}]{@srcdir@/proleptic_utc_with_leap_seconds.spec}
   \embedfile[desc={rebuild proleptic\_UTC.pdf from its sources},
     mimetype={application/make}]{@srcdir@/Makefile.am}
   \embedfile[desc={rebuild proleptic\_UTC.pdf from its sources},
@@ -725,34 +767,69 @@ this paper.
   
   \embedfile[desc={Plot Extraordinary Days},
     mimetype={application/gnuplot}]{@builddir@/plot_extraordinary_days.gnuplot}
+  \embedfile[desc={Plot Extraordinary Days},
+    mimetype={application/gnuplot}]{@srcdir@/plot_extraordinary_days.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 1500},
     mimetype={application/gnuplot}]
             {@builddir@/plot_extraordinary_days_since_1500.gnuplot}
+  \embedfile[desc={Plot Extraordinary Days since 1500},
+    mimetype={application/gnuplot}]
+            {@srcdir@/plot_extraordinary_days_since_1500.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 1600},
     mimetype={application/gnuplot}]
             {@builddir@/plot_extraordinary_days_since_1600.gnuplot}
+  \embedfile[desc={Plot Extraordinary Days since 1600},
+    mimetype={application/gnuplot}]
+            {@srcdir@/plot_extraordinary_days_since_1600.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 1700},
     mimetype={application/gnuplot}]
             {@builddir@/plot_extraordinary_days_since_1700.gnuplot}
+  \embedfile[desc={Plot Extraordinary Days since 1700},
+    mimetype={application/gnuplot}]
+            {@srcdir@/plot_extraordinary_days_since_1700.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 1800},
     mimetype={application/gnuplot}]
             {@builddir@/plot_extraordinary_days_since_1800.gnuplot}
+  \embedfile[desc={Plot Extraordinary Days since 1800},
+    mimetype={application/gnuplot}]
+            {@srcdir@/plot_extraordinary_days_since_1800.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 1900},
     mimetype={application/gnuplot}]
             {@builddir@/plot_extraordinary_days_since_1900.gnuplot}
+  \embedfile[desc={Plot Extraordinary Days since 1900},
+    mimetype={application/gnuplot}]
+            {@srcdir@/plot_extraordinary_days_since_1900.gnuplot.in}
 
   \embedfile[desc={Plot Extraordinary Days since 1950},
     mimetype={application/gnuplot}]
             {@builddir@/plot_extraordinary_days_since_1950.gnuplot}
+  \embedfile[desc={Plot Extraordinary Days since 1950},
+    mimetype={application/gnuplot}]
+            {@srcdir@/plot_extraordinary_days_since_1950.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 2000},
     mimetype={application/gnuplot}]
             {@builddir@/plot_extraordinary_days_since_2000.gnuplot}
+  \embedfile[desc={Plot Extraordinary Days since 2000},
+    mimetype={application/gnuplot}]
+            {@srcdir@/plot_extraordinary_days_since_2000.gnuplot.in}
+  
+  \embedfile[desc={Plot Extraordinary Days since 2015},
+    mimetype={application/gnuplot}]
+            {@srcdir@/plot_extraordinary_days_since_2015.gnuplot.in}
+  
+  \embedfile[desc={Plot Extraordinary Days since 2400},
+    mimetype={application/gnuplot}]
+            {@srcdir@/plot_extraordinary_days_since_2400.gnuplot.in}
+  
+  \embedfile[desc={Plot Extraordinary Days since 2490},
+    mimetype={application/gnuplot}]
+            {@srcdir@/plot_extraordinary_days_since_2490.gnuplot.in}
   
   \embedfile[desc={program to write one xtics file},
     mimetype=(application/python)]{@srcdir@/build_xtic_labels.py}
