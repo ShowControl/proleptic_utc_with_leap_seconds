@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: April 24, 2020.
+# File: Makefile.am, author: John Sauter, date: April 25, 2020.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -89,7 +89,7 @@ RPMs:
 # of GNU/Linux, including RHEL and Fedora.
 EXTRA_DIST += proleptic_utc_with_leap_seconds.spec
 
-# Run pdfLaTeX three times to get the forward references right
+# Run luaLaTeX three times to get the forward references right
 proleptic_UTC.pdf : proleptic_UTC.tex proleptic_UTC.tex.in \
 proleptic_UTC.bbl \
 delta_t.tex extraordinary_days.tex values_of_DTAI.pdf \
@@ -98,11 +98,11 @@ values_of_DTAI_since_1700.pdf values_of_DTAI_since_1800.pdf \
 values_of_DTAI_since_1900.pdf values_of_DTAI_since_1950.pdf \
 values_of_DTAI_since_2000.pdf exdays_01.dat exdays_04.dat \
 finals.all.csv 
-	pdflatex ${builddir}/proleptic_UTC.tex
-	pdflatex ${builddir}/proleptic_UTC.tex
-	pdflatex ${builddir}/proleptic_UTC.tex
+	lualatex ${builddir}/proleptic_UTC.tex
+	lualatex ${builddir}/proleptic_UTC.tex
+	lualatex ${builddir}/proleptic_UTC.tex
 
-# To create the .bbl file, we must run pdfLaTeX against the
+# To create the .bbl file, we must run luaLaTeX against the
 # .tex file and process its .aux file output.  Create a fake
 # copy of the .bbl file for the .tex file to embed, in case
 # it doesn't exist.  Embedding doesn't change the page numbers,
@@ -115,8 +115,8 @@ values_of_DTAI_since_1700.pdf values_of_DTAI_since_1800.pdf \
 values_of_DTAI_since_1900.pdf values_of_DTAI_since_1950.pdf \
 values_of_DTAI_since_2000.pdf exdays_01.dat exdays_04.dat \
 finals.all.csv 
-	touch ${builddir}/proleptic_UTC.bbl
-	pdflatex ${builddir}/proleptic_UTC.tex
+	echo " " >${builddir}/proleptic_UTC.bbl
+	lualatex ${builddir}/proleptic_UTC.tex
 	bibtex ${builddir}/proleptic_UTC.aux
 
 # The extraordinary_days.dat file is constructed from five parts:

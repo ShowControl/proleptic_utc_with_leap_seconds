@@ -1,8 +1,5 @@
 \documentclass[letterpaper,twoside]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
-%\usepackage{libertine}
+\usepackage{fontspec}
 \usepackage[english]{babel}
 \usepackage{color}
 \usepackage{multicol}
@@ -17,13 +14,29 @@
 \usepackage{siunitx}
 \usepackage{graphics}
 \usepackage{natbib}
-\usepackage{microtype}
 \usepackage{hyperxmp}
+\usepackage[tracking]{microtype}
+\usepackage{hyphenat}
+
+% Font choices: pick one.
+% 1. Latin Modern matches Don Knuth's Computer Modern
+%\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
+%\usepackage{unicode-math}
+
+% 2. Libertine
+\setmainfont[Ligatures={Common},Numbers=Proportional]{Linux Libertine O}
+\setsansfont{Linux Biolinum O}
+\usepackage{unicode-math}
+\setmathfont[Scale=MatchUppercase]{libertinusmath-regular.otf}
+
+% 3. Old Standard
+%\setmainfont{Old Standard}[SmallCapsFont={Latin Modern Roman Caps}]
+
 \usepackage[pdfencoding=unicode,pagebackref]{hyperref}
 \bibliographystyle{plainnat}
-\setcitestyle{numbers,square}
+%\setcitestyle{numbers,square}
 % Pages styles
-\setlength{\headheight}{22.5pt}
+\setlength{\headheight}{24pt}
 \pagestyle{fancy}
 \fancyhead{}
 \fancyhead[LE]{\thepage}
@@ -37,14 +50,14 @@
 \renewcommand\arraystretch{1.3}
 \begin{document}
 \embedfile[desc={Extending Coordinated Universal Time to Dates Before 1972},
-  mimetype={text/pdflatex}]{@builddir@/proleptic_UTC.tex}
+  mimetype={text/plain}]{@builddir@/proleptic_UTC.tex}
 \embedfile[desc={Extending Coordinated Universal Time to Dates Before 1972},
-  mimetype={text/pdflatex}]{@srcdir@/proleptic_UTC.tex.in}
+  mimetype={text/plain}]{@srcdir@/proleptic_UTC.tex.in}
 \title{Extending Coordinated Universal Time \\ to Dates Before
   1972\footnote{Copyright {\copyright} 2020 by John Sauter.
   This paper is made available under a
-  Creative Commons Attribution-ShareAlike 4.0 International License.
-  You can read a human-readable summary of the license at
+  Creative Commons Attribution\hyp{}ShareAlike 4.0 International License.
+  You can read a human\hyp{}readable summary of the license at
   \url{https://creativecommons.org/licenses/by-sa/4.0}, which contains
   a link to the full text of the license.
   See also section \ref{section:Licensing} of this paper.}
@@ -71,11 +84,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2020 by John Sauter},
-  pdfdate={2020-04-24},
+  pdfdate={2020-04-30},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
-\date{2020-04-24}
+\date{2020-04-30}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -147,7 +160,7 @@ years 1700, 1800 and 1900 have not included February 29, but the years
 1600 and 2000 have.
 
 The IERS began scheduling extraordinary days in 1972 so that civil time could
-use the SI second rather than a variable-length second.  At the time of
+use the SI second rather than a variable\hyp{}length second.  At the time of
 this writing, in April of 2020, there have been \num{27} days of \num{86401}
 seconds and \num{0} days of \num{86399} seconds.
 
@@ -236,7 +249,8 @@ so using it to measure time avoids the complexity of the Gregorian calendar.
 The Julian Day starts at noon, so adding \num{0.5} means the midnight
 which starts the next day.
 
-\input{delta_t.tex}
+{\addfontfeatures{Numbers={Monospaced,Lining}}%
+\input{delta_t.tex}}
 \embedfile[desc={Table of historical Delta T values},
   mimetype={application/latex}]{@builddir@/delta_t.tex}.
 
@@ -312,7 +326,9 @@ and astronomical projections of $\Delta$T.
 \embedfile[desc={LaTeX Source Created by Reading the Table of Extraordinary
     Days},
   mimetype={application/latex}]{@builddir@/extraordinary_days.tex}
-\input{extraordinary_days.tex}
+
+{\addfontfeatures{Numbers={Monospaced,Lining}}%
+\input{extraordinary_days.tex}}
 
 Another way of presenting the change in DTAI over time is by a
 series of charts.
@@ -462,10 +478,10 @@ contains the URL.
   \em Historical Eclipses and Earth's Rotation: 700 BC--AD 1600}
   \citep{2011ASSP...23....3S}
 
- Abstract: For the whole of the pre-telescopic period, eclipse observations
+ Abstract: For the whole of the pre\hyp{}telescopic period, eclipse observations
  have proved to be by far the best data with which to determine changes in the
  Earth's rate of rotation.  These changes -- on the scale of
- milliseconds -- are produced by both the tides and a variety of non-tidal
+ milliseconds -- are produced by both the tides and a variety of non\hyp{}tidal
  mechanisms.  Each individual observation leads to a result for $\Delta$T (the
  cumulative effect of changes in the Earth's spin rate). Over a period of many
  centuries, this parameter can attain several hours and thus can be determined
@@ -501,20 +517,23 @@ contains the URL.
 
   Summary: Observations of the length of day, corrected for the effects of
   variations in the angular momentum due to changes in wind velocity and
-  atmospheric pressure, ocean-tide heights and currents, and solid-Earth
+  atmospheric pressure, ocean\hyp{}tide heights and currents,
+  and solid\hyp{}Earth
   zonal tides, were analysed. The (1992) IERS Standards model for the effects
-  of zonal tides on the Earth's rotation, which includes ocean-tidal effects,
-  adequately accounts for the observations of the high-frequency
+  of zonal tides on the Earth's rotation, which includes
+  ocean\hyp{}tidal effects,
+  adequately accounts for the observations of the high\hyp{}frequency
   (periods between one and 30 days) variations in the length of day at the
-  present level of accuracy. A currently unexplained semi-annual variation
+  present level of accuracy. A currently unexplained semi\hyp{}annual variation
   in the length of day remains, but this may be due to the unmodelled effects
   of stratospheric winds. The power spectrum of the remaining variations
-  with periods less than 20 days is essentially that of a white-noise process.
+  with periods less than 20 days is essentially that of a
+  white\hyp{}noise process.
   The amplitudes of the remaining unexplained variations in length of day are
   less than 30 microseconds.
 
 \item{C. Jordi, L. V. Morrison, R. D. Rosen, D. A. Salstein and G. Rosseló,
-  \em Fluctuations in the Earth's rotation since 1830 from high-resolution
+  \em Fluctuations in the Earth's rotation since 1830 from high\hyp{}resolution
   astronomical data}
   \citep{Jordi01061994}
   
@@ -532,15 +551,16 @@ contains the URL.
 	     that the temporal behaviour of the interannual fluctuations in
 	     the length of the day can be traced with confidence. We present
 	     plots of the interannual fluctuations in the period 1890–1987
-	     and the longer-term decade fluctuations in the period 1830–1983.
+	     and the longer\hyp{}term decade fluctuations in the period
+             1830–1983.
 
              The interannual fluctuations in the length of the day since 1925
 	     are compared with an index of the El Niño/Southern Oscillation
-	     (ENSO) phenomenon in the ocean-atmosphere system and are
+	     (ENSO) phenomenon in the ocean\hyp{}atmosphere system and are
 	     subjected to spectral analysis. The results support the
 	     conclusions reached by other authors that these fluctuations are
 	     linked to circulation changes in the atmosphere associated with
-	     ENSO, and in part to the quasi-biennial oscillation in the
+	     ENSO, and in part to the quasi\hyp{}biennial oscillation in the
 	     equatorial stratosphere's zonal winds. A spectral analysis of our
 	     62 yr series of length of day values since 1925 reveals two
 	     significant peaks in the interannual range 2–4 yr.
@@ -548,7 +568,7 @@ contains the URL.
 	     broadly supporting results obtained previously from shorter
 	     records.
 
-             Our analysis of high-resolution data, therefore,
+             Our analysis of high\hyp{}resolution data, therefore,
 	     contributes to ongoing efforts to establish a close relationship
 	     between the length of the day and aspects of the global climate
 	     system in the period before modern data became available in
@@ -589,7 +609,8 @@ this paper.
   not just the subset in table \ref{table:JDN_DTAI}.
 \item A program named
   {\ttfamily read\_extraordinary\_days\_table}
-  which reads the {\ttfamily extraordinary\_days.dat}
+  which reads the
+  {\ttfamily extra\-ordinary\_days.dat}
   data file.  This program is provided as an example
   of how to read the data file.  It will optionally write the
   {\LaTeX} code for table \ref{table:JDN_DTAI} and a GNUplot data file
@@ -598,7 +619,8 @@ this paper.
 \item A plain text copy of the GNU General Public License (GPL), version 3.
 \item The source files for this paper.
   The main file is {\ttfamily proleptic\_UTC.tex}.
-  That file reads {\LaTeX} files {\ttfamily extraordinary\_days.tex}
+  That file reads {\LaTeX} files
+  {\ttfamily extraordinary\_days.tex}
   and {\ttfamily delta\_t.tex},
   the {\ttfamily .pdf} files for the figures and
   {\ttfamily proleptic\_UTC.bbl} directly, and copies all the embedded files
@@ -607,11 +629,12 @@ this paper.
   wish to publish a derivative of this paper, perhaps with errors
   corrected and your own ideas added.
   To reproduce this PDF, extract all the files and run
-  pdflatex on {\ttfamily proleptic\_UTC.tex}.  You will have
+  lualatex on {\ttfamily proleptic\_UTC.tex}.  You will have
   to run it more than once to get the forward references to resolve.
-\item Also included are files to automate the creation of this paper and
-  file {\ttfamily extraordinary\_days.dat} when the
+\item Also included are files to automate the creation of 
+  file {\ttfamily extraordinary\_days.dat} and this paper when the
   IERS updates its information about the Earth's rotation.
+  This is also convenient if you modify the paper as described above.
   The IERS publishes new information on Thursday, so to keep
   up with its latest information, do the following late on Thursday:
 
@@ -664,8 +687,7 @@ this paper.
         the changes in file {\ttfamily extraordinary\_days.dat}.
       \item Create a new source tarball using this procedure
         by starting at step {\ref{step:make}}.
-        This will only need to be done once, as file
-        {\ttfamily extraordinary\_days.dat} will not have changed.
+        File {\ttfamily extraordinary\_days.dat} will not change again.
     \end{enumerate}
     If file {\ttfamily extraordinary\_days.dat} has not changed,
     there is little need to publish the updated PDF.  The only changes
@@ -721,9 +743,9 @@ this paper.
   \embedfile[desc={IERS Bulletin C used for this PDF},
     mimetype={text/plain}]{@srcdir@/16_BULLETIN_C16.txt}
 
-  If you modify, add or remove any of the literature references,
-  update file {\ttfamily references.bib},
-  
+  Update file {\ttfamily references.bib} if you modify, add
+  or remove any of the literature references,
+    
   If you wish to change the algorithm for converting $\Delta$T to
   extraordinary
   days, change {\ttfamily read\_delta\_t.py} to implement your new
@@ -842,12 +864,12 @@ this paper.
 \section{Licensing}
 \label{section:Licensing}
 As noted on the first page, this paper is licensed under a Creative
-Commons Attribution-ShareAlike 4.0 International License.
+Commons Attribution\hyp{}ShareAlike 4.0 International License.
 The full text of the license is at
 \url{https://creativecommons.org/licenses/by-sa/4.0/legalcode}%
 \embedfile[desc={Plaintext version of Creative Commons BY-SA 4.0 license},
   mimetype={text/plain}]{@srcdir@/legalcode.txt}.
-This section is a human-readable summary of it.
+This section is a human\hyp{}readable summary of it.
 
 \subsection{You are free to:}
 \begin{description}
