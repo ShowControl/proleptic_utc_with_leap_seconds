@@ -1,5 +1,5 @@
 Name:           proleptic_utc_with_leap_seconds
-Version:        2020.04.30
+Version:        2020.05.07
 Release:        1%{?dist}
 Summary:        Schedule leap seconds
 
@@ -77,8 +77,11 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+ * Thu May 07 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+- 2020.05.07-1 Adjust five distant future leap seconds.
  * Thu Apr 30 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
-- 2020.04.30-1 Convert the PDF to the Libertine font.
+ - 2020.04.30-1 Convert the PDF to the Libertine font and adjust several
+   far future leap seconds.
  * Fri Apr 24 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
 - 2020.04.24-1 Embed the missing files in the PDF.
  * Thu Apr 23 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
