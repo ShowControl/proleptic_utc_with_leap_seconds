@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: May 1, 2020.
+# File: Makefile.am, author: John Sauter, date: June 19, 2020.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -137,18 +137,12 @@ finals.all.csv
 # the expiraton date.
 #
 # The recipe below downloads the three files from the IERS web site and
-# prints some information from the bulletins.
+# prints some information from the bulletins.  It also preserves the
+# previous different download, so we can see what changed.
 
 .PHONEY: download
 download:
-	rm -f 6_BULLETIN_A_V2013_016.txt
-	wget -N https://datacenter.iers.org/data/latestVersion/6_BULLETIN_A_V2013_016.txt
-	rm -f 16_BULLETIN_C16.txt
-	wget -N https://datacenter.iers.org/data/latestVersion/16_BULLETIN_C16.txt
-	rm -f finals.all.csv
-	wget -N https://datacenter.iers.org/data/csv/finals.all.csv
-	python3 parse_bulletin_A.py 6_BULLETIN_A_V2013_016.txt
-	python3 parse_bulletin_C.py 16_BULLETIN_C16.txt
+	bash do_downloads.sh
 
 # The recipe below uses the IERS file to replace the estimates
 # of delta T.  It also uses the leap seconds dates from Tony Finch
