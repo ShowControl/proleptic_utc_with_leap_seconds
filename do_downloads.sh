@@ -1,4 +1,4 @@
-# File: do_downloads.sh, author: John Sauter, date: June 19, 2020.
+# File: do_downloads.sh, author: John Sauter, date: June 25, 2020.
 #
 # Download data files from the IERS.
 
@@ -25,27 +25,31 @@
 #     telephone: (603) 424-1188
 #     e-mail: John_Sauter@systemeyescomputerstore.com
 
-cp -p 6_BULLETIN_A_V2013_016.txt previous_downloads/6_BULLETIN_A_V2013_016.txt
+cp -p 6_BULLETIN_A_V2013_016.txt previous/6_BULLETIN_A_V2013_016.txt
 rm -f 6_BULLETIN_A_V2013_016.txt
 wget -N https://datacenter.iers.org/data/latestVersion/6_BULLETIN_A_V2013_016.txt
-diff -q 6_BULLETIN_A_V2013_016.txt previous_downloads/6_BULLETIN_A_V2013_016.txt
+diff -q 6_BULLETIN_A_V2013_016.txt previous/6_BULLETIN_A_V2013_016.txt
 if [ $? -ne 0 ]; then
-    cp -p previous_downloads/6_BULLETIN_A_V2013_016.txt previous_different_downloads/6_BULLETIN_A_V2013_016.txt
+    cp -p previous/6_BULLETIN_A_V2013_016.txt different/6_BULLETIN_A_V2013_016.txt
 fi
-cp -p 16_BULLETIN_C16.txt previous_downloads/16_BULLETIN_C16.txt
+cp -p 16_BULLETIN_C16.txt previous/16_BULLETIN_C16.txt
 rm -f 16_BULLETIN_C16.txt
 wget -N https://datacenter.iers.org/data/latestVersion/16_BULLETIN_C16.txt
-diff -q previous_downloads/16_BULLETIN_C16.txt 16_BULLETIN_C16.txt
+diff -q previous/16_BULLETIN_C16.txt 16_BULLETIN_C16.txt
 if [ $? -ne 0 ]; then
-    cp -p previous_downloads/16_BULLETIN_C16.txt previous_different_downloads/16_BULLETIN_C16.txt
+    cp -p previous/16_BULLETIN_C16.txt different/16_BULLETIN_C16.txt
 fi
-cp -p finals.all.csv previous_downloads/finals.all.csv
+cp -p finals.all.csv previous/finals.all.csv
 rm -f finals.all.csv
 wget -N https://datacenter.iers.org/data/csv/finals.all.csv
-diff -q previous_downloads/finals.all.csv finals.all.csv
+diff -q previous/finals.all.csv finals.all.csv
 if [ $? -ne 0 ]; then
-    cp -p previous_downloads/finals.all.csv previous_different_downloads/finals.all.csv
+    cp -p previous/finals.all.csv different/finals.all.csv
 fi
+if [ -f extraordinary_days.dat ]; then
+    cp -p extraordinary_days.dat previous/extraordinary_days.dat
+fi
+
 python3 parse_bulletin_A.py 6_BULLETIN_A_V2013_016.txt
 python3 parse_bulletin_C.py 16_BULLETIN_C16.txt
 

@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am, author: John Sauter, date: June 19, 2020.
+# File: Makefile.am, author: John Sauter, date: June 25, 2020.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -325,6 +325,29 @@ dist_doc_DATA = README COPYING LICENSE AUTHORS ChangeLog INSTALL NEWS \
 
 # The spec file is ueed to build RPMs for RPM-based distributions
 # of GNU/Linux, including RHEL and Fedora.
+
+# The extraordinary_days.dat file is constructed from five parts:
+# exdays_01.dat is the introductory comments, exdays_02.dat is
+# the expiration date, exdays_03.dat is the checksum line,
+# exdays_04.dat is the header for the data, and exdays_05.dat
+# is the data.  Exdays_01.dat and exdays_04.dat are source files.
+# Exdays_02.dat is computed from IERS Bulletin C.  Exdays_03.dat is
+# computed from the other four files, and exdays_05.dat is the output
+# of the algorithm which converts Delta T into a schedule of extraordinary days.
+
+# You can download an updated IERS finals.all.csv file from
+# https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html
+# click on finals.all (IAU1980) version metadata, then save the link at
+# finals.all.csv as file finals.all.csv.  The UT1-UTC projections
+# beyond finals.all.csv use a formula in the latest issue of IERS Bulletin A,
+# which is on the same web site, as is IERS Bulletin C which contains
+# the expiraton date.
+#
+# The recipe below downloads the three files from the IERS web site and
+# prints some information from the bulletins.  It also preserves the
+# previous different download, so we can see what changed.
+
+# Distribute the shell scripts which do the downloads and compares.
 EXTRA_DIST = build_xtic_labels.py build_xtic_monthly_labels.py \
 	parse_bulletin_A.py parse_bulletin_C.py read_delta_t.py \
 	read_extraordinary_days_table.py reformat_delta_t.py \
@@ -345,7 +368,8 @@ EXTRA_DIST = build_xtic_labels.py build_xtic_monthly_labels.py \
 	plot_extraordinary_days_since_2490.gnuplot 20160404.full.pdf \
 	R-REC-TF.460-6-200202-I!!PDF-E.pdf legalcode.txt \
 	values_of_delta_T.ods USNO_deltat_preds.csv gpl.txt \
-	build_RPMs.sh proleptic_utc_with_leap_seconds.spec
+	build_RPMs.sh proleptic_utc_with_leap_seconds.spec \
+	do_downloads.sh do_compare.sh
 
 # When removing files, also remove the followins:
 CLEANFILES = \
@@ -868,27 +892,6 @@ finals.all.csv
 	lualatex ${builddir}/proleptic_UTC.tex
 	bibtex ${builddir}/proleptic_UTC.aux
 
-# The extraordinary_days.dat file is constructed from five parts:
-# exdays_01.dat is the introductory comments, exdays_02.dat is
-# the expiration date, exdays_03.dat is the checksum line,
-# exdays_04.dat is the header for the data, and exdays_05.dat
-# is the data.  Exdays_01.dat and exdays_04.dat are source files.
-# Exdays_02.dat is computed from IERS Bulletin C.  Exdays_03.dat is
-# computed from the other four files, and exdays_05.dat is the output
-# of the algorithm which converts Delta T into a schedule of extraordinary days.
-
-# You can download an updated IERS finals.all.csv file from
-# https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html
-# click on finals.all (IAU1980) version metadata, then save the link at
-# finals.all.csv as file finals.all.csv.  The UT1-UTC projections
-# beyond finals.all.csv use a formula in the latest issue of IERS Bulletin A,
-# which is on the same web site, as is IERS Bulletin C which contains
-# the expiraton date.
-#
-# The recipe below downloads the three files from the IERS web site and
-# prints some information from the bulletins.  It also preserves the
-# previous different download, so we can see what changed.
-
 .PHONEY: download
 download:
 	bash do_downloads.sh
@@ -901,8 +904,17 @@ download:
 # IERS_delta_t.tex is not used in the PDF file.  It shows the
 # values of delta T after replacing the estimated values with
 # the values from the IERS.
+#
+# If the file exdays_05.dat exists, which means this is a re-run,
+# perhaps with newly downloaded data or a new algorithm for future
+# leap seconds, save the old version of exdays_05.dat so we can see
+# the changes in the schedule of leap seconds.
+#
 exdays_05.dat : read_delta_t.py values_of_delta_T.csv finals.all.csv \
 6_BULLETIN_A_V2013_016.txt
+	if [ -f ${builddir}/exdays_05.dat ]; then \
+	   mv ${builddir}/exdays_05.dat ${builddir}/exdays_05_previous.dat ; \
+	fi
 	python3 ${srcdir}/read_delta_t.py ${srcdir}/values_of_delta_T.csv \
 ${builddir}/exdays_05.dat \
 --latex-output ${builddir}/IERS_delta_t.tex \
@@ -912,6 +924,9 @@ ${builddir}/exdays_05.dat \
 --USNO-delta-t=${srcdir}/USNO_delta_T.csv \
 --IERS-Bulletin-A=${srcdir}/6_BULLETIN_A_V2013_016.txt \
 --IERS-projection-days=2100
+	if [ -f ${builddir}/exdays_05_previous.dat ]; then \
+	   bash do_compare.sh ; \
+	fi
 
 # If you want to see what the extraordinary days would be using
 # just the historical estimates of delta T, make the following file.

@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: June 19, 2020.
+# File: Makefile.am, author: John Sauter, date: June 25, 2020.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -140,6 +140,9 @@ finals.all.csv
 # prints some information from the bulletins.  It also preserves the
 # previous different download, so we can see what changed.
 
+# Distribute the shell scripts which do the downloads and compares.
+EXTRA_DIST += do_downloads.sh do_compare.sh
+
 .PHONEY: download
 download:
 	bash do_downloads.sh
@@ -152,8 +155,17 @@ download:
 # IERS_delta_t.tex is not used in the PDF file.  It shows the
 # values of delta T after replacing the estimated values with
 # the values from the IERS.
+#
+# If the file exdays_05.dat exists, which means this is a re-run,
+# perhaps with newly downloaded data or a new algorithm for future
+# leap seconds, save the old version of exdays_05.dat so we can see
+# the changes in the schedule of leap seconds.
+#
 exdays_05.dat : read_delta_t.py values_of_delta_T.csv finals.all.csv \
 6_BULLETIN_A_V2013_016.txt
+	if [ -f ${builddir}/exdays_05.dat ]; then \
+	   mv ${builddir}/exdays_05.dat ${builddir}/exdays_05_previous.dat ; \
+	fi
 	python3 ${srcdir}/read_delta_t.py ${srcdir}/values_of_delta_T.csv \
 ${builddir}/exdays_05.dat \
 --latex-output ${builddir}/IERS_delta_t.tex \
@@ -163,6 +175,9 @@ ${builddir}/exdays_05.dat \
 --USNO-delta-t=${srcdir}/USNO_delta_T.csv \
 --IERS-Bulletin-A=${srcdir}/6_BULLETIN_A_V2013_016.txt \
 --IERS-projection-days=2100
+	if [ -f ${builddir}/exdays_05_previous.dat ]; then \
+	   bash do_compare.sh ; \
+	fi
 
 # If you want to see what the extraordinary days would be using
 # just the historical estimates of delta T, make the following file.
