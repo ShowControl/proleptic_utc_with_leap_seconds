@@ -1,4 +1,4 @@
-# File: do_downloads.sh, author: John Sauter, date: June 25, 2020.
+# File: do_downloads.sh, author: John Sauter, date: July 9, 2020.
 #
 # Download data files from the IERS.
 
@@ -26,21 +26,18 @@
 #     e-mail: John_Sauter@systemeyescomputerstore.com
 
 cp -p 6_BULLETIN_A_V2013_016.txt previous/6_BULLETIN_A_V2013_016.txt
-rm -f 6_BULLETIN_A_V2013_016.txt
 wget -N https://datacenter.iers.org/data/latestVersion/6_BULLETIN_A_V2013_016.txt
 diff -q 6_BULLETIN_A_V2013_016.txt previous/6_BULLETIN_A_V2013_016.txt
 if [ $? -ne 0 ]; then
     cp -p previous/6_BULLETIN_A_V2013_016.txt different/6_BULLETIN_A_V2013_016.txt
 fi
 cp -p 16_BULLETIN_C16.txt previous/16_BULLETIN_C16.txt
-rm -f 16_BULLETIN_C16.txt
 wget -N https://datacenter.iers.org/data/latestVersion/16_BULLETIN_C16.txt
 diff -q previous/16_BULLETIN_C16.txt 16_BULLETIN_C16.txt
 if [ $? -ne 0 ]; then
     cp -p previous/16_BULLETIN_C16.txt different/16_BULLETIN_C16.txt
 fi
 cp -p finals.all.csv previous/finals.all.csv
-rm -f finals.all.csv
 wget -N https://datacenter.iers.org/data/csv/finals.all.csv
 diff -q previous/finals.all.csv finals.all.csv
 if [ $? -ne 0 ]; then
