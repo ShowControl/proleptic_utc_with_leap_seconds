@@ -1,5 +1,5 @@
 Name:           proleptic_utc_with_leap_seconds
-Version:        2020.07.17
+Version:        2020.07.24
 Release:        1%{?dist}
 Summary:        Schedule leap seconds
 
@@ -42,6 +42,14 @@ information from the International Earth Rotation System Service (IERS).
 %check
 make check VERBOSE=1
 
+%package devel
+Summary: Schedule leap seconds in the distant past and far future
+Requires: %{name} = %{version}-%{release}
+
+%description devel
+The %{name}-devel package
+contains the man file for %{name}.
+
 %package doc
 Summary: Comprehensive documentation for %{name}
 Requires: %{name} = %{version}-%{release}
@@ -66,17 +74,28 @@ includes the RPM spec file.
 %exclude /usr/share/doc/%{name}/README
 %exclude /usr/share/doc/%{name}/LICENSE
 %{_datadir}/%{name}/data/extraordinary_days.dat
+%license LICENSE
+%license COPYING
+
+%files devel
+%defattr(-,root,root)
 %{_mandir}/man5/extraordinary_days.dat.5.gz
+%doc AUTHORS ChangeLog NEWS README
 %license LICENSE
 %license COPYING
 
 %files doc
 %defattr(-,root,root)
 %doc proleptic_UTC.pdf
+%doc AUTHORS ChangeLog NEWS README
 %license LICENSE
 %license COPYING
 
 %changelog
+ * Fri Jul 24 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+ - 2020.07.24-1 Adjust future leap seconds starting in 2055.
+ * Wed Jul 22 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+ - 2020.07.17-9 Provide NEWS, etc. files.
  * Fri Jul 17 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
  - 2020.07.17-1 Adjust future leap seconds starting in 2080.
  * Fri Jul 10 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
