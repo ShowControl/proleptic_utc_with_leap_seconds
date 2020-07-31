@@ -915,6 +915,9 @@ exdays_05.dat : read_delta_t.py values_of_delta_T.csv finals.all.csv \
 	if [ -f ${builddir}/exdays_05.dat ]; then \
 	   mv ${builddir}/exdays_05.dat ${builddir}/exdays_05_previous.dat ; \
 	fi
+	if [ -f ${builddir}/UT1UTC.csv ]; then \
+	   mv ${builddir}/UT1UTC.csv ${builddir}/UT1UTC_previous.csv ; \
+	fi
 	python3 ${srcdir}/read_delta_t.py ${srcdir}/values_of_delta_T.csv \
 ${builddir}/exdays_05.dat \
 --latex-output ${builddir}/IERS_delta_t.tex \

@@ -1,6 +1,6 @@
-# File: do_compares.sh, author: John Sauter, date: June 25, 2020.
+# File: do_compares.sh, author: John Sauter, date: July 25, 2020.
 #
-# Compare the old version of exdays_05.dat with the new one.
+# Compare the old version of exdays_05.dat and UT1UTC.csv with the new ones.
 
 #   Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
@@ -28,6 +28,11 @@
 diff -q exdays_05_previous.dat exdays_05.dat
 if [ $? -ne 0 ]; then
     cp -p exdays_05_previous.dat different/exdays_05.dat
+fi
+
+diff -q UT1UTC_previous.csv UT1UTC.csv
+if [ $? -ne 0 ]; then
+    cp -p UT1UTC_previous.csv different/UT1UTC.csv
 fi
 
 # End of file do_compare.sh
