@@ -58,7 +58,7 @@ parser.add_argument ('input1_file',
 parser.add_argument ('output_file',
                      help='the resulting list of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_Delta_T 7.3 2020-04-18',
+                     version='read_Delta_T 7.5 2020-08-14',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -588,31 +588,31 @@ if (do_IERS_projections):
           tracefile.write ("IERS Bulletin A is dated " +
                            date_object.strftime('%A %B %d, %Y') + ".\n")
       if (text_line[0:19] == '         UT1-UTC = '):
-        UT1_offset = text_line[19:26]
-        UT1_offset = float(UT1_offset)
-        UT1_slope = text_line[27] + text_line[29:36]
-        UT1_slope = float(UT1_slope)
-        UT1_base_MJD = text_line[44:49]
-        UT1_base_MJD = int(UT1_base_MJD)
+        UT2_offset = text_line[19:26]
+        UT2_offset = float(UT2_offset)
+        UT2_slope = text_line[27] + text_line[29:36]
+        UT2_slope = float(UT2_slope)
+        UT2_base_MJD = text_line[44:49]
+        UT2_base_MJD = int(UT2_base_MJD)
       text_line = infile.readline()
 
-  UT1_base_JDN = UT1_base_MJD + 2400000
-  start_MJD = UT1_base_MJD
+  UT2_base_JDN = UT2_base_MJD + 2400000
+  start_MJD = UT2_base_MJD
   end_MJD = start_MJD + IERS_projection_days
   if (verbosity_level > 0):
-    print ("UT1_base_MJD = " + str(UT1_base_MJD) +
-           ", UT1_slope = " + str(UT1_slope) +
-           ", UT1_offset = " + str(UT1_offset) + "\n" +
+    print ("UT2_base_MJD = " + str(UT2_base_MJD) +
+           ", UT2_slope = " + format(UT2_slope, ".5f") +
+           ", UT2_offset = " + str(UT2_offset) + "\n" +
            "  projected for " + str(IERS_projection_days) + " days: " +
-           " from " + greg (UT1_base_JDN, "-", 0) +  " to " +
+           " from " + greg (UT2_base_JDN, "-", 0) +  " to " +
            greg (end_MJD + 2400000, "-", 0) + ".")
         
   if (do_trace == 1):
-    tracefile.write ("UT1_base_MJD = " + str(UT1_base_MJD) +
-                     ", UT1_slope = " + str(UT1_slope) +
-                     ", UT1_offset = " + str(UT1_offset) +
+    tracefile.write ("UT2_base_MJD = " + str(UT2_base_MJD) +
+                     ", UT2_slope = " + str(UT2_slope) +
+                     ", UT2_offset = " + str(UT2_offset) +
                      ", projected for " + str(IERS_projection_days) +
-                     " days: from " + greg (UT1_base_JDN, "-", 0) +
+                     " days: from " + greg (UT2_base_JDN, "-", 0) +
                      " to " + greg (end_MJD + 2400000, "-", 0) +
                      ".\n")
   leap_offset = 0
@@ -622,14 +622,13 @@ if (do_IERS_projections):
 
     # Estimate UT1-UTC (ignoring future leap seconds) using the formula
     # provided by the IERS.
-    ut1_minus_utc = (UT1_offset + (UT1_slope *
-                                  (target_MJD - UT1_base_MJD)) -
+    ut1_minus_utc = (UT2_offset + (UT2_slope * (target_MJD - UT2_base_MJD)) -
                      UT2_seasonal (target_JDN))
     
     # We must deduce Delta T from UT1-UTC, which requires
     # knowing how many leap seconds have passed.
     # The projection ignores future leap seconds, so we do too.
-    leaps_since_JDN = leaps_since (UT1_base_JDN)
+    leaps_since_JDN = leaps_since (UT2_base_JDN)
     new_delta_t = 32.184 - ut1_minus_utc + leaps_since_JDN
     if (do_trace == 1):
       tracefile.write (" ut1_minus_utc = " + str(ut1_minus_utc) +
@@ -868,7 +867,7 @@ if (last_delta_T_from_IERS_date > 0):
   source = "Parabola"
   parabola_delta_t_dict = delta_t_all[source]
 
-  fade_time = UT1_base_JDN + IERS_projection_days - last_delta_T_from_IERS_date
+  fade_time = UT2_base_JDN + IERS_projection_days - last_delta_T_from_IERS_date
   if (verbosity_level > 0):
     print ("On " + greg(last_delta_T_from_IERS_date + fade_time, "-", 0) +
            " projected delta T = " +
@@ -1115,29 +1114,30 @@ if (do_trace > 1):
                      str(deltaTAI(this_JDN)) + ".\n")
 
 #
-# Check for big changes in deltaTAI.
+# Check for and report big changes in deltaTAI.
 #
 prev_DTAI = deltaTAI(jdn(-2000,1,1))
-max_change_JDN = 0
-max_change = 0
+max_change_dict = dict()
 
 for this_JDN in range(jdn(-2000,1,1), jdn(2500,1,5)):
   this_DTAI = deltaTAI(this_JDN)
-  if (abs(this_DTAI - prev_DTAI) > max_change):
-    max_change = abs(this_DTAI - prev_DTAI)
-    max_change_JDN = this_JDN
-    max_change_signed = this_DTAI - prev_DTAI
+  this_change = abs(this_DTAI - prev_DTAI)
+  max_change_dict[this_change] = this_JDN
   prev_DTAI = this_DTAI
   
-print ("Max day-to-day change in DTAI is " +
-       format(max_change_signed, ".7f") +
-       " at " + greg(max_change_JDN, "-", 0) + ".")
-
+line_count = 0
+for this_change in sorted(max_change_dict, reverse=True):
+  if (line_count < 5):
+    this_JDN = max_change_dict[this_change]
+    max_change_signed = deltaTAI(this_JDN) - deltaTAI(this_JDN-1)
+    print ("Max " + str(line_count) + " day-to-day change in DTAI is " +
+       format(max_change_signed, ".12f") +
+       " at " + greg(this_JDN, "-", 0) + ".")
+    line_count = line_count + 1
+    
 if (do_trace == 1):
-  tracefile.write ("Max day-to-day change in DTAI is " +
-                   str(max_change_signed) +
-                   " at " + greg(max_change_JDN, "-", 0) + ".\n")
-
+  pprint.pprint (max_change_dict, tracefile)
+  
 #
 # As we go through the timeline, there will be some choice as to
 # when we schedule an extraordinary day.  We use a priority system,

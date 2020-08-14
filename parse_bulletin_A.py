@@ -3,7 +3,7 @@
 #
 # Parse the text file of IERS Bulletin A.
 
-#   Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -32,12 +32,13 @@ import hashlib
 import datetime
 from jdcal import gcal2jd, jd2gcal, is_leap
 import pprint
+from pathlib import Path
 import argparse
 
 parser = argparse.ArgumentParser (
   formatter_class=argparse.RawDescriptionHelpFormatter,
   description='Parse IERS Bulletin A',
-  epilog='Copyright © 2019 by John Sauter' + '\n' +
+  epilog='Copyright © 2020 by John Sauter' + '\n' +
   'License GPL3+: GNU GPL version 3 or later; ' + '\n' +
   'see <http://gnu.org/licenses/gpl.html> for the full text ' +
   'of the license.' + '\n' +
@@ -47,8 +48,10 @@ parser = argparse.ArgumentParser (
   'the output is an extraction of the information. ' + '\n')
 parser.add_argument ('input_file',
                      help='IERS Bulletin A as a text file')
+parser.add_argument ('--output_file', metavar='output_file',
+                     help='write CSV output to the specified file')
 parser.add_argument ('--version', action='version', 
-                     version='parse_bulletin_A 2.0 2019-12-12',
+                     version='parse_bulletin_A 3.2 2020-08-13',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -58,6 +61,7 @@ parser.add_argument ('--verbose', type=int, metavar='verbosity level',
 
 do_trace = 0
 tracefile = ""
+do_output = 0
 verbosity_level = 1
 error_counter = 0
 
@@ -79,39 +83,85 @@ arguments = vars(arguments)
 if (arguments ['trace'] != None):
   do_trace = 1
   trace_file_name = arguments ['trace']
-  tracefile = open (trace_file_name, 'wt')
+  tracefile = open (trace_file_name, 'at')
 
 if (arguments ['verbose'] != None):
   verbosity_level = arguments ['verbose']
 
-# Process the input file.
-input_file_name = arguments ['input_file']
-line_number = 0
-with open (input_file_name, 'rt') as infile:
-  text_line = infile.readline()
-  while (text_line != ''):
-    line_number = line_number + 1
-    if (line_number == 8):
+bull_info = dict()
+
+def process_file (file_name):
+  global bull_info
+  line_number = 0
+  date_found = 0
+  with open (file_name, 'rt') as infile:
+    text_line = infile.readline()
+    while (text_line != ''):
+      line_number = line_number + 1
       left_side = text_line[0:40]
       left_side = left_side.rstrip()
       left_side = left_side.lstrip()
-      datetime_object = datetime.datetime.strptime (left_side, '%d %B %Y')
-      date_object = datetime_object.date()
-      date_string = date_object.strftime ('%B %d, %Y')
-      print ('Date of IERS Bulletin A is ' + date_string)
-    if (text_line[0:19] == '         UT1-UTC = '):
-      print (text_line, end='')
-      param_1 = text_line[19:26]
-      param_1 = float(param_1)
-      param_2 = text_line[27] + text_line[29:36]
-      param_2 = float(param_2)
-      param_3 = text_line[44:49]
-      param_3 = int(param_3)
-      print ('         UT1-UTC = ' + str(param_1) + ' + (' + str(param_2) +
-             ' ⨯ (MJD - ' + str(param_3) + ')) - (UT2-UT1)')
-      print ('MJD ' + str(param_3) + ' is ' + greg(param_3 + 2400000.5))
-    text_line = infile.readline()
+      right_side = text_line[41:]
+      right_side = right_side.lstrip()
+      right_side = right_side[0:5]
+      if (do_trace == 1):
+        if (date_found == 0):
+          tracefile.write ('Looking for date: ' + right_side + '\n')
+      if ((date_found == 0) and (right_side == 'Vol. ')):
+        date_found = 1
+        datetime_object = datetime.datetime.strptime (left_side, '%d %B %Y')
+        date_object = datetime_object.date()
+        date_string = date_object.strftime ('%B %d, %Y')
+        print ('Date of IERS Bulletin A is ' + date_string)
+        if (do_trace == 1):
+          tracefile.write ('date = ' + date_string + '.\n')
+      if (text_line[0:19] == '         UT1-UTC = '):
+        print (text_line, end='')
+        param_1 = text_line[19:26]
+        if (do_trace == 1):
+          tracefile.write ('param_1 = "' + param_1 + '".\n')
+        param_1 = float(param_1)
+        param_2 = text_line[27] + text_line[29:36].lstrip()
+        if (do_trace == 1):
+          tracefile.write ('param_2 = "' + param_2 + '".\n')
+        param_2 = float(param_2)
+        param_3 = text_line[44:49]
+        param_3 = int(param_3)
+        print ('         UT1-UTC = ' + str(param_1) + ' + (' +
+               format(param_2, ".5f") +
+               ' ⨯ (MJD - ' + str(param_3) + ')) - (UT2-UT1)')
+        print ('MJD ' + str(param_3) + ' is ' + greg(param_3 + 2400000.5))
+        bull_info [date_object] = (param_1, param_2, param_3)
+      text_line = infile.readline()
 
+# Process the input file.  If it is a directory, process all .txt files
+# within it.
+input_file_name = arguments ['input_file']
+if (do_trace == 1):
+  tracefile.write ('input file name = ' + input_file_name + '.\n')
+input_file_path = Path(input_file_name)
+if (input_file_path.is_dir()):
+  for file_name in list(input_file_path.glob('*.txt')):
+    process_file (file_name)
+else:
+  process_file (input_file_name)
+  
+if (arguments ['output_file'] != None):
+  do_output = 1
+  output_file_name = arguments ['output_file']
+  outputfile = open (output_file_name, 'wt')
+
+if (do_output == 1):
+  outputfile.write ('date,UT2_slope\n')
+  for the_date in sorted(bull_info):
+    outputfile.write ('"=date(' + str(the_date.year) + ',' +
+                      str(the_date.month) + ',' +
+                      str(the_date.day) + ')",' +
+                      format(bull_info[the_date][1], ".5f") + '\n')
+
+if (do_output == 1):
+  outputfile.close()
+  
 if (do_trace == 1):
   tracefile.close()
 

@@ -36,4 +36,3 @@ if [ $? -ne 0 ]; then
 fi
 
 # End of file do_compare.sh
-

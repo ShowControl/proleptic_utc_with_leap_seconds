@@ -51,4 +51,3 @@ python3 parse_bulletin_A.py 6_BULLETIN_A_V2013_016.txt
 python3 parse_bulletin_C.py 16_BULLETIN_C16.txt
 
 # End of file do_downloads.sh
-
