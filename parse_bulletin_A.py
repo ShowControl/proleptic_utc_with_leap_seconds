@@ -48,10 +48,13 @@ parser = argparse.ArgumentParser (
   'the output is an extraction of the information. ' + '\n')
 parser.add_argument ('input_file',
                      help='IERS Bulletin A as a text file')
-parser.add_argument ('--output_file', metavar='output_file',
+parser.add_argument ('--csv-output_file', metavar='csv_output_file',
                      help='write CSV output to the specified file')
+parser.add_argument ('--latest-date-output_file',
+                     metavar='latest_date_output_file',
+                     help='write the latest Bulletin A date to the specified file')
 parser.add_argument ('--version', action='version', 
-                     version='parse_bulletin_A 3.2 2020-08-13',
+                     version='parse_bulletin_A 3.4 2020-08-23',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -61,7 +64,8 @@ parser.add_argument ('--verbose', type=int, metavar='verbosity level',
 
 do_trace = 0
 tracefile = ""
-do_output = 0
+do_csv_output = 0
+do_latest_date_output = 0
 verbosity_level = 1
 error_counter = 0
 
@@ -112,11 +116,13 @@ def process_file (file_name):
         datetime_object = datetime.datetime.strptime (left_side, '%d %B %Y')
         date_object = datetime_object.date()
         date_string = date_object.strftime ('%B %d, %Y')
-        print ('Date of IERS Bulletin A is ' + date_string)
+        if (verbosity_level > 0):
+          print ('Date of IERS Bulletin A is ' + date_string)
         if (do_trace == 1):
           tracefile.write ('date = ' + date_string + '.\n')
       if (text_line[0:19] == '         UT1-UTC = '):
-        print (text_line, end='')
+        if (verbosity_level > 0):
+          print (text_line, end='')
         param_1 = text_line[19:26]
         if (do_trace == 1):
           tracefile.write ('param_1 = "' + param_1 + '".\n')
@@ -127,10 +133,11 @@ def process_file (file_name):
         param_2 = float(param_2)
         param_3 = text_line[44:49]
         param_3 = int(param_3)
-        print ('         UT1-UTC = ' + str(param_1) + ' + (' +
-               format(param_2, ".5f") +
-               ' ⨯ (MJD - ' + str(param_3) + ')) - (UT2-UT1)')
-        print ('MJD ' + str(param_3) + ' is ' + greg(param_3 + 2400000.5))
+        if (verbosity_level > 0):
+          print ('         UT1-UTC = ' + str(param_1) + ' + (' +
+                 format(param_2, ".5f") +
+                 ' ⨯ (MJD - ' + str(param_3) + ')) - (UT2-UT1)')
+          print ('MJD ' + str(param_3) + ' is ' + greg(param_3 + 2400000.5))
         bull_info [date_object] = (param_1, param_2, param_3)
       text_line = infile.readline()
 
@@ -146,21 +153,37 @@ if (input_file_path.is_dir()):
 else:
   process_file (input_file_name)
   
-if (arguments ['output_file'] != None):
-  do_output = 1
-  output_file_name = arguments ['output_file']
-  outputfile = open (output_file_name, 'wt')
+if (arguments ['csv_output_file'] != None):
+  do_csv_output = 1
+  csv_output_file_name = arguments ['csv_output_file']
+  csvoutputfile = open (csv_output_file_name, 'wt')
 
-if (do_output == 1):
-  outputfile.write ('date,UT2_slope\n')
+if (do_csv_output == 1):
+  csvoutputfile.write ('date1,date2,UT2_slope\n')
   for the_date in sorted(bull_info):
-    outputfile.write ('"=date(' + str(the_date.year) + ',' +
-                      str(the_date.month) + ',' +
-                      str(the_date.day) + ')",' +
-                      format(bull_info[the_date][1], ".5f") + '\n')
+    csvoutputfile.write ('"=date(' + str(the_date.year) + ',' +
+                         str(the_date.month) + ',' +
+                         str(the_date.day) + ')",' +
+                         str(the_date.year) + '-' +
+                         str(the_date.month) + '-' +
+                         str(the_date.day) + ',' +
+                         format(bull_info[the_date][1], ".5f") + '\n')
 
-if (do_output == 1):
-  outputfile.close()
+if (arguments ['latest_date_output_file'] != None):
+  do_latest_date_output = 1
+  latest_date_output_file_name = arguments ['latest_date_output_file']
+  latest_dateoutputfile = open (latest_date_output_file_name, 'wt')
+
+if (do_latest_date_output == 1):
+  latest_date = sorted(bull_info)[-1]
+  date_string = latest_date.strftime ('%B %d, %Y')
+  latest_dateoutputfile.write (date_string)
+  
+if (do_csv_output == 1):
+  csvoutputfile.close()
+
+if (do_latest_date_output == 1):
+  latest_dateoutputfile.close()
   
 if (do_trace == 1):
   tracefile.close()
