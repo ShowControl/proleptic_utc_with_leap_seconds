@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: June 25, 2020.
+# File: Makefile.am, author: John Sauter, date: September 1, 2020.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -177,7 +177,7 @@ ${builddir}/exdays_05.dat \
 --UT1UTC-output=${builddir}/UT1UTC.csv --UT1UTC-start-jdn=2305814 \
 --USNO-delta-t=${srcdir}/USNO_delta_T.csv \
 --IERS-Bulletin-A=${srcdir}/6_BULLETIN_A_V2013_016.txt \
---IERS-projection-days=2100
+--IERS-projection-days=3653 
 	if [ -f ${builddir}/exdays_05_previous.dat ]; then \
 	   bash do_compare.sh ; \
 	fi
@@ -381,6 +381,19 @@ plot_extraordinary_days_since_2490.gnuplot set_xtics_006mo.gnuplot
 pdf-local: proleptic_UTC.pdf
 .PHONEY: pdf-local
 
+# Support make check and make distcheck
+dist_check_DATA = check_output.txt check_expected_output.txt
+dist_check_SCRIPTS = verify_files_template.sh
+
+TESTS = verify_files.sh
+verify_files.sh : verify_files_template.sh check_output.txt 
+	cp $(srcdir)/verify_files_template.sh verify_files.sh
+	if [ ! -r "check_expected_output.txt" ] ; then cp $(srcdir)/check_expected_output.txt check_expected_output.txt ; touch copied_from_srcdir ; fi
+	chmod +x verify_files.sh
+
+check_output.txt : read_extraordinary_days_table.py extraordinary_days.dat
+	python3 ${srcdir}/read_extraordinary_days_table.py ${builddir}/extraordinary_days.dat | tee ${builddir}/check_output.txt
+
 # When removing files, also remove the followins:
 CLEANFILES = \
 delta_t.tex \
@@ -393,6 +406,8 @@ exdays.dat \
 exdays_03.dat \
 extraordinary_days.dat \
 extraordinary_days.tex \
+verify_files.sh \
+check_output.txt \
 gnuplot.dat \
 set_xtics_200yr.gnuplot \
 values_of_DTAI.pdf \
@@ -415,8 +430,12 @@ proleptic_UTC.blg \
 proleptic_UTC.brf \
 proleptic_UTC.pdf
 
-clean-local:
+clean-local: clean-local-check
+.PHONEY: clean-local-check
+clean-local-check:
+	if [ -e "copied_from_srcdir" ] ; then rm -f check_expected_output.txt ; rm copied_from_srcdir ; fi
 	rm -rf autom4te.cache
+	rm -f trace*.txt
 	rm -f *~
 
 # end of file Makefile.am

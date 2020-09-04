@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.67])
-AC_INIT([proleptic_utc_with_leap_seconds],[2020.08.28],
+AC_INIT([proleptic_utc_with_leap_seconds],[2020.09.04],
 [John_Sauter@systemeyescomputerstore.com],
 [proleptic_utc_with_leap_seconds],
 ["github@github.com:ShowControl/proleptic_utc_with_leap_seconds.git"])
@@ -56,3 +56,5 @@ AC_CONFIG_FILES([Makefile
 	proleptic_UTC.tex
 ])
 AC_OUTPUT
+
+# End of file configure.ac

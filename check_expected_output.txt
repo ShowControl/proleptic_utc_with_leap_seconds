@@ -1,0 +1,4 @@
+Start date is 990574.5 = 1 Jan -2000
+End date is 2634166.5 = 1 Jan 2500
+Expiration date is 2459393.5 = 28 Jun 2021
+Checksum is correct.

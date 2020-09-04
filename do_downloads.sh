@@ -1,4 +1,4 @@
-# File: do_downloads.sh, author: John Sauter, date: July 9, 2020.
+# File: do_downloads.sh, author: John Sauter, date: August 29, 2020.
 #
 # Download data files from the IERS.
 
@@ -25,6 +25,7 @@
 #     telephone: (603) 424-1188
 #     e-mail: John_Sauter@systemeyescomputerstore.com
 
+mkdir -p previous
 cp -p 6_BULLETIN_A_V2013_016.txt previous/6_BULLETIN_A_V2013_016.txt
 wget -N https://datacenter.iers.org/data/latestVersion/6_BULLETIN_A_V2013_016.txt
 diff -q 6_BULLETIN_A_V2013_016.txt previous/6_BULLETIN_A_V2013_016.txt
