@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: September 1, 2020.
+# File: Makefile.am, author: John Sauter, date: September 22, 2020.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -177,7 +177,7 @@ ${builddir}/exdays_05.dat \
 --UT1UTC-output=${builddir}/UT1UTC.csv --UT1UTC-start-jdn=2305814 \
 --USNO-delta-t=${srcdir}/USNO_delta_T.csv \
 --IERS-Bulletin-A=${srcdir}/6_BULLETIN_A_V2013_016.txt \
---IERS-projection-days=3653 
+--IERS-projection-days=1461
 	if [ -f ${builddir}/exdays_05_previous.dat ]; then \
 	   bash do_compare.sh ; \
 	fi

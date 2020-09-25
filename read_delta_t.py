@@ -58,7 +58,7 @@ parser.add_argument ('input1_file',
 parser.add_argument ('output_file',
                      help='the resulting list of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_Delta_T 7.7 2020-09-17',
+                     version='read_Delta_T 7.9 2020-09-22',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -365,7 +365,7 @@ with open (file_name, 'rt') as csvfile:
         max_year = new_year
         end_date = this_JDN
 
-# Adjust the values of delta_t so January 1, 1058, is 32.184.
+# Adjust the values of delta_t so January 1, 1958, is 32.184.
 DTAI_base_date = jdn(1958, 1, 1)
 DTAI_base_dt = delta_t [DTAI_base_date]
 for this_JDN in delta_t:
@@ -551,7 +551,7 @@ def UT2_seasonal (target_JDN):
 
 if (do_IERS_projections):
   
-  if (do_trace== 1):
+  if (do_trace == 1):
     tracefile.write ("Delta T based on the IERS projection for UT1-UTC:\n")
 
   # Project UT1-UTC and thus deltaT using formulas from the IERS Bulletin A.
@@ -590,14 +590,16 @@ if (do_IERS_projections):
 
   UT2_base_JDN = UT2_base_MJD + 2400000
   start_MJD = UT2_base_MJD
+  projection_start_JDN = start_MJD + 2400000
   end_MJD = start_MJD + IERS_projection_days
+  projection_end_JDN = end_MJD + 2400000
   if (verbosity_level > 0):
     print ("UT2_base_MJD = " + str(UT2_base_MJD) +
            ", UT2_slope = " + format(UT2_slope, ".5f") +
            ", UT2_offset = " + str(UT2_offset) + "\n" +
            "  projected for " + str(IERS_projection_days) + " days: " +
            " from " + greg (UT2_base_JDN, "-", 0) +  " to " +
-           greg (end_MJD + 2400000, "-", 0) + ".")
+           greg (projection_end_JDN, "-", 0) + ".")
         
   if (do_trace == 1):
     tracefile.write ("UT2_base_MJD = " + str(UT2_base_MJD) +
@@ -605,13 +607,13 @@ if (do_IERS_projections):
                      ", UT2_offset = " + str(UT2_offset) +
                      ", projected for " + str(IERS_projection_days) +
                      " days: from " + greg (UT2_base_JDN, "-", 0) +
-                     " to " + greg (end_MJD + 2400000, "-", 0) +
+                     " to " + greg (projection_end_JDN, "-", 0) +
                      ".\n")
   leap_offset = 0
 
-  for target_MJD in range(start_MJD, end_MJD):
-    target_JDN = target_MJD + 2400000
-
+  for target_JDN in range(projection_start_JDN, projection_end_JDN):
+    target_MJD = target_JDN - 2400000
+    
     # Estimate UT1-UTC (ignoring future leap seconds) using the formula
     # provided by the IERS.
     ut1_minus_utc = (UT2_offset + (UT2_slope * (target_MJD - UT2_base_MJD)) -
@@ -789,38 +791,40 @@ if (last_delta_T_from_IERS_date > 0):
   # from the IERS and some additional past and future values.
 
   x_vals = [
-    start_date,
-    jdn(1895,1,1),
+#    jdn(1700,1,1),
+#    jdn(1895,1,1),
     last_delta_T_from_IERS_date,
     jdn(2030,1,1),
-    jdn(2040,1,1),
-    jdn(2050,1,1),
-    jdn(2100,1,1),
-    jdn(2200,1,1),
-    jdn(2300,1,1),
-    jdn(2400,1,1),
+#    projection_end_JDN,
+#    jdn(2040,1,1),
+#    jdn(2050,1,1),
+#    jdn(2100,1,1),
+#    jdn(2200,1,1),
+#    jdn(2300,1,1),
+#    jdn(2400,1,1),
     end_date
   ]
   weights = [
-    1.0,
-    1.0,
-    1048576.0,
-    256.0,
-    128.0,
-    64.0,
-    32.0,
-    16.0,
-    8.0,
-    4.0,
+#    1.0,
+#    1.0,
+    1024.0,
+    512.0,
+#    256.0,
+#    128.0,
+#    64.0,
+#    32.0,
+#    16.0,
+#    8.0,
+#    4.0,
     2.0
   ]
 
-  # Rather than use the important points, use them all.
-  x_vals=list()
-  weights=list()
-  for jdn_val in range(start_date, end_date+1):
-    x_vals.append(jdn_val)
-    weights.append(1.0)
+  # Rather than use the important points, use all the points since 1700.
+  #x_vals=list()
+  #weights=list()
+  #for jdn_val in range(jdn(1700,1,1), end_date+1):
+  #  x_vals.append(jdn_val)
+  #  weights.append(1.0)
 
   # The Y value corresponding to each X value is the value of delta T
   # at that date.
@@ -829,109 +833,63 @@ if (last_delta_T_from_IERS_date > 0):
   for pos_index in range(len(x_vals)):
     y_vals.append(deltaT(x_vals[pos_index]))
     
+  if (verbosity_level > 0):
+    print ("Parabola inputs (x1,y1),(x2,y2),(x3,y3) = " +
+           "(" + str(x_vals[0] ) + "," + str(y_vals[0]) + ")," +
+           "(" + str(x_vals[1] ) + "," + str(y_vals[1]) + ")," +
+           "(" + str(x_vals[2] ) + "," + str(y_vals[2]) + ").")
+           
   if (do_trace > 0):
     tracefile.write ("Parabola: dates, delta T and weights:\n")
     for pos_index in range(len(x_vals)):
       tracefile.write (" " + greg(x_vals[pos_index], "-", 0) +
                        " is " + str(y_vals[pos_index]) +
                        " weight " + str(weights[pos_index]) + "\n")
-    
+
+   
+  def calc_parabola_vertex(x1, y1, x2, y2, x3, y3):
+    '''
+    Adapted and modifed to get the unknowns for defining a parabola:
+    http://stackoverflow.com/questions/717762/
+                   how-to-calculate-the-vertex-of-a-parabola-given-three-points
+		'''
+
+    denom = (x1-x2) * (x1-x3) * (x2-x3)
+    A = (x3 * (y2-y1) + x2 * (y1-y3) + x1 * (y3-y2)) / denom
+    B = (x3*x3 * (y1-y2) + x2*x2 * (y3-y1) + x1*x1 * (y2-y3)) / denom
+    C = ((x2 * x3 * (x2-x3) * y1+x3 * x1 * (x3-x1) * y2+x1 * x2 * (x1-x2) * y3)
+         / denom)
+    return A,B,C
+              
   # Calculate the unknowns of the equation y=ax^2+bx+c
   p = Polynomial.fit(x_vals, y_vals, 2)
   pnormal = p.convert(domain=(-1, 1))
   a = pnormal.coef[2]
   b = pnormal.coef[1]
   c = pnormal.coef[0]
-  
+
+  if (verbosity_level > 0):
+    print ("Polynomial Parabola a,b,c = " + str(a) + ", " +
+           str(b) + ", " + str(c) + ".")
+
+  if (len(x_vals) == 3):
+    (a,b,c) = calc_parabola_vertex (x_vals[0], y_vals[0],
+                                    x_vals[1], y_vals[1],
+                                    x_vals[2], y_vals[2])
+    if (verbosity_level > 0):
+      print ("Calculated Parabola a,b,c = " + str(a) + ", " +
+             str(b) + ", " + str(c) + ".")
+      
   if (do_trace > 0):
     tracefile.write ("Parabola a,b,c = " + str(a) + ", " +
                      str(b) + ", " +
                      str(c) + ".\n")
 
-  # Calculate the points of the parabola into a dictionary,
-  # adding the annual fluctuation.
-  y_pos=dict()
-  for this_JDN in range (start_date, end_date+1):
-    y_pos[this_JDN] = ((a*(this_JDN**2))+(b*this_JDN)+c +
-                       UT2_seasonal (this_JDN))
-
-  # Stretch the oarabola so it passes through this point.
-  parabola_anchor_X = last_delta_T_from_IERS_date
-  parabola_anchor_Y = deltaT(parabola_anchor_X)
-    
-  parabola_offset = (parabola_anchor_Y -
-                     y_pos[parabola_anchor_X])
-  if (verbosity_level > 0):
-    print ("Parabola anchor X = " + str(parabola_anchor_X) + ".5" +
-           ", Y = " + str(parabola_anchor_Y) + ".")
-    print ("Parabola offset: " + str(parabola_offset) + ".")
-
-  # Stretch the parabola so it matches the anchor point.
-  parabola_max_found = 0
-  parabola_min_found = 0
-  for this_JDN in range (start_date, end_date+1):
-    if (parabola_max_found == 0):
-      parabola_max = y_pos[this_JDN]
-      parabola_max_found = 1
-    if (y_pos[this_JDN] > parabola_max):
-      parabola_max = y_pos[this_JDN]
-    if (parabola_min_found == 0):
-      parabola_min = y_pos[this_JDN]
-      parabola_min_found = 1
-    if (y_pos[this_JDN] < parabola_min):
-      parabola_min = y_pos[this_JDN]
-  parabola_height = parabola_max - parabola_min
-  parabola_stretch = ((parabola_anchor_Y - parabola_height) /
-                      (y_pos[parabola_anchor_X] - parabola_height))
-  if (verbosity_level > 0):
-    print ("Parabola max: " + str(parabola_max) + ".")
-    print ("Parabola min: " + str(parabola_min) + ".")
-    print ("Parabola height: " + str(parabola_height) + ".")
-    print ("Parabola at " + str(parabola_anchor_X) + ".5: " +
-           str(y_pos[parabola_anchor_X]) + ".")
-    print ("Parabola stretch: " + str(parabola_stretch) + ".")
-  
-  for this_JDN in range (start_date, end_date+1):
-    y_pos[this_JDN] = ((parabola_stretch * (y_pos[this_JDN] - parabola_height))
-                        + parabola_height)
-
-  if (do_trace > 0):
-    tracefile.write ("Parabola results:\n")
-    tracefile.write (" Max: " + str(parabola_max) + ".\n")
-    tracefile.write (" Min: " + str(parabola_min) + ".\n")
-    tracefile.write (" Meight: " + str(parabola_height) + ".\n")
-    tracefile.write (" Offset: " + str(parabola_offset) + ".\n")
-    tracefile.write (" Stretch: " + str(parabola_stretch) + ".\n")
-    tracefile.write (" Values:\n")
-    pprint.pprint (y_pos, tracefile)
-    
-  # Place the computed values in the delta T dictionary.
-  source = "Parabola"
-  for this_JDN in y_pos:
-    if (source not in delta_t_all):
-      delta_t_all[source] = dict()
-      source_list = source_list + [source]
-    this_delta_t_source = delta_t_all[source]
-    this_delta_t_source[this_JDN] = y_pos[this_JDN]
-
-  # Fade from the IERS projections to the astronomical projection.
-  # There is code here to use the parabola if it seems necessary.
-
-  source = "IERS UT1-UTC projection"
-  projection_delta_t_dict = delta_t_all[source]
-  source = "Parabola"
-  parabola_delta_t_dict = delta_t_all[source]
-  source = "Astronomical Projection"
-  astro_delta_t_dict = delta_t_all[source]
-
-  if (do_trace > 0):
-    tracefile.write ("Astronomical Projections:\n")
-    pprint.pprint (astro_delta_t_dict, tracefile)
-
   # Subroutine to do a linear interpolation between two points
   # in the astronomical projection.
   def astro_interpolate (the_JDN):
-    global astro_delta_t_dict
+    global delta_t_all
+    astro_delta_t_dict = delta_t_all["Astronomical Projection"]
     if (the_JDN in astro_delta_t_dict):
       return astro_delta_t_dict[the_JDN]
     # Fill in missing values using linear interpolation.
@@ -959,6 +917,94 @@ if (last_delta_T_from_IERS_date > 0):
                        str(this_delta_t) + ".\n")
     return (this_delta_t)
       
+  # Calculate the points of the parabola into a dictionary,
+  # adding the annual UT2 fluctuation.
+  y_pos=dict()
+  for this_JDN in range (jdn(1700,1,1), end_date+1):
+    y_pos[this_JDN] = ((a*(this_JDN**2))+(b*this_JDN)+c)
+
+  if (verbosity_level > 0):
+    print ("Parabola points: " +
+           "(" + str(x_vals[0]) + "," + str(y_pos[x_vals[0]]) + ")," +
+           "(" + str(x_vals[1]) + "," + str(y_pos[x_vals[1]]) + ")," +
+           "(" + str(x_vals[2]) + "," + str(y_pos[x_vals[2]]) + ").")
+
+  # Add the UT2 correction to the parabola.
+  for this_JDN in range (jdn(1700,1,1), end_date+1):
+      y_pos[this_JDN] = y_pos[this_JDN] + UT2_seasonal(this_JDN)
+      
+  # Stretch the oarabola so it passes through the following point.
+  parabola_anchor_X = jdn(2030,1,1)
+  parabola_anchor_Y = deltaT(parabola_anchor_X)
+    
+  parabola_offset = (parabola_anchor_Y - y_pos[parabola_anchor_X])
+  if (verbosity_level > 0):
+    print ("Parabola anchor X = " + str(parabola_anchor_X) + ".5" +
+           ", Y = " + str(parabola_anchor_Y) + ".")
+    print ("Parabola offset: " + str(parabola_offset) + ".")
+
+  # Stretch the parabola so it matches the anchor point.
+  parabola_max_found = 0
+  parabola_min_found = 0
+  for this_JDN in range (jdn(1700,1,1), end_date+1):
+    if (parabola_max_found == 0):
+      parabola_max = y_pos[this_JDN]
+      parabola_max_found = 1
+    if (y_pos[this_JDN] > parabola_max):
+      parabola_max = y_pos[this_JDN]
+    if (parabola_min_found == 0):
+      parabola_min = y_pos[this_JDN]
+      parabola_min_found = 1
+    if (y_pos[this_JDN] < parabola_min):
+      parabola_min = y_pos[this_JDN]
+  parabola_height = parabola_max - parabola_min
+  parabola_stretch = ((parabola_anchor_Y - parabola_height) /
+                      (y_pos[parabola_anchor_X] - parabola_height))
+  if (verbosity_level > 0):
+    print ("Parabola max: " + str(parabola_max) + ".")
+    print ("Parabola min: " + str(parabola_min) + ".")
+    print ("Parabola height: " + str(parabola_height) + ".")
+    print ("Parabola at " + str(parabola_anchor_X) + ".5: " +
+           str(y_pos[parabola_anchor_X]) + ".")
+    print ("Parabola stretch: " + str(parabola_stretch) + ".")
+  
+  for this_JDN in range (jdn(1700,1,1), end_date+1):
+    y_pos[this_JDN] = ((parabola_stretch * (y_pos[this_JDN] - parabola_height))
+                        + parabola_height)
+
+  if (do_trace > 0):
+    tracefile.write ("Parabola results:\n")
+    tracefile.write (" Max: " + str(parabola_max) + ".\n")
+    tracefile.write (" Min: " + str(parabola_min) + ".\n")
+    tracefile.write (" Meight: " + str(parabola_height) + ".\n")
+    tracefile.write (" Offset: " + str(parabola_offset) + ".\n")
+    tracefile.write (" Stretch: " + str(parabola_stretch) + ".\n")
+    tracefile.write (" Values:\n")
+    pprint.pprint (y_pos, tracefile)
+    
+  # Place the computed values in the delta T dictionary.
+  source = "Parabola"
+  for this_JDN in y_pos:
+    if (source not in delta_t_all):
+      delta_t_all[source] = dict()
+      source_list = source_list + [source]
+    this_delta_t_source = delta_t_all[source]
+    this_delta_t_source[this_JDN] = y_pos[this_JDN]
+
+  # Fade from the IERS projections to the parabola or the
+  # astronomical projection.
+
+  source = "IERS UT1-UTC projection"
+  projection_delta_t_dict = delta_t_all[source]
+  source = "Parabola"
+  parabola_delta_t_dict = delta_t_all[source]
+  source = "Astronomical Projection"
+  astro_delta_t_dict = delta_t_all[source]
+
+  if (do_trace > 0):
+    tracefile.write ("Astronomical Projection:\n")
+    pprint.pprint (astro_delta_t_dict, tracefile)
+
   fade_time = (IERS_projection_days -
                (last_delta_T_from_IERS_date - UT2_base_JDN))
   if (verbosity_level > 0):
@@ -988,16 +1034,23 @@ if (last_delta_T_from_IERS_date > 0):
     print (" astronomical projection = " +
            format(astro_interpolate(last_delta_T_from_IERS_date +
                                      fade_time), ".7f") + ".")
-  for this_JDN in range (parabola_anchor_X, end_date+1):
-    the_fraction = (this_JDN - parabola_anchor_X) / fade_time
+
+    future_delta_T_source = "Astronomical Projection"
+    future_delta_T_source = "Parabola"
+  for this_JDN in range (last_delta_T_from_IERS_date, end_date+1):
+    the_fraction = (this_JDN - last_delta_T_from_IERS_date) / fade_time
     if (the_fraction > 1.0):
       the_fraction = 1.0
     if ((the_fraction < 1.0) and (this_JDN in projection_delta_t_dict)):
       projection_delta_t = projection_delta_t_dict [this_JDN]
       parabola_delta_t = parabola_delta_t_dict [this_JDN]
       astro_delta_t = astro_interpolate(this_JDN)
-      new_delta_t = ((the_fraction * astro_delta_t) +
-                     ((1.0 - the_fraction) * projection_delta_t))
+      if (future_delta_T_source == "Parabola"):
+        new_delta_t = ((the_fraction * parabola_delta_t) +
+                       ((1.0 - the_fraction) * projection_delta_t))
+      if (future_delta_T_source == "Astronomical Projection"):
+        new_delta_t = ((the_fraction * astro_delta_t) +
+                       ((1.0 - the_fraction) * projection_delta_t))
       if (do_trace > 0):
         tracefile.write ("At " + greg(this_JDN, "-", 0) + ", " +
                          "fade fraction = " + str(the_fraction) + ", " +
@@ -1006,12 +1059,15 @@ if (last_delta_T_from_IERS_date > 0):
                          "astro = " + str(astro_delta_t) + ", " +
                          "new delta T = " + str(new_delta_t) + ".\n")
     else:
-      new_delta_t = astro_interpolate(this_JDN)
+      if (future_delta_T_source == "Parabola"):
+        new_delta_t = parabola_delta_t_dict[this_JDN]
+      if (future_delta_T_source == "Astronomical Projection"):
+        new_delta_t = astro_interpolate(this_JDN)
       fraction = 1.0
     if (the_fraction == 1.0):
-      source = "Astronomical Projection"
+      source = future_delta_T_source
     else:
-      source = "IERS UT1-UTC projection + Astronomical projection"
+      source = "IERS UT1-UTC projection + " + future_delta_T_source
     delta_t [this_JDN] = new_delta_t
     delta_t_source[this_JDN] = source
     if (source not in delta_t_all):

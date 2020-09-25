@@ -1,3 +1,7 @@
+2929-09-25
+  Predict future leap seconds using a better parabola.  Adjust almost
+  all future leap seconds.
+  
 2020-09-04
   Rewrite the prediction of future leap seconds, using the astronomical
   projection directly rather than fitting a parabola to it.  Add make check.
