@@ -1,6 +1,9 @@
+2020-10-02
+  Adjust future leap seconds starting in 2059.
+  
 2929-09-25
   Predict future leap seconds using a better parabola.  Adjust almost
-  all future leap seconds.
+  all future leap seconds starting in 2032.
   
 2020-09-04
   Rewrite the prediction of future leap seconds, using the astronomical

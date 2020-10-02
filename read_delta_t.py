@@ -1063,7 +1063,7 @@ if (last_delta_T_from_IERS_date > 0):
         new_delta_t = parabola_delta_t_dict[this_JDN]
       if (future_delta_T_source == "Astronomical Projection"):
         new_delta_t = astro_interpolate(this_JDN)
-      fraction = 1.0
+      the_fraction = 1.0
     if (the_fraction == 1.0):
       source = future_delta_T_source
     else:
