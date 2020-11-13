@@ -3,15 +3,15 @@ set grid xtics
 set grid ytics
 set xtics rotate by 90
 set xtics right
-set title "Values of DATI Since 1700"
+set title "Values of DTAI Since 1700"
 set xlabel "Date"
 set ylabel "DTAI"
 set xrange [2341972:2470000]
 load "@builddir@/set_xtics_015yr.gnuplot"
 set nokey
 set xtic rotate by 45
-set terminal pdfcairo size 5,3
-set output "values_of_DTAI_since_1700.pdf"
+set terminal lua tikz size 12,7 latex
+set output "values_of_DTAI_since_1700.tex"
 plot 'gnuplot.dat' using 1:2
 
 

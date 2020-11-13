@@ -1,4 +1,11 @@
+% Main LaTeX source file for proleptic_UTC.pdf
+
+% Copyright © 2020 by John Sauter.
+% Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
+% license.  See https://creativecommons.org/license/by-sa/4.0/.
+
 \documentclass[letterpaper,twoside]{article}
+\usepackage{gnuplot-lua-tikz}
 \usepackage{fontspec}
 \usepackage[english]{babel}
 \usepackage{color}
@@ -20,18 +27,25 @@
 
 % Font choices: pick one.
 % 1. Latin Modern matches Don Knuth's Computer Modern
+% Note that Latin Modern displays U+02BC (Modifier letter apostrophe)
+% as a space.  This letter is used in the section describing the
+% use of the Proleptic Gregorian calendar to translate Mayan dates.
 %\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
 %\usepackage{unicode-math}
 
 % 2. Libertine
-\setmainfont[Ligatures={Common},Numbers=Proportional]{Linux Libertine O}
-\setsansfont{Linux Biolinum O}
-\usepackage{unicode-math}
-\setmathfont[Scale=MatchUppercase]{libertinusmath-regular.otf}
+%\setmainfont[Ligatures={Common},Numbers=Proportional]{Linux Libertine O}
+%\setsansfont{Linux Biolinum O}
+%\usepackage{unicode-math}
+%\setmathfont[Scale=MatchUppercase]{libertinusmath-regular.otf}
 
 % 3. Old Standard
 %\setmainfont{Old Standard}[SmallCapsFont={Latin Modern Roman Caps}]
 
+% 4. Garamond
+\usepackage{ebgaramond-maths}
+\setmainfont[Numbers=Lining]{EB Garamond}
+  
 \usepackage[pdfencoding=unicode,pagebackref]{hyperref}
 \bibliographystyle{plainnat}
 %\setcitestyle{numbers,square}
@@ -48,6 +62,7 @@
 \fancyfoot{}
 \setlength\tabcolsep{1mm}
 \renewcommand\arraystretch{1.3}
+
 \begin{document}
 \embedfile[desc={Extending Coordinated Universal Time to Dates Before 1972},
   mimetype={text/plain}]{@builddir@/proleptic_UTC.tex}
@@ -58,8 +73,8 @@
   This paper is made available under a
   Creative Commons Attribution\hyp{}ShareAlike 4.0 International License.
   You can read a human\hyp{}readable summary of the license at
-  \url{https://creativecommons.org/licenses/by-sa/4.0}, which contains
-  a link to the full text of the license.
+  \url{https://creativecommons.org/licenses/by-sa/4.0}.  You will also
+  find there a link to the full text of the license.
   See also section \ref{section:Licensing} of this paper.}
 }
 \author{John Sauter\footnote{
@@ -84,11 +99,11 @@
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2020 by John Sauter},
-  pdfdate={2020-11-06},
+  pdfdate={2020-11-13},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
-\date{2020-11-06}
+\date{2020-11-13}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -172,9 +187,9 @@ the term ``UTC'' refers to the UTC used since 1972.
 For some purposes, it is useful to extend the rules of the Gregorian
 calendar to dates before 1582.  For example, when describing Mayan
 culture for a general audience, the mythical creation date of 13
-b'ak'tuns, 0 k'atuns, 0 tuns, 0 winals, 0 kins (4 Ajaw 8
-Kumk'u) is translated as August 11, 3114 BCE.  Mayan
-scholars generally translate Mayan dates into Proleptic Gregorian
+bʼakʼtuns, 0 kʼatuns, 0 tuns, 0 winals, 0 kins (4 Ajaw, 8 Kumkʼu)
+is translated as August 11, 3114 BCE.
+Mayan scholars generally translate Mayan dates into Proleptic Gregorian
 rather than the Julian calendar used for civil timekeeping in Europe at
 the time of the Mayan civilization because there was no cultural
 contact between the classic Mayans and the people of Europe.
@@ -348,80 +363,80 @@ that has been measurable since the invention of the telescope and the
 pendulum clock.
 
 \embedfile[desc={Values of DTAI since the year \num{-2000}},
-  mimetype=(application/pdf)]{@builddir@/values_of_DTAI.pdf}
+  mimetype=(application/latex)]{@builddir@/values_of_DTAI.tex}
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI}
+    \include{@builddir@/values_of_DTAI}
     \caption{Values of DTAI from \num{-2000} to \num{2500}}
     \label{figure:DTAI}
   \end{center}
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 1500},
-  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_1500.pdf}
+  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_1500.tex}
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_1500}
+    \include{@builddir@/values_of_DTAI_since_1500}
     \caption{Values of DTAI since 1500}
     \label{figure:DTAI_since_1500}
   \end{center}
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 1600},
-  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_1600.pdf}
+  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_1600.tex}
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_1600}
+    \include{@builddir@/values_of_DTAI_since_1600}
     \caption{Values of DTAI since 1600}
     \label{figure:DTAI_since_1600}
   \end{center}
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 1700},
-  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_1700.pdf}
+  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_1700.tex}
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_1700}
+    \include{@builddir@/values_of_DTAI_since_1700}
     \caption{Values of DTAI since 1700}
     \label{figure:DTAI_since_1700}
   \end{center}
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 1800},
-  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_1800.pdf}
+  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_1800.tex}
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_1800}
+    \include{@builddir@/values_of_DTAI_since_1800}
     \caption{Values of DTAI since 1800}
     \label{figure:DTAI_since_1800}
   \end{center}
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 1900},
-  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_1900.pdf}
+  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_1900.tex}
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_1900}
+    \include{@builddir@/values_of_DTAI_since_1900}
     \caption{Values of DTAI since 1900}
     \label{figure:DTAI_since_1900}
   \end{center}
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 1950},
-  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_1950.pdf}
+  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_1950.tex}
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_1950}
+    \include{@builddir@/values_of_DTAI_since_1950}
     \caption{Values of DTAI since 1950}
     \label{figure:DTAI_since_1950}
   \end{center}
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 2000},
-  mimetype=(application/pdf)]{@builddir@/values_of_DTAI_since_2000.pdf}
+  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_2000.tex}
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=\textwidth]{@builddir@/values_of_DTAI_since_2000}
+    \include{@builddir@/values_of_DTAI_since_2000}
     \caption{Values of DTAI from \num{2000} to \num{2100}}
     \label{figure:DTAI_since_2000}
   \end{center}
@@ -623,19 +638,20 @@ this paper.
   That file reads {\LaTeX} files
   {\ttfamily extraordinary\_days.tex}
   and {\ttfamily delta\_t.tex},
-  the {\ttfamily .pdf} files for the figures and
+  the {\ttfamily .tex} files for the figures and
   {\ttfamily proleptic\_UTC.bbl} directly, and copies all the embedded files
   to the output file, {\ttfamily proleptic\_UTC.pdf}.
   You can use these files if you
   wish to publish a derivative of this paper, perhaps with errors
   corrected and your own ideas added.
+  
   To reproduce this PDF, extract all the files and run
   lualatex on {\ttfamily proleptic\_UTC.tex}.  You will have
   to run it more than once to get the forward references to resolve.
 \item Also included are files to automate the creation of 
   file {\ttfamily extraordinary\_days.dat} and this paper when the
   IERS updates its information about the Earth's rotation.
-  This is also convenient if you modify the paper as described above.
+  This is also useful if you modify the paper as described above.
   The IERS publishes new information on Thursday, so to keep
   up with its latest information, do the following late on Thursday:
 
@@ -643,9 +659,9 @@ this paper.
   \item After extracting the files, type {\ttfamily bash fix\_files.sh}
     to get the modes of the files set correctly, since they are lost
     when embedded in the PDF.
-  \item Edit the revision dates in files
-    {\ttfamily proleptic\_UTC.tex.in}, {\ttfamily configure.ac},
-    {\ttfamily exdays\_01.dat} and {\ttfamily references.bib}.
+  \item Update the revision dates in the following files:
+    {\ttfamily configure.ac}, {\ttfamily proleptic\_UTC.tex.in},
+    {\ttfamily references.bib} and {\ttfamily exdays\_01.dat}.
   \item Update the ``time of this writing'' phrase in
     secton {\ref{section:A_Brief_History_of_Timekeeping}}
     if the previous update was in an earlier month.
@@ -653,12 +669,13 @@ this paper.
   \item Update file {\ttfamily proleptic\_utc\_with\_leap\_seconds.spec}
     to show the revision date as the version number, and add to
     the change log.
-  \item Type {\ttfamily ./autogen.sh {-}{-}download} to re-create
-    file {\ttfamily configure} from file {\ttfamily configure.ac}
-    and file {\ttfamily Makefile.in} from file {\ttfamily Makefile.am}.
-  \item Type {\ttfamily ./configure {-}{-}prefix=/usr} to re-create
-    several files,
-    including file {\ttfamily Makefile}, from their {\ttfamily .in} templates.
+  \item Type {\ttfamily ./autogen.sh {-}{-}download} to
+    download the latest autotools support files and build
+    file {\ttfamily configure} from {\ttfamily configure.ac}
+    and file {\ttfamily Makefile.in} from {\ttfamily Makefile.am}.
+  \item Type {\ttfamily ./configure {-}{-}prefix=/usr} to build
+    {\ttfamily Makefile} and several other files
+    from their {\ttfamily .in} templates.
   \item Type {\ttfamily make download} to download the latest
     Earth rotation information from the IERS.
     Bulletin C, which announces leap seconds, is updated every six months.
@@ -755,14 +772,14 @@ this paper.
     mimetype={text/plain}]{@srcdir@/test-driver}
 
   Update file {\ttfamily references.bib} if you modify, add
-  or remove any of the literature references,
+  or remove any of the literature references.
     
   If you wish to change the algorithm for converting $\Delta$T to
   extraordinary
   days, change {\ttfamily read\_delta\_t.py} to implement your new
   algorithm and run it to create the data lines for file
-  {\ttfamily extraordinary\_days.dat}.  The exact command line is in
-  file {\ttfamily Makefile.am}.
+  {\ttfamily extraordinary\_days.dat}.  See {\ttfamily Makefile.am}
+  for details.
 
   If you wish to update the values of $\Delta$T, for example to take
   advantage of new research, if you have LibreOffice you can update
@@ -775,12 +792,13 @@ this paper.
   {\ttfamily python3 reformat\_delta\_t.py values\_of\_delta\_T.csv
     delta\_t.tex}
   
-  Use a text editor to edit the comments for file
-  {\ttfamily extraordinary\_days.dat} in file {\ttfamily exdays\_01.dat}.
-  See file {\ttfamily Makefile.am} for the mechanics of recreating file
-  {\ttfamily extraordinary\_days.dat}, and for creating files
-  {\ttfamily gnuplot.dat} and {\ttfamily extraordinary\_days.tex}
-  from it.
+  File {\ttfamily extraordinary\_days.dat} is built from
+  {\ttfamily exdays\_01.dat} through {\ttfamily exdays\_05.dat}
+  using the procedure described in {\ttfamily Makefile.am}.
+  File {\ttfamily exdays\_01.dat} has the heading comments,
+  including the revision date, which you can edit.
+  File {\ttfamily Makefile.am} also has the recipes for building
+  {\ttfamily gnuplot.dat} and {\ttfamily extra\-ordin\-ary\_\-days.tex}.
   \embedfile[desc={file for constructing extraordinary\_days.dat},
     mimetype={text/plain}]{@srcdir@/exdays_01.dat}
   \embedfile[desc={file for constructing extraordinary\_days.dat},
@@ -867,16 +885,14 @@ this paper.
   
 \end{enumerate}
 
-\newpage
-
 \section{Licensing}
 \label{section:Licensing}
 As noted on the first page, this paper is licensed under a Creative
 Commons Attribution\hyp{}ShareAlike 4.0 International License.
-The full text of the license is at
+You can read the full text of the license at this URL:
 \url{https://creativecommons.org/licenses/by-sa/4.0/legalcode}%
-\embedfile[desc={Plaintext version of Creative Commons BY-SA 4.0 license},
-  mimetype={text/plain}]{@srcdir@/legalcode.txt}.
+\embedfile[desc={Plaintext version of Creative Commons BY-SA 4.0 license},%
+mimetype={text/plain}]{@srcdir@/legalcode.txt}.
 This section is a human\hyp{}readable summary of it.
 
 \subsection{You are free to:}

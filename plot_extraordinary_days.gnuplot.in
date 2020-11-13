@@ -3,14 +3,12 @@ set grid xtics
 set grid ytics
 set xtics rotate by 90
 set xtics right
-set title "Values of DATI"
+set title "Values of DTAI"
 set xlabel "Date"
 set ylabel "DTAI"
 load "@builddir@/set_xtics_200yr.gnuplot"
 set nokey
 set xtic rotate by 45
-set terminal pdfcairo size 5,4
-set output "values_of_DTAI.pdf"
+set terminal lua tikz size 12,7 latex createstyle
+set output "values_of_DTAI.tex"
 plot 'gnuplot.dat' using 1:2
-
-

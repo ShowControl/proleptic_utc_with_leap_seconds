@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: September 22, 2020.
+# File: Makefile.am, author: John Sauter, date: November 11, 2020.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -92,11 +92,11 @@ EXTRA_DIST += proleptic_utc_with_leap_seconds.spec
 # Run luaLaTeX three times to get the forward references right
 proleptic_UTC.pdf : proleptic_UTC.tex proleptic_UTC.tex.in \
 proleptic_UTC.bbl \
-delta_t.tex extraordinary_days.tex values_of_DTAI.pdf \
-values_of_DTAI_since_1500.pdf values_of_DTAI_since_1600.pdf \
-values_of_DTAI_since_1700.pdf values_of_DTAI_since_1800.pdf \
-values_of_DTAI_since_1900.pdf values_of_DTAI_since_1950.pdf \
-values_of_DTAI_since_2000.pdf exdays_01.dat exdays_04.dat \
+delta_t.tex extraordinary_days.tex values_of_DTAI.tex \
+values_of_DTAI_since_1500.tex values_of_DTAI_since_1600.tex \
+values_of_DTAI_since_1700.tex values_of_DTAI_since_1800.tex \
+values_of_DTAI_since_1900.tex values_of_DTAI_since_1950.tex \
+values_of_DTAI_since_2000.tex exdays_01.dat exdays_04.dat \
 finals.all.csv 
 	lualatex ${builddir}/proleptic_UTC.tex
 	lualatex ${builddir}/proleptic_UTC.tex
@@ -109,11 +109,11 @@ finals.all.csv
 # so doing that won't hurt the .aux file.
 proleptic_UTC.bbl : proleptic_UTC.tex proleptic_UTC.tex.in \
 references.bib \
-delta_t.tex extraordinary_days.tex values_of_DTAI.pdf \
-values_of_DTAI_since_1500.pdf values_of_DTAI_since_1600.pdf \
-values_of_DTAI_since_1700.pdf values_of_DTAI_since_1800.pdf \
-values_of_DTAI_since_1900.pdf values_of_DTAI_since_1950.pdf \
-values_of_DTAI_since_2000.pdf exdays_01.dat exdays_04.dat \
+delta_t.tex extraordinary_days.tex values_of_DTAI.tex \
+values_of_DTAI_since_1500.tex values_of_DTAI_since_1600.tex \
+values_of_DTAI_since_1700.tex values_of_DTAI_since_1800.tex \
+values_of_DTAI_since_1900.tex values_of_DTAI_since_1950.tex \
+values_of_DTAI_since_2000.tex exdays_01.dat exdays_04.dat \
 finals.all.csv 
 	echo " " >${builddir}/proleptic_UTC.bbl
 	lualatex ${builddir}/proleptic_UTC.tex
@@ -229,7 +229,7 @@ ${builddir}/extraordinary_days.dat \
 
 # The figures are created using GNUplot.  If you change the spacing of
 # the dates along the horizontal axis, in addition to editing the
-# .gnuplot file you will need to edit this section of the Makefile
+# .gnuplot.in file you will need to edit this section of the Makefile.am
 # to provide a rule for building the xtics file, and add it to the
 # dependencies for the figure.
 gnuplot.dat : extraordinary_days.dat
@@ -312,6 +312,10 @@ set_xtics_025yr.gnuplot : build_xtic_labels.py
 	python3 ${srcdir}/build_xtic_labels.py \
 ${builddir}/set_xtics_025yr.gnuplot --interval 25
 
+set_xtics_030yr.gnuplot : build_xtic_labels.py
+	python3 ${srcdir}/build_xtic_labels.py \
+${builddir}/set_xtics_030yr.gnuplot --interval 30
+
 set_xtics_050yr.gnuplot : build_xtic_labels.py
 	python3 ${srcdir}/build_xtic_labels.py \
 ${builddir}/set_xtics_050yr.gnuplot --interval 50
@@ -328,35 +332,35 @@ set_xtics_500yr.gnuplot : build_xtic_labels.py
 	python3 ${srcdir}/build_xtic_labels.py \
 $dstdir}/set_xtics_500yr.gnuplot --interval 500
 
-values_of_DTAI.pdf : gnuplot.dat plot_extraordinary_days.gnuplot \
+values_of_DTAI.tex : gnuplot.dat plot_extraordinary_days.gnuplot \
 set_xtics_200yr.gnuplot
 	gnuplot plot_extraordinary_days.gnuplot
 
-values_of_DTAI_since_1500.pdf : gnuplot.dat \
-plot_extraordinary_days_since_1500.gnuplot set_xtics_020yr.gnuplot
+values_of_DTAI_since_1500.tex : gnuplot.dat \
+plot_extraordinary_days_since_1500.gnuplot set_xtics_030yr.gnuplot
 	gnuplot plot_extraordinary_days_since_1500.gnuplot
 
-values_of_DTAI_since_1600.pdf : gnuplot.dat \
+values_of_DTAI_since_1600.tex : gnuplot.dat \
 plot_extraordinary_days_since_1600.gnuplot set_xtics_020yr.gnuplot
 	gnuplot plot_extraordinary_days_since_1600.gnuplot
 
-values_of_DTAI_since_1700.pdf : gnuplot.dat \
+values_of_DTAI_since_1700.tex : gnuplot.dat \
 plot_extraordinary_days_since_1700.gnuplot set_xtics_015yr.gnuplot
 	gnuplot plot_extraordinary_days_since_1700.gnuplot
 
-values_of_DTAI_since_1800.pdf : gnuplot.dat \
+values_of_DTAI_since_1800.tex : gnuplot.dat \
 plot_extraordinary_days_since_1800.gnuplot set_xtics_010yr.gnuplot
 	gnuplot plot_extraordinary_days_since_1800.gnuplot
 
-values_of_DTAI_since_1900.pdf : gnuplot.dat \
+values_of_DTAI_since_1900.tex : gnuplot.dat \
 plot_extraordinary_days_since_1900.gnuplot set_xtics_010yr.gnuplot
 	gnuplot plot_extraordinary_days_since_1900.gnuplot
 
-values_of_DTAI_since_1950.pdf : gnuplot.dat \
+values_of_DTAI_since_1950.tex : gnuplot.dat \
 plot_extraordinary_days_since_1950.gnuplot set_xtics_005yr.gnuplot
 	gnuplot plot_extraordinary_days_since_1950.gnuplot
 
-values_of_DTAI_since_2000.pdf : gnuplot.dat \
+values_of_DTAI_since_2000.tex : gnuplot.dat \
 plot_extraordinary_days_since_2000.gnuplot set_xtics_005yr.gnuplot
 	gnuplot plot_extraordinary_days_since_2000.gnuplot
 
@@ -365,15 +369,15 @@ plot_extraordinary_days_since_2000.gnuplot set_xtics_005yr.gnuplot
 # seconds in the future.  By 2500 it will be common to have three
 # in a year.
 
-values_of_DTAI_since_2015.pdf : gnuplot.dat \
+values_of_DTAI_since_2015.tex : gnuplot.dat \
 plot_extraordinary_days_since_2015.gnuplot set_xtics_005yr.gnuplot
 	gnuplot plot_extraordinary_days_since_2015.gnuplot
 
-values_of_DTAI_since_2400.pdf : gnuplot.dat \
+values_of_DTAI_since_2400.tex : gnuplot.dat \
 plot_extraordinary_days_since_2400.gnuplot set_xtics_001yr.gnuplot
 	gnuplot plot_extraordinary_days_since_2400.gnuplot
 
-values_of_DTAI_since_2490.pdf : gnuplot.dat \
+values_of_DTAI_since_2490.tex : gnuplot.dat \
 plot_extraordinary_days_since_2490.gnuplot set_xtics_006mo.gnuplot
 	gnuplot plot_extraordinary_days_since_2490.gnuplot
 
@@ -410,18 +414,41 @@ verify_files.sh \
 check_output.txt \
 gnuplot.dat \
 set_xtics_200yr.gnuplot \
-values_of_DTAI.pdf \
+set_xtics_025yr.gnuplot \
+set_xtics_030yr.gnuplot \
 set_xtics_020yr.gnuplot \
-values_of_DTAI_since_1500.pdf \
-values_of_DTAI_since_1600.pdf \
 set_xtics_015yr.gnuplot \
-values_of_DTAI_since_1700.pdf \
 set_xtics_010yr.gnuplot \
-values_of_DTAI_since_1800.pdf \
-values_of_DTAI_since_1900.pdf \
 set_xtics_005yr.gnuplot \
-values_of_DTAI_since_1950.pdf \
-values_of_DTAI_since_2000.pdf \
+set_xtics_001yr.gnuplot \
+set_xtics_006mo.gnuplot \
+gnuplot-lua-tikz.sty \
+t-gnuplot-lua-tikz.tex \
+gnuplot-lua-tikz.tex \
+gnuplot-lua-tikz-common.tex \
+values_of_DTAI.tex \
+values_of_DTAI.tex.aux \
+values_of_DTAI_since_1500.tex \
+values_of_DTAI_since_1600.tex \
+values_of_DTAI_since_1700.tex \
+values_of_DTAI_since_1800.tex \
+values_of_DTAI_since_1900.tex \
+values_of_DTAI_since_1950.tex \
+values_of_DTAI_since_2000.tex \
+values_of_DTAI_since_2015.tex \
+values_of_DTAI_since_2400.tex \
+values_of_DTAI_since_2490.tex \
+values_of_DTAI.aux \
+values_of_DTAI_since_1500.aux \
+values_of_DTAI_since_1600.aux \
+values_of_DTAI_since_1700.aux \
+values_of_DTAI_since_1800.aux \
+values_of_DTAI_since_1900.aux \
+values_of_DTAI_since_1950.aux \
+values_of_DTAI_since_2000.aux \
+values_of_DTAI_since_2015.aux \
+values_of_DTAI_since_2400.aux \
+values_of_DTAI_since_2490.aux \
 proleptic_UTC.bbl \
 proleptic_UTC.log \
 proleptic_UTC.aux \

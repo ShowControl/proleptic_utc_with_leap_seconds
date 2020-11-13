@@ -1,2 +1,5 @@
 # proleptic_utc_with_leap_seconds
 Schedule leap seconds for the past and future using today's definition of UTC 
+
+Provide the file proleptic_utc_with_leap_seconds.txt which lists all of
+the days with leap seconds.  See the comments in the file for details.
