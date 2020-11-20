@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: November 11, 2020.
+# File: Makefile.am, author: John Sauter, date: November 19, 2020.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 

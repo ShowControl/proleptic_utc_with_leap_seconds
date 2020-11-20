@@ -58,7 +58,7 @@ parser.add_argument ('input1_file',
 parser.add_argument ('output_file',
                      help='the resulting list of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_Delta_T 7.9 2020-09-22',
+                     version='read_Delta_T 7.10 2020-11-19',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -70,7 +70,7 @@ parser.add_argument ('--USNO-delta-t-predictions',
 parser.add_argument ('--IERS-Bulletin-A',
                      metavar='IERS_Bulletin_A_input_file',
                      help='Read UT1-UTC projection formula from IERS Bulletin A')
-parser.add_argument ('--IERS-projection-days', type=int, default=1000,
+parser.add_argument ('--IERS-projection-days', type=int, default=0,
                      metavar='IERS_projection_days',
                      help='Number of days to project delta T using the IERS formula in Bulletin A')
 parser.add_argument ('--IERS-final', metavar='IERS_final_input_file',
@@ -549,6 +549,8 @@ def UT2_seasonal (target_JDN):
           - 0.006 * np.sin(4.0*np.pi*target_T)
           + 0.007 * np.cos(4.0*np.pi*target_T))
 
+perform_fade = 0
+
 if (do_IERS_projections):
   
   if (do_trace == 1):
@@ -591,6 +593,12 @@ if (do_IERS_projections):
   UT2_base_JDN = UT2_base_MJD + 2400000
   start_MJD = UT2_base_MJD
   projection_start_JDN = start_MJD + 2400000
+  # If the number of days to project is not specified, project
+  # to the end of the data.
+  perform_fade = 1
+  if (IERS_projection_days == 0):
+    IERS_projection_days = jdn(2500,1,1) - projection_start_JDN
+    perform_fade = 0
   end_MJD = start_MJD + IERS_projection_days
   projection_end_JDN = end_MJD + 2400000
   if (verbosity_level > 0):
@@ -786,7 +794,7 @@ if (last_delta_T_from_IERS_date > 0):
     tracefile.write ("last delta T from IERS data: " +
                      str(last_delta_T_from_IERS) + ".\n")
   #
-  # A parabola can be apporximated from three or more known points.
+  # A parabola can be approximated from three or more known points.
   # Use the delta T values for the last date for which we have an estimate
   # from the IERS and some additional past and future values.
 
@@ -939,7 +947,7 @@ if (last_delta_T_from_IERS_date > 0):
     
   parabola_offset = (parabola_anchor_Y - y_pos[parabola_anchor_X])
   if (verbosity_level > 0):
-    print ("Parabola anchor X = " + str(parabola_anchor_X) + ".5" +
+    print ("Parabola anchor X = " + str(parabola_anchor_X) +
            ", Y = " + str(parabola_anchor_Y) + ".")
     print ("Parabola offset: " + str(parabola_offset) + ".")
 
@@ -991,90 +999,92 @@ if (last_delta_T_from_IERS_date > 0):
     this_delta_t_source = delta_t_all[source]
     this_delta_t_source[this_JDN] = y_pos[this_JDN]
 
-  # Fade from the IERS projections to the parabola or the
+  # If requested, fade from the IERS projections to the parabola or the
   # astronomical projection.
 
-  source = "IERS UT1-UTC projection"
-  projection_delta_t_dict = delta_t_all[source]
-  source = "Parabola"
-  parabola_delta_t_dict = delta_t_all[source]
-  source = "Astronomical Projection"
-  astro_delta_t_dict = delta_t_all[source]
+  if (perform_fade == 1):
+    source = "IERS UT1-UTC projection"
+    projection_delta_t_dict = delta_t_all[source]
+    source = "Parabola"
+    parabola_delta_t_dict = delta_t_all[source]
+    source = "Astronomical Projection"
+    astro_delta_t_dict = delta_t_all[source]
 
-  if (do_trace > 0):
-    tracefile.write ("Astronomical Projection:\n")
-    pprint.pprint (astro_delta_t_dict, tracefile)
+    if (do_trace > 0):
+      tracefile.write ("Astronomical Projection:\n")
+      pprint.pprint (astro_delta_t_dict, tracefile)
 
-  fade_time = (IERS_projection_days -
-               (last_delta_T_from_IERS_date - UT2_base_JDN))
-  if (verbosity_level > 0):
-    print ("Fade in is from " +
-           greg(last_delta_T_from_IERS_date, "-", 0) +
-           " to " +
-           greg(last_delta_T_from_IERS_date + fade_time, "-", 0) +
-           " : " +
-           str(fade_time) + " days.")
-    print ("On " + greg(last_delta_T_from_IERS_date, "-", 0) +
-           " predicted delta T = " +
-           format(deltaT(last_delta_T_from_IERS_date), ".7f") + ",")
-    print (" stretched parabola = " +
-           format(parabola_delta_t_dict[last_delta_T_from_IERS_date], ".7f") +
-           ", ")
-    print (" astronomical projection = " +
-           format(astro_interpolate(last_delta_T_from_IERS_date), ".7f")
-           + ".")
-    print ("On " + greg(last_delta_T_from_IERS_date + fade_time, "-", 0) +
-           " projected delta T = " +
-           format(deltaT(last_delta_T_from_IERS_date + fade_time), ".7f") +
-           ",")
-    print (" stretched parabola = " +
-           format(parabola_delta_t_dict[last_delta_T_from_IERS_date +
-                                        fade_time], ".7f") +
-           ",")
-    print (" astronomical projection = " +
-           format(astro_interpolate(last_delta_T_from_IERS_date +
-                                     fade_time), ".7f") + ".")
+    fade_time = (IERS_projection_days -
+                 (last_delta_T_from_IERS_date - UT2_base_JDN))
+    if (verbosity_level > 0):
+      print ("Fade in is from " +
+             greg(last_delta_T_from_IERS_date, "-", 0) +
+             " to " +
+             greg(last_delta_T_from_IERS_date + fade_time, "-", 0) +
+             " : " +
+             str(fade_time) + " days.")
+      print ("On " + greg(last_delta_T_from_IERS_date, "-", 0) +
+             " predicted delta T = " +
+             format(deltaT(last_delta_T_from_IERS_date), ".7f") + ",")
+      print (" stretched parabola = " +
+             format(parabola_delta_t_dict[last_delta_T_from_IERS_date], ".7f") +
+             ", ")
+      print (" astronomical projection = " +
+             format(astro_interpolate(last_delta_T_from_IERS_date), ".7f")
+             + ".")
+      print ("On " + greg(last_delta_T_from_IERS_date + fade_time, "-", 0) +
+             " projected delta T = " +
+             format(deltaT(last_delta_T_from_IERS_date + fade_time), ".7f") +
+             ",")
+      print (" stretched parabola = " +
+             format(parabola_delta_t_dict[last_delta_T_from_IERS_date +
+                                          fade_time], ".7f") +
+             ",")
+      print (" astronomical projection = " +
+             format(astro_interpolate(last_delta_T_from_IERS_date +
+                                      fade_time), ".7f") + ".")
 
-    future_delta_T_source = "Astronomical Projection"
-    future_delta_T_source = "Parabola"
-  for this_JDN in range (last_delta_T_from_IERS_date, end_date+1):
-    the_fraction = (this_JDN - last_delta_T_from_IERS_date) / fade_time
-    if (the_fraction > 1.0):
-      the_fraction = 1.0
-    if ((the_fraction < 1.0) and (this_JDN in projection_delta_t_dict)):
-      projection_delta_t = projection_delta_t_dict [this_JDN]
-      parabola_delta_t = parabola_delta_t_dict [this_JDN]
-      astro_delta_t = astro_interpolate(this_JDN)
-      if (future_delta_T_source == "Parabola"):
-        new_delta_t = ((the_fraction * parabola_delta_t) +
-                       ((1.0 - the_fraction) * projection_delta_t))
-      if (future_delta_T_source == "Astronomical Projection"):
-        new_delta_t = ((the_fraction * astro_delta_t) +
-                       ((1.0 - the_fraction) * projection_delta_t))
-      if (do_trace > 0):
-        tracefile.write ("At " + greg(this_JDN, "-", 0) + ", " +
-                         "fade fraction = " + str(the_fraction) + ", " +
-                         "projection = " + str(projection_delta_t) + ", " +
-                         "parabola = " + str(parabola_delta_t) + ", " +
-                         "astro = " + str(astro_delta_t) + ", " +
-                         "new delta T = " + str(new_delta_t) + ".\n")
-    else:
-      if (future_delta_T_source == "Parabola"):
-        new_delta_t = parabola_delta_t_dict[this_JDN]
-      if (future_delta_T_source == "Astronomical Projection"):
-        new_delta_t = astro_interpolate(this_JDN)
-      the_fraction = 1.0
-    if (the_fraction == 1.0):
-      source = future_delta_T_source
-    else:
-      source = "IERS UT1-UTC projection + " + future_delta_T_source
-    delta_t [this_JDN] = new_delta_t
-    delta_t_source[this_JDN] = source
-    if (source not in delta_t_all):
-      delta_t_all[source] = dict()
-      source_list = source_list + [source]
-    this_delta_t_source = delta_t_all[source]
-    this_delta_t_source[this_JDN] = new_delta_t
+      future_delta_T_source = "Astronomical Projection"
+      future_delta_T_source = "Parabola"
+      for this_JDN in range (last_delta_T_from_IERS_date, end_date+1):
+        the_fraction = (this_JDN - last_delta_T_from_IERS_date) / fade_time
+        if (the_fraction > 1.0):
+          the_fraction = 1.0
+        if ((the_fraction < 1.0) and (this_JDN in projection_delta_t_dict)):
+          projection_delta_t = projection_delta_t_dict [this_JDN]
+          parabola_delta_t = parabola_delta_t_dict [this_JDN]
+          astro_delta_t = astro_interpolate(this_JDN)
+          if (future_delta_T_source == "Parabola"):
+            new_delta_t = ((the_fraction * parabola_delta_t) +
+                           ((1.0 - the_fraction) * projection_delta_t))
+          if (future_delta_T_source == "Astronomical Projection"):
+            new_delta_t = ((the_fraction * astro_delta_t) +
+                           ((1.0 - the_fraction) * projection_delta_t))
+          if (do_trace > 0):
+            tracefile.write ("At " + greg(this_JDN, "-", 0) + ", " +
+                             "fade fraction = " + str(the_fraction) + ", " +
+                             "projection = " + str(projection_delta_t) +
+                             ", " +
+                             "parabola = " + str(parabola_delta_t) + ", " +
+                             "astro = " + str(astro_delta_t) + ", " +
+                             "new delta T = " + str(new_delta_t) + ".\n")
+        else:
+          if (future_delta_T_source == "Parabola"):
+            new_delta_t = parabola_delta_t_dict[this_JDN]
+          if (future_delta_T_source == "Astronomical Projection"):
+            new_delta_t = astro_interpolate(this_JDN)
+          the_fraction = 1.0
+        if (the_fraction == 1.0):
+          source = future_delta_T_source
+        else:
+          source = "IERS UT1-UTC projection + " + future_delta_T_source
+        delta_t [this_JDN] = new_delta_t
+        delta_t_source[this_JDN] = source
+        if (source not in delta_t_all):
+          delta_t_all[source] = dict()
+          source_list = source_list + [source]
+        this_delta_t_source = delta_t_all[source]
+        this_delta_t_source[this_JDN] = new_delta_t
     
   rebuild_interpolations()
   #
