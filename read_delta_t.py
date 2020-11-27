@@ -1294,7 +1294,7 @@ if (do_trace > 1):
 prev_DTAI = deltaTAI(jdn(-2000,1,1))
 max_change_dict = dict()
 
-for this_JDN in range(jdn(-2000,1,1), jdn(2500,1,5)):
+for this_JDN in range(jdn(-2000,1,1), jdn(2500,1,1)):
   this_DTAI = deltaTAI(this_JDN)
   this_change = abs(this_DTAI - prev_DTAI)
   max_change_dict[this_change] = this_JDN
@@ -1418,19 +1418,23 @@ if (do_trace == 1):
 # and UT1 is within a specified interval.
 # Sign == -1 means the interval is below 0, and so the comparisons
 # are reversed.
-def in_interval (val, base_val, low_limit, high_limit, sign):
+def in_interval (val, base_val, low_limit, high_limit, sign, current_JDN):
   if ((base_val - val) > 1):
-    print ("in_interval: " + str(val) + " " + str(base_val))
+    print ("in_interval high: " + str(current_JDN) + ", " + str(val) + ", " + 
+           str(base_val))
     if (do_trace == 1):
-      tracefile.write ("in_interval high: val " + str(val) +
+      tracefile.write ("in_interval high: JDN = " + current_JDN +
+                       ", val " + str(val) +
                        " base_val " + str(base_val) +
                        " low_limit " + str(low_limit) +
                        " high_limit " + str(high_limit) +
                        " sign " + str(sign) + ".\n")
   if ((base_val - val) < -1):
-    print ("in_interval: " + str(val) + " " + str(base_val))
+    print ("in_interval low: " + str(current_JDN) + ", " + str(val) + ", " + 
+           str(base_val))
     if (do_trace == 1):
-      tracefile.write ("in_interval low: val " + str(val) +
+      tracefile.write ("in_interval low: JDN = " + str(current_JDN) +
+                       ", val " + str(val) +
                        " base_val " + str(base_val) +
                        " low_limit " + str(low_limit) +
                        " high_limit " + str(high_limit) +
@@ -1517,8 +1521,9 @@ def scan_interval (base_jdn, limit_jdn):
   # Now look ahead to when UT1 differs from UTC by 0.9 seconds
   # in the same direction.  If the difference declines to 0.1,
   # stop looking.
-  while (in_interval (deltaTAI (current_jdn), leap, 0.1, 0.9, sign) &
-         (current_jdn <= limit_jdn)):
+  while ((current_jdn < limit_jdn) and
+         in_interval (deltaTAI (current_jdn), leap, 0.1, 0.9, sign, 
+                      current_jdn)):
     current_jdn = current_jdn + 1
   if (current_jdn >= limit_jdn):
     return current_jdn
@@ -1683,7 +1688,7 @@ if (do_UT1UTC_output):
     lod = 86400
     if (this_JDN in jdn_edays):
       lod = jdn_edays[this_JDN]
-    leap = leap + lod - 86400
+    next_leap = leap + lod - 86400
     ymdf = jd2gcal (float(this_JDN), 0.5)
     year_no = ymdf [0]
     month_no = ymdf [1]
@@ -1700,9 +1705,11 @@ if (do_UT1UTC_output):
                        "Day of month " + str(mday_no) + " " +
                        "deltaT " + str(this_deltaT) + " " +
                        "leap " + str(leap) + " " +
+                       "next_leap " + str(next_leap) + " " +
                        "UT1-UTC " + str(UT1UTC) +
                        " source " + source + ".\n")
     previous_source = source
+    leap = next_leap
       
   # Walk pastward from January 1, 1958.
   leap = base_deltaT
@@ -1713,7 +1720,7 @@ if (do_UT1UTC_output):
     lod = 86400
     if (this_JDN in jdn_edays):
       lod = jdn_edays[this_JDN]
-    leap = leap - lod + 86400
+    next_leap = leap - lod + 86400
     ymdf = jd2gcal (float(this_JDN), 0.5)
     year_no = ymdf [0]
     month_no = ymdf [1]
@@ -1730,9 +1737,11 @@ if (do_UT1UTC_output):
                        "Day of month " + str(mday_no) + " " +
                        "deltaT " + str(this_deltaT) + " " +
                        "leap " + str(leap) + " " +
+                       "next_leap " + str(next_leap) + " " +
                        "UT1-UTC " + str(UT1UTC) +
                        " source " + source + ".\n")
     previous_source = source
+    leap = next_leap
 
   # Now that the dataa is collected, output it.
   UT1UTCfile = open (UT1UTC_output_file_name, "wt")

@@ -1,5 +1,5 @@
 Name:           proleptic_utc_with_leap_seconds
-Version:        2020.11.20
+Version:        2020.11.27
 Release:        1%{?dist}
 Summary:        Schedule leap seconds
 
@@ -92,6 +92,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+ * Fri Nov 27 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
+ - 2020.11.27-1 Adjust future leap seconds starting in 2097.
  * Fri Nov 20 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>
  - 2020.11.20-1 Adjust future leap seconds starting in 2067.
  * Fri Nov 13 2020 John Sauter <John_Sauter@systemeyescomputerstore.com>

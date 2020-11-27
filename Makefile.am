@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: November 19, 2020.
+# File: Makefile.am, author: John Sauter, date: November 21, 2020.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -89,7 +89,8 @@ RPMs:
 # of GNU/Linux, including RHEL and Fedora.
 EXTRA_DIST += proleptic_utc_with_leap_seconds.spec
 
-# Run luaLaTeX three times to get the forward references right
+# Run luaLaTeX four times to get the forward references and
+# pdf bytecount right.
 proleptic_UTC.pdf : proleptic_UTC.tex proleptic_UTC.tex.in \
 proleptic_UTC.bbl \
 delta_t.tex extraordinary_days.tex values_of_DTAI.tex \
@@ -98,6 +99,7 @@ values_of_DTAI_since_1700.tex values_of_DTAI_since_1800.tex \
 values_of_DTAI_since_1900.tex values_of_DTAI_since_1950.tex \
 values_of_DTAI_since_2000.tex exdays_01.dat exdays_04.dat \
 finals.all.csv 
+	lualatex ${builddir}/proleptic_UTC.tex
 	lualatex ${builddir}/proleptic_UTC.tex
 	lualatex ${builddir}/proleptic_UTC.tex
 	lualatex ${builddir}/proleptic_UTC.tex
@@ -160,6 +162,7 @@ download:
 # perhaps with newly downloaded data or a new algorithm for future
 # leap seconds, save the old version of exdays_05.dat so we can see
 # the changes in the schedule of leap seconds.
+# The usual value for IERS-projection-days is 1461.
 #
 exdays_05.dat : read_delta_t.py values_of_delta_T.csv finals.all.csv \
 6_BULLETIN_A_V2013_016.txt
