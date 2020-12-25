@@ -58,7 +58,7 @@ parser.add_argument ('input1_file',
 parser.add_argument ('output_file',
                      help='the resulting list of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_Delta_T 7.10 2020-11-19',
+                     version='read_Delta_T 7.11 2020-12-24',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -972,7 +972,7 @@ if (last_delta_T_from_IERS_date > 0):
     print ("Parabola max: " + str(parabola_max) + ".")
     print ("Parabola min: " + str(parabola_min) + ".")
     print ("Parabola height: " + str(parabola_height) + ".")
-    print ("Parabola at " + str(parabola_anchor_X) + ".5: " +
+    print ("Parabola at " + str(parabola_anchor_X) + ": " +
            str(y_pos[parabola_anchor_X]) + ".")
     print ("Parabola stretch: " + str(parabola_stretch) + ".")
   
