@@ -54,7 +54,7 @@ parser.add_argument ('--latest-date-output_file',
                      metavar='latest_date_output_file',
                      help='write the latest Bulletin A date to the specified file')
 parser.add_argument ('--version', action='version', 
-                     version='parse_bulletin_A 3.4 2020-08-23',
+                     version='parse_bulletin_A 3.5 2021-01-08',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -98,6 +98,8 @@ def process_file (file_name):
   global bull_info
   line_number = 0
   date_found = 0
+  next_line_is_DUT1 = 0
+  DUT1 = 0.0
   with open (file_name, 'rt') as infile:
     text_line = infile.readline()
     while (text_line != ''):
@@ -108,6 +110,8 @@ def process_file (file_name):
       right_side = text_line[41:]
       right_side = right_side.lstrip()
       right_side = right_side[0:5]
+      stripped_text_line = text_line.lstrip()
+      stripped_text_line = stripped_text_line.rstrip()
       if (do_trace == 1):
         if (date_found == 0):
           tracefile.write ('Looking for date: ' + right_side + '\n')
@@ -120,6 +124,11 @@ def process_file (file_name):
           print ('Date of IERS Bulletin A is ' + date_string)
         if (do_trace == 1):
           tracefile.write ('date = ' + date_string + '.\n')
+      if (next_line_is_DUT1 == 1):
+        DUT1 = float(stripped_text_line[1:8])
+        next_line_is_DUT1 = 0
+      if (stripped_text_line=='DUT1= (UT1-UTC) transmitted with time signals'):
+        next_line_is_DUT1 = 1
       if (text_line[0:19] == '         UT1-UTC = '):
         if (verbosity_level > 0):
           print (text_line, end='')
@@ -138,7 +147,7 @@ def process_file (file_name):
                  format(param_2, ".5f") +
                  ' ⨯ (MJD - ' + str(param_3) + ')) - (UT2-UT1)')
           print ('MJD ' + str(param_3) + ' is ' + greg(param_3 + 2400000.5))
-        bull_info [date_object] = (param_1, param_2, param_3)
+        bull_info [date_object] = (param_1, param_2, param_3, DUT1)
       text_line = infile.readline()
 
 # Process the input file.  If it is a directory, process all .txt files
@@ -159,7 +168,7 @@ if (arguments ['csv_output_file'] != None):
   csvoutputfile = open (csv_output_file_name, 'wt')
 
 if (do_csv_output == 1):
-  csvoutputfile.write ('date1,date2,UT2_slope\n')
+  csvoutputfile.write ('date1,date2,UT2_slope,DUT1\n')
   for the_date in sorted(bull_info):
     csvoutputfile.write ('"=date(' + str(the_date.year) + ',' +
                          str(the_date.month) + ',' +
@@ -167,7 +176,8 @@ if (do_csv_output == 1):
                          str(the_date.year) + '-' +
                          str(the_date.month) + '-' +
                          str(the_date.day) + ',' +
-                         format(bull_info[the_date][1], ".5f") + '\n')
+                         format(bull_info[the_date][1], ".5f") + "," +
+                         format(bull_info[the_date][3], ".5f") + '\n')
 
 if (arguments ['latest_date_output_file'] != None):
   do_latest_date_output = 1
