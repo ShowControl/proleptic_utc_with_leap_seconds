@@ -29,7 +29,8 @@
 % 1. Latin Modern matches Don Knuth's Computer Modern
 % Note that Latin Modern displays U+02BC (Modifier Letter Apostrophe)
 % as a space.  This letter is used in the section describing the
-% use of the Proleptic Gregorian calendar to translate Mayan dates.
+% use of the Proleptic Gregorian calendar to translate Mesoamerican Long
+% Count dates.
 %\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
 %\usepackage{unicode-math}
 
@@ -105,11 +106,11 @@
   % Hyperxmp says we should not quote the underscores with
   % backslash, but this produces subscripting, which is not permitted.
   % pdfurl={https://commons.wikimedia.org/wiki/File:Extending\_Coordinated\_Universal\_Time\_to\_Dates\_Before\_1972.pdf},
-  pdfdate={2021-02-19},
+  pdfdate={2021-02-26},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-US}
 }
-\date{2021-02-19}
+\date{2021-02-26}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -196,8 +197,9 @@ culture for a general audience, the mythical creation date of 13
 b\symbol{"02BC}ak\symbol{"02BC}tuns, 0 k\symbol{"02BC}atuns,
 0 tuns, 0 winals, 0 kins (4 Ajaw, 8 Kumk\symbol{"02BC}u)
 is translated as August 11, 3114 BCE.
-Mayan scholars generally translate Mayan dates into Proleptic Gregorian
-rather than the Julian calendar used for civil timekeeping in Europe at
+Mayan scholars generally translate Mesoamerican Long Count
+calendar dates into Proleptic Gregorian dates
+rather than the Julian calendar dates used for civil timekeeping in Europe at
 the time of the Mayan civilization because there was no cultural
 contact between the classic Mayans and the people of Europe.
 
