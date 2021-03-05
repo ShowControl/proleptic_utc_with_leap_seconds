@@ -7,7 +7,7 @@ set title "Values of DTAI 2000 to 2100"
 set xlabel "Date"
 set ylabel "DTAI"
 set xrange [2451545:2488869]
-set yrange [30:70]
+set yrange [30:50]
 load "@builddir@/set_xtics_005yr.gnuplot"
 set nokey
 set xtic rotate by 45

@@ -5,7 +5,7 @@
 # to estimate delta T, then creates various useful files based on
 # the data.
 #
-#   Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2021 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ parser = argparse.ArgumentParser (
   formatter_class=argparse.RawDescriptionHelpFormatter,
   description='Convert the file of Delta T values into '
   'a list of extraordinary days.',
-  epilog='Copyright © 2020 by John Sauter' + '\n' +
+  epilog='Copyright © 2021 by John Sauter' + '\n' +
   'License GPL3+: GNU GPL version 3 or later; ' + '\n' +
   'see <http://gnu.org/licenses/gpl.html> for the full text ' +
   'of the license.' + '\n' +
@@ -58,7 +58,7 @@ parser.add_argument ('input1_file',
 parser.add_argument ('output_file',
                      help='the resulting list of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_Delta_T 7.11 2020-12-24',
+                     version='read_Delta_T 7.12 2021-03-02',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -339,7 +339,7 @@ with open (file_name, 'rt') as csvfile:
         this_MJD = int(row["MJD"])
       this_delta_t = float(row['deltaT'])
       delta_t [this_JDN] = this_delta_t
-      if (year_int <= 2015):
+      if (year_int <= 2020):
         source = "Eclipses and Lunar Occulations"
       else:
         source = "Astronomical Projection"
@@ -594,11 +594,13 @@ if (do_IERS_projections):
   start_MJD = UT2_base_MJD
   projection_start_JDN = start_MJD + 2400000
   # If the number of days to project is not specified, project
-  # to the end of the data.
+  # to 2040.  If negative, project to the end of the data.
   perform_fade = 1
-  if (IERS_projection_days == 0):
+  if (IERS_projection_days < 0):
     IERS_projection_days = jdn(2500,1,1) - projection_start_JDN
     perform_fade = 0
+  if (IERS_projection_days == 0):
+    IERS_projection_days = jdn(2040,1,1) - projection_start_JDN
   end_MJD = start_MJD + IERS_projection_days
   projection_end_JDN = end_MJD + 2400000
   if (verbosity_level > 0):
@@ -802,11 +804,11 @@ if (last_delta_T_from_IERS_date > 0):
 #    jdn(1700,1,1),
 #    jdn(1895,1,1),
     last_delta_T_from_IERS_date,
-    jdn(2030,1,1),
-#    projection_end_JDN,
+    projection_end_JDN,
+#    jdn(2030,1,1),
 #    jdn(2040,1,1),
 #    jdn(2050,1,1),
-#    jdn(2100,1,1),
+    jdn(2100,1,1),
 #    jdn(2200,1,1),
 #    jdn(2300,1,1),
 #    jdn(2400,1,1),
@@ -820,7 +822,7 @@ if (last_delta_T_from_IERS_date > 0):
 #    256.0,
 #    128.0,
 #    64.0,
-#    32.0,
+    32.0,
 #    16.0,
 #    8.0,
 #    4.0,
@@ -894,24 +896,29 @@ if (last_delta_T_from_IERS_date > 0):
                      str(c) + ".\n")
 
   # Subroutine to do a linear interpolation between two points
-  # in the astronomical projection.
+  # in the astronomical projection or the projection based on
+  # eclipses and lunar occulations.
   def astro_interpolate (the_JDN):
     global delta_t_all
+    astro_and_eclipses_delta_t_dict = dict()
     astro_delta_t_dict = delta_t_all["Astronomical Projection"]
-    if (the_JDN in astro_delta_t_dict):
-      return astro_delta_t_dict[the_JDN]
+    eclipses_delta_t_dict = delta_t_all["Eclipses and Lunar Occulations"]
+    astro_and_eclipses_delta_t_dict.update(eclipses_delta_t_dict)
+    astro_and_eclipses_delta_t_dict.update(astro_delta_t_dict)
+    if (the_JDN in astro_and_eclipses_delta_t_dict):
+      return astro_and_eclipses_delta_t_dict[the_JDN]
     # Fill in missing values using linear interpolation.
     if (do_trace > 0):
       tracefile.write ("Interpolating: ")
       tracefile.write ("the_JDN " + str(the_JDN) + ".5.\n")
-    for probe_JDN in astro_delta_t_dict:
+    for probe_JDN in astro_and_eclipses_delta_t_dict:
       if (probe_JDN < the_JDN):
         prev_JDN = probe_JDN
       if (probe_JDN > the_JDN):
         next_JDN = probe_JDN
         break
-    prev_delta_t = astro_delta_t_dict [prev_JDN]
-    next_delta_t = astro_delta_t_dict [next_JDN]
+    prev_delta_t = astro_and_eclipses_delta_t_dict [prev_JDN]
+    next_delta_t = astro_and_eclipses_delta_t_dict [next_JDN]
     JDN_range = next_JDN - prev_JDN
     if (do_trace > 0):
       tracefile.write ("prev JDN: " + str(prev_JDN) + ".5 -> " +

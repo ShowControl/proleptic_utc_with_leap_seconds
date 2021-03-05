@@ -1,3 +1,9 @@
+2021-03-05
+  Include the latest research on historical values of delta T.
+  This changes nearly all leap seconds before 1825, and nearly
+  all future leap seconds.  The next leap second is scheduled
+  for June 30, 2031, and it will be a negative leap second.
+  
 2021-02-26
   Adjust future leap seconds starting in 2104.
   

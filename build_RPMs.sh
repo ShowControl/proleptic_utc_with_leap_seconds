@@ -28,20 +28,25 @@ pushd ~/rpmbuild/SOURCES
 chmod 0644 proleptic_utc_with_leap_seconds-*.tar.gz
 chmod 0644 proleptic_utc_with_leap_seconds.spec
 # Build the source RPM.
+echo "Building source RPM."
 rpmbuild -bs proleptic_utc_with_leap_seconds.spec
 # Copy back the source RPM so it can be copied to github.
 popd
 cp -v ~/rpmbuild/SRPMS/proleptic_utc_with_leap_seconds-*.src.rpm .
 # Make sure it is OK.
+echo "Validating source RPM."
 rpmlint proleptic_utc_with_leap_seconds-*.src.rpm
 # Further test the source RPM by building and testing the binary RPMs.
 pushd ~/rpmbuild/SOURCES
+echo "Building binary RPM."
 rpmbuild -bb proleptic_utc_with_leap_seconds.spec
 popd
 # Perform validity checking on the RPMs.
 pushd ~/rpmbuild/SRPMS
+echo "Validating source RPM again."
 rpmlint proleptic_utc_with_leap_seconds-*.src.rpm
 pushd ../RPMS/noarch/
+echo "Validating binary RPM."
 rpmlint proleptic_utc_with_leap_seconds-*.rpm
 # Make sure the application  will build from the source RPM.
 popd
