@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am, author: John Sauter, date: March 2, 2021
+# File: Makefile.am, author: John Sauter, date: March 10, 2021
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -1514,6 +1514,14 @@ plot_extraordinary_days_since_2490.gnuplot set_xtics_006mo.gnuplot
 # Buld the PDF on demand, if requested.
 pdf-local: proleptic_UTC.pdf
 .PHONEY: pdf-local
+
+# Include the signature file in the repository
+signature : ${PACKAGE}-${VERSION}.tar.gz.asc
+.PHONEY: signature
+
+${PACKAGE}-${VERSION}.tar.gz.asc : ${PACKAGE}-${VERSION}.tar.gz
+	rm -f ${PACKAGE}-*.tar.gz.asc
+	gpg2 --detach-sign --armor ${PACKAGE}-${VERSION}.tar.gz
 verify_files.sh : verify_files_template.sh check_output.txt 
 	cp $(srcdir)/verify_files_template.sh verify_files.sh
 	if [ ! -r "check_expected_output.txt" ] ; then cp $(srcdir)/check_expected_output.txt check_expected_output.txt ; touch copied_from_srcdir ; fi
