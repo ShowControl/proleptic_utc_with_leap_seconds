@@ -3,3 +3,39 @@ Schedule leap seconds for the past and future using today's definition of UTC
 
 Provide the file proleptic_utc_with_leap_seconds.txt which lists all of
 the days with leap seconds.  See the comments in the file for details.
+
+
+If you download the tarball from the git repository, you can also download
+its signature file, which has the same name as the tarball with .asc appended.
+I created the signature file using gpg version 2.  To verify that the tarball
+was created by me you will need my public key.  You can get my PGP public key
+from a keyserver, from my web site using the WSD protocol by typing
+gpg --locate-external-keys John_Sauter@systemeyescomputerstore.com
+or by extracting file John_Sauter_public_key.asc from the tarball
+and importing it into gpg.  That last process is not too secure, since
+if the tarball is compromised the public key could also be compromised.
+Thus, to improve its security, here is what you should see when you list
+the public key file:
+
+pub   rsa2048 2012-03-01 [SC]
+      E24AD25BE5FE4914A60349EC70303EA19A0B511E
+uid           John Sauter <John_Sauter@systemeyescomputerstore.com>
+uid           keybase.io/john_sauter <john_sauter@keybase.io>
+uid           [jpeg image of size 3091]
+sub   rsa2048 2012-03-01 [E]
+pub   rsa4096 2016-04-20 [SC] [revoked: 2016-04-20]
+      BB3334308DE0C78126C7123C2A6E2A4F026FC76C
+uid           John Sauter (Asus Q200E) <John_Sauter@systemeyescomputerstore.com>
+sub   rsa4096 2016-04-20 [E] [revoked: 2016-04-20]
+pub   rsa2048 2012-10-25 [SC]
+      A62580C913EA6A40C9DCAB87064A96E03DF7EE1D
+uid           John Sauter <John_Sauter@systemeyescomputerstore.com>
+sub   rsa2048 2012-10-25 [E]
+pub   dsa1024 2009-08-26 [SCA]
+      2D8B16E2E7EBE79403234AAB644086A281CE86BF
+uid           John Sauter <John_Sauter@systemeyescomputerstore.com>
+sub   elg2048 2009-08-26 [E]
+
+This should not change between versions without a good reason, so you
+can examine a copy of this README file from an old tarball to increase
+your confidence that the latest tarball was also created by me.

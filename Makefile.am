@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: March 10, 2021
+# File: Makefile.am, author: John Sauter, date: March 18, 2021
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -75,7 +75,7 @@ plot_extraordinary_days_since_2490.gnuplot
 EXTRA_DIST += 20160404.full.pdf \
 R-REC-TF.460-6-200202-I!!PDF-E.pdf \
 legalcode.txt values_of_delta_T.ods\
-USNO_deltat_preds.csv gpl.txt
+USNO_deltat_preds.csv gpl.txt John_Sauter_public_key.asc
 
 # Distribute the shell script which builds the RPMs.
 EXTRA_DIST += build_RPMs.sh
