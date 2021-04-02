@@ -1,5 +1,5 @@
 #
-# Table of Extraordinary Days, last modified March 19, 2021.
+# Table of Extraordinary Days, last modified March 26, 2021.
 #
 # Copyright © 2021 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -61,7 +61,7 @@
 START_DATE=990574       # 1 Jan -2000
 END_DATE=2634166        # 1 Jan 2500
 EXPIRATION_DATE=2459576 # 28 Dec 2021
-CHECKSUM=55fea80c90721d9824912f48b600305e7689288aa857b809ab6d0d933b600612
+CHECKSUM=786067219c1e45b126f6ce979f5098abaed40c1b852c59fc1d97324ec823bfd4
 #
 # The data extends from -2000 through 2499.
 #
