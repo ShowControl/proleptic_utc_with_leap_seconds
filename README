@@ -139,7 +139,7 @@ not use any files built previously.
 18. Type "make download" to be sure you have the latest data from the IERS.
 
 19. Type "make" to build UT1UTC.csv and extraordinary_days.dat again.
-This time extraordinary_daye.dat will have the correct revision date.
+This time extraordinary_days.dat will have the correct revision date.
 
 20.  Type "diff /usr/share/proleptic_utc_with_leap_seconds/data/extraordinary_
 days.dat extraordinary_days.dat | less" to verify that the year of the first
@@ -241,7 +241,7 @@ unstructured data.
 "make clean", "cd ../survey_UT2_slope.", "make clean" and "cd ..".  Yoo should
 now be in the leap_seconds project.
 
-42. Type "git add ." and "git update -a -m " followed by a comment in
+42. Type "git add ." and "git commit -a -m " followed by a comment in
 auotation marks.  The comment should describe the year of the next modified
 leap second prediction.  This updates the git repository for the leap_seconds
 project.
@@ -251,7 +251,7 @@ project.
 44. Type "cd ~/Projects/Theatre/show_control/repositories/proleptic_utc_with_
 leap_seconds".
 
-45. Type "git add ." and "git update -a -m" with the same comment as above.
+45. Type "git add ." and "git commit -a -m" with the same comment as above.
 
 46. Type "git tag -s " followed by the version number as in the spec file,
 followed by -m and the same comment as above.
@@ -265,9 +265,9 @@ for the tarball.  If it doesn't either the tarball or the signature has
 been corrupted since you created them.  Go back to the autogen step
 and build everything again.
 
-49.  Place the new UT1-UTC chart on the seb site by copying all the files
+49.  Place the new UT1-UTC chart on the web site by copying all the files
 in the web_site project to the computer that serves the web site, and
-typeing "bash deploy.sh" in the web_site project on that computer.
+typing "bash deploy.sh" in the web_site project on that computer.
 When that is done use a browser to verify that the leap_seconds page
 of the web site has been updated.
 
