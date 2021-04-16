@@ -51,9 +51,9 @@ and distcheck are implemented.  To re-create the PDF, type make pdf.
 If you wish to distribute your updated package, you can create your own
 signature file by typing make signature after make distcheck.  In that
 case you should update this README file to include your own pgp public
-key, and place it in the tarball.
+key.
 
-Note that the PGF contains all the files needed to rebuild the tarball
+Note that the PDF contains all the files needed to rebuild the tarball
 as embedded files, so when you add your public key you should update
 the list of files to be included in the tarball in Makefile.am and also
 add it to proleptic_UTC.tex.in sa an embedded file.
@@ -246,7 +246,8 @@ auotation marks.  The comment should describe the year of the next modified
 leap second prediction.  This updates the git repository for the leap_seconds
 project.
 
-43. Type "push public.sh" to update the local copy of the github repository.
+43. Type "bash push_public.sh" to update the local copy of the github
+repository.
 
 44. Type "cd ~/Projects/Theatre/show_control/repositories/proleptic_utc_with_
 leap_seconds".
@@ -257,13 +258,11 @@ leap_seconds".
 followed by -m and the same comment as above.
 
 47. Type "git push" and "git push --tags" to upload the project to github.
-The steps following the building of libtime can be done in parallel with
-the similar steps for libtime.
 
-48. Type "gpg p*.asc".  Gpg should say that it has a good signature
-for the tarball.  If it doesn't either the tarball or the signature has
-been corrupted since you created them.  Go back to the autogen step
-and build everything again.
+48. Type "gpg --verify proleptic*.asc proleptic*.tar.gz".  Gpg should say
+that it has a good signature for the tarball.  If it doesn't either the
+tarball or the signature has been corrupted since you created them.
+Go back to the autogen step and build everything again.
 
 49.  Place the new UT1-UTC chart on the web site by copying all the files
 in the web_site project to the computer that serves the web site, and
