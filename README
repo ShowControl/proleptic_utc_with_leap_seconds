@@ -166,41 +166,57 @@ did not mention in Makefile.am, this will catch it.  If you must modify
 Makefile.am, go back to the autogen step.
 
 25. Type "make signature" to sign the tarball.  This must be done after
-the last make distcheck.  Type "gpg p*.asc" to be sure the signagure
-is good.  At the end of this checklist you will use this signature to
+the last make distcheck.
+
+26. Type "gpg --verify proleptic*.asc proleptic*.tar.gz" to be sure the
+signagure is good.  At the end of this checklist you will use this signature to
 verify that the tarball has not been accidently corrupted.
 
-26. Type "mkdir test_pdf", "cp proleptic_UTC.pdf test_pdf/" and "cd test_pdf/"
-to place the PDF in a fresh subdirectory.
+27. Type the following commands to place the PDF in a fresh subdirectory:
 
-27. Type "pdfdetach -saveall proleptic_UTC.pdf" to extract the embedded
+    mkdir test_pdf
+    cp proleptic_UTC.pdf test_pdf/
+    cd test_pdf/
+    
+28. Type "pdfdetach -saveall proleptic_UTC.pdf" to extract the embedded
 files from the PDF.
 
-28. Type "bash fix_files.sh" to fix the file protections on the files, since
+29. Type "bash fix_files.sh" to fix the file protections on the files, since
 file protections are not remembered in embedded files.
 
-29. Type "./configure --prefix=/usr", "make download", "make", "make check",
-"make pdf", "make dist" and "make distcheck" to be sure all the files needed
+30. Type the following commands to make sure all the files needed
 to rebuild the tarball have been embedded in the PDF.  Fixing any errors
 requires updating proleptic_UTC.tex.in.  If this is needed, delete this
 subdirectory and go back to the autogen step, to make sure the update
 did not introduce any errors.
 
-30. Type "cd .." and "rm -r test_pdf/".  We are done with this subdirectory.
+    ./configure --prefix=/usr
+    make download
+    make
+    make check
+    make pdf
+    make dist
+    make distcheck
 
-31. Type "cp references.bib ~/Projects/Theatre/show_control/libtime/"
+31. Type ./autogen.sh --download to make sure the autogen script is present
+    and working.  The autogen command is at the end instead of before configure
+    since configure is supposed to work without first running autogen.
+    
+32. Type "cd .." and "rm -r test_pdf/".  We are done with this subdirectory.
+
+33. Type "cp references.bib ~/Projects/Theatre/show_control/libtime/"
 to provide the updated copy of references.bib to the libtime project.
 
-32. Type "cd ../survey_UT2_slope/", "make download" and "make" to create
+34. Type "cd ../survey_UT2_slope/", "make download" and "make" to create
 a PDF file named UT2_slope.pdf which display the changes in the predictions
 of future values of UT2, and another named DUT1.pdf which displays past values
 of DUT1.  Examine them using evince to be sure they look OK.  The logic to
 download files from the IERS and parse those files is in this subdirectory.
 Note that one of the parsers is a soft link to avoid duplicating code.
 
-33. Type "cd ../Proleptic_UTC/"
+35. Type "cd ../Proleptic_UTC/"
 
-34. Type "make RPMs" to build the source RPM from the tarball and verify
+36. Type "make RPMs" to build the source RPM from the tarball and verify
 that the binary RPMs build from it without error.  RPMlint will show some
 foolish spelling errors, will show that the tarball has not yet been uploaded
 to github, and may complain about a future date in the changelog.  Anything
@@ -208,11 +224,11 @@ more serious needs to be investigated.  This is the first step which checks
 the spec file.  If you have to change it go back to the autogen step, since
 the spec file is included in the tarball.
 
-35. Use an internet browser to log in to the Fedora COPR web site.  Navigate
+37. Use an internet browser to log in to the Fedora COPR web site.  Navigate
 to the proleptic_utc_with_leap_seconds project and make sure it is set to
 compile the package on ail available platforms.
 
-36. Type "copr-cli build proleptic_utc_with_leap_seconds 
+38. Type "copr-cli build proleptic_utc_with_leap_seconds 
 proleptic_utc_with_leap_seconds-" followed by the version number and the
 remainder of the srpm file name.  This will start the build on COPR,
 which will take some time.  When it is complete, use the browser to verify
@@ -220,51 +236,51 @@ that the package was built successfully on all of the important platforms.
 If any of the builds failed for what appear to be transient reasons, you can
 resubmit them using the COPR web site.
 
-37. When the build is complete, use the web site to regenerate the
+39. When the build is complete, use the web site to regenerate the
 repositories.
 
-38. Wait a few minutes for the repositories to populate, then type
+40. Wait a few minutes for the repositories to populate, then type
 "sudo dnf update --refresh".  You should get the new version of
 proleptic_utc_with_leap seconds installed.  Use diff to verify that
 the local copy of extraordinary_days.dat matches what was installed
 in /usr/share/proleptic_utc_with_leap_seconds/data/.
 
-39. Now that you have the latest version of proleptic_utc_with_leap_seconds
+41. Now that you have the latest version of proleptic_utc_with_leap_seconds
 installed, you can rebuild libtime.
 
-40. Upload the latest version of proleptic_UTC.pdf to Wikimedia.  Describe
+42. Upload the latest version of proleptic_UTC.pdf to Wikimedia.  Describe
 the change by referencing the first year in which the prediction of
 the leap second has changed.  Update its revision date, both structured and
 unstructured data.
 
-41. Type "make distclean", "cd ../bochs/", "make clean", "cd ../chart5/",
+43. Type "make distclean", "cd ../bochs/", "make clean", "cd ../chart5/",
 "make clean", "cd ../survey_UT2_slope.", "make clean" and "cd ..".  Yoo should
 now be in the leap_seconds project.
 
-42. Type "git add ." and "git commit -a -m " followed by a comment in
+44. Type "git add ." and "git commit -a -m " followed by a comment in
 auotation marks.  The comment should describe the year of the next modified
 leap second prediction.  This updates the git repository for the leap_seconds
 project.
 
-43. Type "bash push_public.sh" to update the local copy of the github
+45. Type "bash push_public.sh" to update the local copy of the github
 repository.
 
-44. Type "cd ~/Projects/Theatre/show_control/repositories/proleptic_utc_with_
+46. Type "cd ~/Projects/Theatre/show_control/repositories/proleptic_utc_with_
 leap_seconds".
 
-45. Type "git add ." and "git commit -a -m" with the same comment as above.
+47. Type "git add ." and "git commit -a -m" with the same comment as above.
 
-46. Type "git tag -s " followed by the version number as in the spec file,
+48. Type "git tag -s " followed by the version number as in the spec file,
 followed by -m and the same comment as above.
 
-47. Type "git push" and "git push --tags" to upload the project to github.
+49. Type "git push" and "git push --tags" to upload the project to github.
 
-48. Type "gpg --verify proleptic*.asc proleptic*.tar.gz".  Gpg should say
+50. Type "gpg --verify proleptic*.asc proleptic*.tar.gz".  Gpg should say
 that it has a good signature for the tarball.  If it doesn't either the
 tarball or the signature has been corrupted since you created them.
 Go back to the autogen step and build everything again.
 
-49.  Place the new UT1-UTC chart on the web site by copying all the files
+51.  Place the new UT1-UTC chart on the web site by copying all the files
 in the web_site project to the computer that serves the web site, and
 typing "bash deploy.sh" in the web_site project on that computer.
 When that is done use a browser to verify that the leap_seconds page
