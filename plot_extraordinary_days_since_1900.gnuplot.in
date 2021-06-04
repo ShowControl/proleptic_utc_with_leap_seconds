@@ -1,3 +1,4 @@
+set encoding utf8
 set style data steps
 set grid xtics
 set grid ytics

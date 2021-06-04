@@ -1,5 +1,5 @@
 Name:           proleptic_utc_with_leap_seconds
-Version:        2021.05.28
+Version:        2021.06.04
 Release:        1%{?dist}
 Summary:        Schedule leap seconds
 
@@ -18,11 +18,14 @@ BuildRequires:  python3-numpy
 BuildRequires:  python3-scipy
 BuildRequires:  python3-pandas
 
-# gnuplot and texlive-scheme-full are needed only to rebuild the PDF file.
-#BuildRequires:  gnuplot
-#BuildRequires:  texlive-scheme-full
-
 %global _hardened_build 1
+
+# Do not rebuild the PDF file on ELN, since it does not have TeX.
+%if 0%{?rhel}
+%global rebuild_pdf 0
+%else
+%global rebuild_pdf 1
+%endif
 
 %description
 Schedule leap seconds in the distant past and far future
@@ -33,7 +36,14 @@ information from the International Earth Rotation System Service (IERS).
 %autosetup -S git
 
 %build
+
+# Tell configure to rebuild the PDF file if TeX is present.
+%if %{rebuild_pdf}
+%configure --enable-pdf
+%else
 %configure
+%endif
+
 %make_build
 
 %install
@@ -54,6 +64,12 @@ contains the man file for %{name}.
 Summary: Comprehensive documentation for %{name}
 Requires: %{name} = %{version}-%{release}
 
+# gnuplot and texlive-scheme-full are needed only to rebuild the PDF file.
+%if %{rebuild_pdf}
+BuildRequires:  gnuplot
+BuildRequires:  texlive-scheme-full
+%endif
+
 %description doc
 The %{name}-doc package contains the documentation
 for %{name}
@@ -73,13 +89,14 @@ includes the RPM spec file.
 %exclude /usr/share/doc/%{name}/NEWS
 %exclude /usr/share/doc/%{name}/README
 %exclude /usr/share/doc/%{name}/LICENSE
+%exclude /usr/share/doc/%{name}/proleptic_UTC.pdf
 %{_datadir}/%{name}/data/extraordinary_days.dat
 %license LICENSE
 %license COPYING
 
 %files devel
 %defattr(-,root,root)
-%{_mandir}/man5/extraordinary_days.dat.5.gz
+%{_mandir}/man5/extraordinary_days.dat.5.*
 %doc AUTHORS ChangeLog NEWS README
 %license LICENSE
 %license COPYING
@@ -92,6 +109,12 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+ * Fri Jun 04 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>
+ - 2021.06.04-1 Adjust future leap seconds starting in 2063.
+ * Sun May 30 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>
+ - 2021.05.28-4 Build PDF file, but only if TeX is available.
+ * Sat May 29 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>
+ - 2021.05.28-2 Allow for a future change to the man file compression method.
  * Fri May 28 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>
  - 2021.05.28-1 Adjust future leap seconds starting in 2182.
  * Fri May 21 2021 John Sauter <John_Sauter@systemeyescomputerstore.com>
