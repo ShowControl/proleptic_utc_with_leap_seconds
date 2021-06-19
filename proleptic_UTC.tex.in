@@ -106,11 +106,11 @@
   % Hyperxmp says we should not quote the underscores with
   % backslash, but this produces subscripting, which is not permitted.
   % pdfurl={https://commons.wikimedia.org/wiki/File:Extending\_Coordinated\_Universal\_Time\_to\_Dates\_Before\_1972.pdf},
-  pdfdate={2021-06-11},
+  pdfdate={2021-06-18},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-Us}
 }
-\date{2021-06-11}
+\date{2021-06-18}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
