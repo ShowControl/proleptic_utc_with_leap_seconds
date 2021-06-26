@@ -106,11 +106,11 @@
   % Hyperxmp says we should not quote the underscores with
   % backslash, but this produces subscripting, which is not permitted.
   % pdfurl={https://commons.wikimedia.org/wiki/File:Extending\_Coordinated\_Universal\_Time\_to\_Dates\_Before\_1972.pdf},
-  pdfdate={2021-06-18},
+  pdfdate={2021-06-25},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-Us}
 }
-\date{2021-06-18}
+\date{2021-06-25}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -721,6 +721,9 @@ this paper.
     If file {\ttfamily extraordinary\_days.dat} has not changed,
     there is little need to publish the updated PDF.  The only changes
     will be in the embedded files which were downloaded from the IERS.
+
+    There is a detailed checklist for updating this package in the
+    README file.
   \end{enumerate}
   
   You will need Autotools, Python, {\LaTeX} and GNUplot.
