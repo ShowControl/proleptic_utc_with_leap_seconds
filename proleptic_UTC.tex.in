@@ -106,11 +106,11 @@
   % Hyperxmp says we should not quote the underscores with
   % backslash, but this produces subscripting, which is not permitted.
   % pdfurl={https://commons.wikimedia.org/wiki/File:Extending\_Coordinated\_Universal\_Time\_to\_Dates\_Before\_1972.pdf},
-  pdfdate={2021-08-20},
+  pdfdate={2021-09-10},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-Us}
 }
-\date{2021-08-20}
+\date{2021-09-10}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -183,7 +183,7 @@ years 1700, 1800 and 1900 have not included February 29, but the years
 
 The IERS began scheduling extraordinary days in 1972 so that civil time could
 use the SI second rather than a variable\hyp{}length second.  As of the time of
-this writing, in August of 2021, there have been \num{27} days of \num{86401}
+this writing, in September of 2021, there have been \num{27} days of \num{86401}
 seconds and \num{0} days of \num{86399} seconds.
 
 Before 1972 there was a time scale also called UTC, but which used a
@@ -536,27 +536,6 @@ contains the URL.
   of day are presented and their spectra are
   discussed.
 
-\item{Dennis D. Mccarthy and Brian J. Luzum,
-  \em An Analysis of Tidal Variations in the Length of Day}
-  \citep{Mccarthy01081993}
-
-  Summary: Observations of the length of day, corrected for the effects of
-  variations in the angular momentum due to changes in wind velocity and
-  atmospheric pressure, ocean\hyp{}tide heights and currents,
-  and solid\hyp{}Earth
-  zonal tides, were analysed. The (1992) IERS Standards model for the effects
-  of zonal tides on the Earth's rotation, which includes
-  ocean\hyp{}tidal effects,
-  adequately accounts for the observations of the high\hyp{}frequency
-  (periods between one and 30 days) variations in the length of day at the
-  present level of accuracy. A currently unexplained semi\hyp{}annual variation
-  in the length of day remains, but this may be due to the unmodelled effects
-  of stratospheric winds. The power spectrum of the remaining variations
-  with periods less than 20 days is essentially that of a
-  white\hyp{}noise process.
-  The amplitudes of the remaining unexplained variations in length of day are
-  less than 30 microseconds.
-
 \item{C. Jordi, L. V. Morrison, R. D. Rosen, D. A. Salstein and G. Rosseló,
   \em Fluctuations in the Earth's rotation since 1830 from high\hyp{}resolution
   astronomical data}
@@ -599,6 +578,27 @@ contains the URL.
 	     system in the period before modern data became available in
 	     1955.5.
 
+\item{Dennis D. Mccarthy and Brian J. Luzum,
+  \em An Analysis of Tidal Variations in the Length of Day}
+  \citep{Mccarthy01081993}
+
+  Summary: Observations of the length of day, corrected for the effects of
+  variations in the angular momentum due to changes in wind velocity and
+  atmospheric pressure, ocean\hyp{}tide heights and currents,
+  and solid\hyp{}Earth
+  zonal tides, were analysed. The (1992) IERS Standards model for the effects
+  of zonal tides on the Earth's rotation, which includes
+  ocean\hyp{}tidal effects,
+  adequately accounts for the observations of the high\hyp{}frequency
+  (periods between one and 30 days) variations in the length of day at the
+  present level of accuracy. A currently unexplained semi\hyp{}annual variation
+  in the length of day remains, but this may be due to the unmodelled effects
+  of stratospheric winds. The power spectrum of the remaining variations
+  with periods less than 20 days is essentially that of a
+  white\hyp{}noise process.
+  The amplitudes of the remaining unexplained variations in length of day are
+  less than 30 microseconds.
+
 \end{itemize}
 
 \section{Embedded Files}
@@ -620,9 +620,9 @@ this paper.
 \item A spreadsheet named {\ttfamily values\_of\_delta\_T.ods}
   containing the values of $\Delta$T shown in table \ref{table:delta_t}.
   Also included is the same data in a CSV file.
-\item A plain text file, downloaded from the
-  Creative Commons web site:
-  \url{https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt}.
+\item A plain text file named {\ttfamily legalcode.txt}, downloaded from the
+  Creative Commons web
+  site\footnote{\url{https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt}}.
   In this file is the legal code for the license for this paper,
   in case the hyperlink in section \ref{section:Licensing} should fail.
   I do not assert copyright on this file.
@@ -642,7 +642,9 @@ this paper.
   This program is licensed under the GPL.
 \item A plain text copy of the GNU General Public License (GPL), version 3.
 \item The source files for this paper.
-  The main file is {\ttfamily proleptic\_UTC.tex}.
+  The main file is {\ttfamily proleptic\_UTC.tex.in}.
+  It is converted to {\ttfamily proleptic\_UTC.tex} which is processed
+  by Lua\LaTeX.
   That file reads {\LaTeX} files
   {\ttfamily extraordinary\_days.tex}
   and {\ttfamily delta\_t.tex},
@@ -955,7 +957,7 @@ freedoms as long as you follow the license terms.
   material.}
 \end{itemize}
 
-\newpage
+%\newpage
 
 \bibliography{@srcdir@/references}
 \embedfile[desc={Bibliography},mimetype={text/biblatex}]
