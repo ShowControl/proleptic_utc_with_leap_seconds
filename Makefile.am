@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: March 18, 2021
+# File: Makefile.am, author: John Sauter, date: September 12, 2021.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -25,7 +25,7 @@
 #     telephone: (603) 424-1188
 #     e-mail: John_Sauter@systemeyescomputerstore.com
 
-all: extraordinary_days.dat
+all: extraordinary_days.dat 
 .PHONEY: all
 
 # Distribute the main file.
@@ -55,6 +55,7 @@ EXTRA_DIST = \
 build_xtic_labels.py build_xtic_monthly_labels.py \
 parse_bulletin_A.py parse_bulletin_C.py read_delta_t.py \
 read_extraordinary_days_table.py reformat_delta_t.py \
+find_next_leap_second.py \
 proleptic_UTC.tex.in fix_files.sh autogen.sh
 
 EXTRA_DIST += \
@@ -207,6 +208,7 @@ exdays_04.dat exdays_05.dat
 	cat ${srcdir}/exdays_01.dat ${builddir}/exdays_02.dat \
 ${builddir}/exdays_03.dat ${srcdir}/exdays_04.dat \
 ${builddir}/exdays_05.dat > ${builddir}/extraordinary_days.dat
+	python3 ${srcdir}/find_next_leap_second.py ${builddir}/UT1UTC.csv
 
 exdays_02.dat : parse_bulletin_C.py 16_BULLETIN_C16.txt
 	python3 ${srcdir}/parse_bulletin_C.py ${srcdir}/16_BULLETIN_C16.txt \

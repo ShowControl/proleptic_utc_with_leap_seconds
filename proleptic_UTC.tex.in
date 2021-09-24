@@ -106,11 +106,11 @@
   % Hyperxmp says we should not quote the underscores with
   % backslash, but this produces subscripting, which is not permitted.
   % pdfurl={https://commons.wikimedia.org/wiki/File:Extending\_Coordinated\_Universal\_Time\_to\_Dates\_Before\_1972.pdf},
-  pdfdate={2021-09-10},
+  pdfdate={2021-09-24},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-Us}
 }
-\date{2021-09-10}
+\date{2021-09-24}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -346,6 +346,8 @@ and astronomical projections of $\Delta$T.
   mimetype={text/plain}]{@srcdir@/extraordinary_days.dat.5}
 \embedfile[desc={Read the Extraordinary Days Table},
   mimetype={application/python}]{@srcdir@/read_extraordinary_days_table.py}
+\embedfile[desc={Find the Next Leap Second},
+  mimetype={application/python}]{@srcdir@/find_next_leap_second.py}
 \embedfile[desc={GNU General Public License (GPL), version 3}.
   mimetype={text/plain}]{@srcdir@/gpl.txt}
 \embedfile[desc={LaTeX Source Created by Reading the Table of Extraordinary
