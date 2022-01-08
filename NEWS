@@ -1,3 +1,8 @@
+2021-01-07
+  Update to IERS Bulletic C 63, issued January 5, 2022.
+  There will be no leap second at the end of June, 2022.
+  Adjust future leap seconds starting in 2155.
+  
 2021-12-10
   Adjust future leap seconds starting in 2030.  The next leap second is
   scheduled for June 30, 2031, and it will be a negative leap second.
