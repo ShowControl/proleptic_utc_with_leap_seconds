@@ -1,5 +1,5 @@
 #
-# Table of Extraordinary Days, last modified January 7, 2022.
+# Table of Extraordinary Days, last modified February 18, 2022.
 #
 # Copyright © 2022 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -25,7 +25,7 @@
 # The Julian Day Number is a simple count of days, starting on
 # November 24, -4713.  This file contains only the integer part of the
 # Julian Day number: to get a proper Julian Day Number add 0.5.  If you
-# prefer to use Modified Julian Days (MJD) subtract 2400000.
+# prefer to use Modified Julian Days (MJD) subtract 2400000 instead.
 #
 # DTAI is the difference between International Atomic
 # Time (TAI) and Coordinated Universal Time (UTC).  That difference is 0

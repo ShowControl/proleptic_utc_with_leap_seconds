@@ -1,5 +1,5 @@
 # proleptic_utc_with_leap_seconds
-Last updated November 24, 2021.
+Last updated January 8, 2022.
 
 Schedule leap seconds for the past and future using today's definition of UTC.
 
@@ -258,7 +258,7 @@ of the bokeh sub-project, which depends on file proleptic_UTC.pdf.
 
 41. Clean up the sub-projects:
     make distclean
-    cd ../bochs/
+    cd ../bokeh/
     make clean
     cd ../chart5/
     make clean

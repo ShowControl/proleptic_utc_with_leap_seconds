@@ -34,21 +34,25 @@
 % Count dates.
 %\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
 %\usepackage{unicode-math}
+%\newcommand{\filename}{\ttfamily}
 
 % 2. Libertine
 %\setmainfont[Ligatures={Common},Numbers=Proportional]{Linux Libertine O}
 %\setsansfont{Linux Biolinum O}
 %\usepackage{unicode-math}
 %\setmathfont[Scale=MatchUppercase]{libertinusmath-regular.otf}
+%\newcommand{\filename}{\ttfamily}
 
 % 3. Garamond
 %\usepackage{garamondlibre}
 %\usepackage{unicode-math}
+%\newcommand{\filename}{\ttfamily}
 
 % 4. Old Standard
 % Small caps doesn't work.
 %\setmainfont{OldStandard}
 %\usepackage{unicode-math}
+%\newcommand{\filename}{\ttfamily}
 
 % 5. Liberation
 % Small caps doesn't work.
@@ -57,12 +61,14 @@
 %\setsansfont{Liberation Sans}
 %\setmonofont[SmallCapsFont={Liberation Mono}]{Liberation Mono}
 %\usepackage{unicode-math}
+%\newcommand{\filename}{\ttfamily}
 
 % 6. GNU Freefont
 \setmainfont{FreeSerif}
 \setsansfont{FreeSans}
 \setmonofont{FreeMono}
 \usepackage{unicode-math}
+\newcommand{\filename}{\ttfamily\small}
 
 \usepackage[pdfencoding=unicode,pagebackref]{hyperref}
 \bibliographystyle{plainnat}
@@ -118,11 +124,11 @@
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2022 by John Sauter},
   pdfurl={https://drive.google.com/file/d/1VGMXCYG5VMQYVyC4y3aVwVf82yeisuWu/view},
-  pdfdate={2022-01-07},
+  pdfdate={2022-02-18},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-Us}
 }
-\date{2022-01-07}
+\date{2022-02-18}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -195,8 +201,9 @@ years 1700, 1800 and 1900 have not included February 29, but the years
 1600 and 2000 have.
 
 The IERS began scheduling extraordinary days in 1972 so that civil time could
-use the SI second rather than a variable\hyp{}length second.  As of the time of
-this writing, in January of 2022, there have been \num{27} days of \num{86401}
+use the SI second rather than a variable\hyp{}length second.
+As of the time of this writing, in February of 2022,
+there have been \num{27} days of \num{86401}
 seconds and \num{0} days of \num{86399} seconds.
 
 Before 1972 there was a time scale also called UTC, but which used a
@@ -308,7 +315,7 @@ If the interval includes a June~30 or December~31,
 we will designate that day.  If it does not, the next dates to choose
 will be March~31 and September~30, and if they are not available
 we will designate the last day of any month.
-Details of this process are in file {\ttfamily read\_delta\_t.py},
+Details of this process are in file {\filename read\_delta\_t.py},
 which is embedded in this PDF file, as described in section
 \ref{section:EmbeddedFiles}.  The process is based on the formal definition of
 UTC.\footnote{The definition of UTC
@@ -327,7 +334,7 @@ January~1, 1958.
 The result of the scheduling process is too large for this paper, but
 here are the extraordinary days from 1700 to 2100.
 The complete table is embedded in this
-PDF under the name {\ttfamily extraordinary\_days.dat},
+PDF under the name {\filename extraordinary\_days.dat},
 as described in section \ref{section:EmbeddedFiles}.
 Extraordinary days before 1958 are computed based on the estimates of
 $\Delta$T, as described above.  From 1958 through 1971 the dates are
@@ -626,30 +633,30 @@ Except as noted, the embedded files are covered by the same license as
 this paper.
 
 \begin{enumerate}
-\item Files {\ttfamily 20160404.full.pdf}, which is the main research paper
+\item Files {\filename 20160404.full.pdf}, which is the main research paper
   on reducing historical records to {$\Delta$T}, and
-  {\ttfamily R-REC-TF.460-6-200202-I!!PDF-E.pdf}, the definition
+  {\filename R-REC-TF.460-6-200202-I!!PDF-E.pdf}, the definition
   of UTC.  They are referenced in this paper by name and with a hyperlink.
   The files are embedded in this PDF in case the hyperlinks become
   broken.  I do not assert copyright on these files.
-\item A spreadsheet named {\ttfamily values\_of\_delta\_T.ods}
+\item A spreadsheet named {\filename values\_of\_delta\_T.ods}
   containing the values of $\Delta$T shown in table \ref{table:delta_t}.
   Also included is the same data in a CSV file.
-\item A plain text file named {\ttfamily legalcode.txt}, downloaded from the
+\item A plain text file named {\filename legalcode.txt}, downloaded from the
   Creative Commons web
   site\footnote{\url{https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt}}.
   In this file is the legal code for the license for this paper,
   in case the hyperlink in section \ref{section:Licensing} should fail.
   I do not assert copyright on this file.
-\item A plain text file named {\ttfamily extraordinary\_days.dat}
+\item A plain text file named {\filename extraordinary\_days.dat}
   which lists the extraordinary days
   using the form shown in table \ref{table:JDN_DTAI}.  This file lists all
   of the extraordinary days plotted in figure \ref{figure:DTAI},
   not just the subset in table \ref{table:JDN_DTAI}.
 \item A program named
-  {\ttfamily read\_extraordinary\_days\_table}
+  {\filename read\_extraordinary\_days\_table}
   which reads the
-  {\ttfamily extra\-ordinary\_days.dat}
+  {\filename extra\-ordinary\_days.dat}
   data file.  This program is provided as an example
   of how to read the data file.  It will optionally write the
   {\LaTeX} code for table \ref{table:JDN_DTAI} and a GNUplot data file
@@ -657,85 +664,85 @@ this paper.
   This program is licensed under the GPL.
 \item A plain text copy of the GNU General Public License (GPL), version 3.
 \item The source files for this paper.
-  The main file is {\ttfamily proleptic\_UTC.tex.in}.
-  It is converted to {\ttfamily proleptic\_UTC.tex} which is processed
+  The main file is {\filename proleptic\_UTC.tex.in}.
+  It is converted to {\filename proleptic\_UTC.tex} which is processed
   by Lua\LaTeX.
   That file reads {\LaTeX} files
-  {\ttfamily extraordinary\_days.tex}
-  and {\ttfamily delta\_t.tex},
-  the {\ttfamily .tex} files for the figures and
-  {\ttfamily proleptic\_UTC.bbl} directly, and copies all the embedded files
-  to the output file, {\ttfamily proleptic\_UTC.pdf}.
+  {\filename extraordinary\_days.tex}
+  and {\filename delta\_t.tex},
+  the {\filename .tex} files for the figures and
+  {\filename proleptic\_UTC.bbl} directly, and copies all the embedded files
+  to the output file, {\filename proleptic\_UTC.pdf}.
   You can use these files if you
   wish to publish a derivative of this paper, perhaps with errors
   corrected and your own ideas added.
   
   To reproduce this PDF, extract all the files and run
-  lualatex on {\ttfamily proleptic\_UTC.tex}.  You will have
+  lualatex on {\filename proleptic\_UTC.tex}.  You will have
   to run it more than once to get the forward references to resolve.
 \item Also included are files to automate the creation of 
-  {\ttfamily extraordinary\_days.dat} and this paper when the
+  {\filename extraordinary\_days.dat} and this paper when the
   IERS updates its information about the Earth's rotation.
   This is also useful if you modify the paper as described above.
   The IERS publishes new information on Thursday, so to keep
   up with its latest information, do the following late on Thursday:
 
   \begin{enumerate}
-  \item After extracting the files, type {\ttfamily bash fix\_files.sh}
+  \item After extracting the files, type {\filename bash fix\_files.sh}
     to get the modes of the files set correctly, since they are lost
     when embedded in the PDF.
   \item Update the revision dates in the following four files:
-    {\ttfamily exdays\_01.dat},
-    {\ttfamily config\-ure.ac},
-    {\ttfamily proleptic\_UTC.tex.in} and
-    {\ttfamily references.bib}.
+    {\filename exdays\_01.dat},
+    {\filename config\-ure.ac},
+    {\filename proleptic\_UTC.tex.in} and
+    {\filename references.bib}.
   \item Update the ``time of this writing'' phrase in
     secton {\ref{section:A_Brief_History_of_Timekeeping}}
     if the previous update was in an earlier month.
-  \item Update the revision history in file {\ttfamily NEWS}.
-  \item Update file {\ttfamily proleptic\_utc\_with\_leap\_seconds.spec}
+  \item Update the revision history in file {\filename NEWS}.
+  \item Update file {\filename proleptic\_utc\_with\_leap\_seconds.spec}
     to show the revision date as the version number, and add to
     the change log.
-  \item Type {\ttfamily ./autogen.sh {-}{-}download} to
+  \item Type {\filename ./autogen.sh {-}{-}download} to
     download the latest autotools support files.
-    {\ttfamily Autogen.sh} will also build
-    {\ttfamily configure} from {\ttfamily configure.ac}
-    and {\ttfamily Makefile.in} from {\ttfamily Makefile.am}.
-  \item Type {\ttfamily ./configure {-}{-}prefix=/usr} to build
-    {\ttfamily Makefile} and several other files
-    from their {\ttfamily .in} templates.
-  \item Type {\ttfamily make download} to download the latest
+    {\filename Autogen.sh} will also build
+    {\filename configure} from {\filename configure.ac}
+    and {\filename Makefile.in} from {\filename Makefile.am}.
+  \item Type {\filename ./configure {-}{-}prefix=/usr} to build
+    {\filename Makefile} and several other files
+    from their {\filename .in} templates.
+  \item Type {\filename make download} to download the latest
     Earth rotation information from the IERS.
     Bulletin C, which announces leap seconds, is updated every six months.
     Bulletin A, which lists the time it took for the Earth to rotate each day,
     is updated every week.
-  \item \label{step:make} Type {\ttfamily make} to create file
-    {\ttfamily extraordinary\_days.dat}.
-  \item Type {\ttfamily make pdf} to create file
-    {\ttfamily proleptic\_UTC.pdf}.
-  \item Type {\ttfamily rm *.gz} to delete the old source tarball.
-  \item Type {\ttfamily make dist} to create a new source tarball.
-  \item Type {\ttfamily rm *.rpm} to delete the old source RPM file.
-  \item Type {\ttfamily make RPMs} to create a new source RPM file.
-    See the comments in file {\ttfamily build\_RPM.sh} for details.
-  \item Type {\ttfamily make distcheck} to validate the source tarball.
-  \item Type {\ttfamily sudo make install} to copy file
-    {\ttfamily extraordinary\_days.dat} to directory
-    {\ttfamily /usr/share/proleptic\_utc\_with\_leap\_seconds/data}
+  \item \label{step:make} Type {\filename make} to create file
+    {\filename extraordinary\_days.dat}.
+  \item Type {\filename make pdf} to create file
+    {\filename proleptic\_UTC.pdf}.
+  \item Type {\filename rm *.gz} to delete the old source tarball.
+  \item Type {\filename make dist} to create a new source tarball.
+  \item Type {\filename rm *.rpm} to delete the old source RPM file.
+  \item Type {\filename make RPMs} to create a new source RPM file.
+    See the comments in file {\filename build\_RPM.sh} for details.
+  \item Type {\filename make distcheck} to validate the source tarball.
+  \item Type {\filename sudo make install} to copy file
+    {\filename extraordinary\_days.dat} to directory
+    {\filename /usr/share/proleptic\_utc\_with\_leap\_seconds/data}
     so other programs can find it.
-  \item If file {\ttfamily extraordinary\_days.dat} has changed:
+  \item If file {\filename extraordinary\_days.dat} has changed:
     \begin{enumerate}
       \item Rebuild everything that depends on it, so those programs can
         be apprised of the new leap second schedule.
       \item Update files 
-        {\ttfamily proleptic\_utc\_with\_leap\_seconds.spec}
-        and {\ttfamily NEWS} to describe
-        the changes in file {\ttfamily extraordinary\_days.dat}.
+        {\filename proleptic\_utc\_with\_leap\_seconds.spec}
+        and {\filename NEWS} to describe
+        the changes in file {\filename extraordinary\_days.dat}.
       \item Create a new source tarball using this procedure
         by starting at step {\ref{step:make}}.
-        File {\ttfamily extraordinary\_days.dat} will not change again.
+        File {\filename extraordinary\_days.dat} will not change again.
     \end{enumerate}
-    If file {\ttfamily extraordinary\_days.dat} has not changed,
+    If file {\filename extraordinary\_days.dat} has not changed,
     there is little need to publish the updated PDF.  The only changes
     will be in the embedded files which were downloaded from the IERS.
 
@@ -745,7 +752,7 @@ this paper.
   
   You will need Autotools, Python, {\LaTeX} and GNUplot.
   Details of the dependencies are in file
-  {\ttfamily proleptic\_utc\_with\_leap\_seconds.spec}.
+  {\filename proleptic\_utc\_with\_leap\_seconds.spec}.
   
   \embedfile[desc={correct the modes of extracted files},
     mimetype={text/plain}]{@srcdir@/fix_files.sh}
@@ -804,38 +811,38 @@ this paper.
   \embedfile[desc={John Sauter's public PGP key, referenced in README},
     mimetype={text/plain}]{@srcdir@/John_Sauter_public_key.asc}
 
-  Update file {\ttfamily references.bib} if you modify, add
+  Update file {\filename references.bib} if you modify, add
   or remove any of the literature references.
     
   If you wish to change the algorithm for converting $\Delta$T to
   extraordinary
-  days, change {\ttfamily read\_delta\_t.py} to implement your new
+  days, change {\filename read\_delta\_t.py} to implement your new
   algorithm and run it to create the data lines for file
-  {\ttfamily extraordinary\_days.dat}.  See {\ttfamily Makefile.am}
+  {\filename extraordinary\_days.dat}.  See {\filename Makefile.am}
   for details.
 
   If you wish to update the values of $\Delta$T, for example to take
   advantage of new research, if you have LibreOffice you can update
-  {\ttfamily values\_of\_delta\_T.ods} and save a copy as
-  {\ttfamily values\_of\_delta\_T.csv}. If you don't have LibreOffice
-  you can use a text editor to update file {\ttfamily values\_of\_delta\_T.csv}
-  directly.  Then re-run {\ttfamily read\_delta\_t} as above
-  and run {\ttfamily reformat\_delta\_t} as follows:
+  {\filename values\_of\_delta\_T.ods} and save a copy as
+  {\filename values\_of\_delta\_T.csv}. If you don't have LibreOffice
+  you can use a text editor to update file {\filename values\_of\_delta\_T.csv}
+  directly.  Then re-run {\filename read\_delta\_t} as above
+  and run {\filename reformat\_delta\_t} as follows:
 
   {\sloppy
-  {\ttfamily python3 reformat\_delta\_t.py values\_of\_delta\_T.csv
+  {\filename python3 reformat\_delta\_t.py values\_of\_delta\_T.csv
     delta\_t.tex}}
 
   {\sloppy
-  File {\ttfamily extraordinary\_days.dat} is built from files
-  {\ttfamily exdays\_01.dat}, {\ttfamily exdays\_02.dat},
-  {\ttfamily exdays\_03.dat}, {\ttfamily exdays\_04.dat} and
-  {\ttfamily exdays\_05.dat}
-  using the procedure described in {\ttfamily Makefile.am}.
-  Note that file {\ttfamily exdays\_01.dat} has the heading comments,
+  File {\filename extraordinary\_days.dat} is built from files
+  {\filename exdays\_01.dat}, {\filename exdays\_02.dat},
+  {\filename exdays\_03.dat}, {\filename exdays\_04.dat} and
+  {\filename exdays\_05.dat}
+  using the procedure described in {\filename Makefile.am}.
+  Note that file {\filename exdays\_01.dat} has the heading comments,
   including the revision date, which you can edit.
-  File {\ttfamily Makefile.am} also has the recipes for building
-  {\ttfamily gnuplot.dat} and {\ttfamily extra\-ordin\-ary\_\-days.tex}.
+  File {\filename Makefile.am} also has the recipes for building
+  {\filename gnuplot.dat} and {\filename extra\-ordin\-ary\_\-days.tex}.
   \embedfile[desc={file for constructing extraordinary\_days.dat},
     mimetype={text/plain}]{@srcdir@/exdays_01.dat}
   \embedfile[desc={file for constructing extraordinary\_days.dat},
@@ -843,7 +850,7 @@ this paper.
 
   To update the figures after changing the schedule of extraordinary days
   you will need GNUplot.  All of the files needed are embedded in this PDF.
-  See file {\ttfamily Makefile.am} for details.
+  See file {\filename Makefile.am} for details.
 
   \embedfile[desc={GNUplot output of read\_extraordinary\_days},
     mimetype={text/plain}]{@builddir@/gnuplot.dat}
