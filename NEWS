@@ -1,3 +1,7 @@
+2022-02-25
+  Adjust future leap seconds starting in 2030.  The next leap second is
+  predicted to be on December 31, 2030, and it will be a negative leap second.
+  
 2022-02-19
   Adjust future leap seconds starting in 2068.
   Apparently I missed the revision of Bulletin A.
