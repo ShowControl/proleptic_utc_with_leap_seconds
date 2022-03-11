@@ -25,55 +25,77 @@
 \usepackage[tracking]{microtype}
 \usepackage{hyphenat}
 \usepackage{lmodern}
+\usepackage{relsize}
 
 % Font choices: pick one.
 % 1. Latin Modern matches Don Knuth's Computer Modern
 % Note that Latin Modern displays U+02BC (Modifier Letter Apostrophe)
 % as a space.  This letter is used in the section describing the
-% use of the Proleptic Gregorian calendar to translate Mesoamerican Long
-% Count dates.
-%\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
+% use of the Proleptic Gregorian calendar to translate Mesoamerican
+% Long Count dates.
 %\usepackage{unicode-math}
-%\newcommand{\filename}{\ttfamily}
+%\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
+%\setmonofont{Latin Modern Mono}
+%\setmathfont{Latin Modern Math}
+%\newcommand{\filename}{\ttfamily\smaller}
 
 % 2. Libertine
+%\usepackage{unicode-math}
 %\setmainfont[Ligatures={Common},Numbers=Proportional]{Linux Libertine O}
 %\setsansfont{Linux Biolinum O}
-%\usepackage{unicode-math}
 %\setmathfont[Scale=MatchUppercase]{libertinusmath-regular.otf}
 %\newcommand{\filename}{\ttfamily}
 
-% 3. Garamond
-%\usepackage{garamondlibre}
+% 3. Garamond Libre
 %\usepackage{unicode-math}
+%\usepackage{garamondlibre}
 %\newcommand{\filename}{\ttfamily}
 
 % 4. Old Standard
 % Small caps doesn't work.
-%\setmainfont{OldStandard}
 %\usepackage{unicode-math}
+%\setmainfont{OldStandard}
 %\newcommand{\filename}{\ttfamily}
 
 % 5. Liberation
 % Small caps doesn't work.
+%\usepackage{unicode-math}
 %\defaultfontfeatures{Scale=MatchLowercase}
 %\setmainfont{Liberation Serif}
 %\setsansfont{Liberation Sans}
 %\setmonofont[SmallCapsFont={Liberation Mono}]{Liberation Mono}
-%\usepackage{unicode-math}
 %\newcommand{\filename}{\ttfamily}
 
 % 6. GNU Freefont
-\setmainfont{FreeSerif}
-\setsansfont{FreeSans}
-\setmonofont{FreeMono}
-\usepackage{unicode-math}
-\newcommand{\filename}{\ttfamily\small}
+%\usepackage{unicode-math}
+%\setmainfont{FreeSerif}
+%\setsansfont{FreeSans}
+%\setmonofont{FreeMono}
+%\newcommand{\filename}{\ttfamily\smaller}
+%\renewcommand\RSpercentTolerance{0}
 
 % 7. Andika
-%\setmainfont{Andika}
 %\usepackage{unicode-math}
+%\setmainfont{Andika}
 %\newcommand{\filename}{\ttfamily}
+
+% 8. Bahnschrift
+%\usepackage{unicode-math}
+%\setmainfont{Bahnschrift}
+%\newcommand{\filename}{\ttfamily}
+
+% 9. Charis Sil
+%\usepackage{unicode-math}
+%\setmainfont{Charis Sil}
+%\newcommand{\filename}{\ttfamily}
+
+% 10. E B Garamond
+\usepackage{unicode-math}
+\setmainfont{ebgaramond}
+\setsansfont{Charis Sil}
+\setmonofont[SmallCapsFont={Liberation Mono}]{source code pro}
+\setmathfont{Garamond-Math.otf}
+\newcommand{\filename}{\ttfamily\smaller}
 
 \usepackage[pdfencoding=unicode,pagebackref]{hyperref}
 \bibliographystyle{plainnat}
@@ -102,7 +124,8 @@
   This paper is made available under a
   Creative Commons Attribution\hyp{}ShareAlike 4.0 International License.
   You can read a human\hyp{}readable summary of the license at
-  \url{https://creativecommons.org/licenses/by-sa/4.0}.  You will also
+  \href{https://creativecommons.org/licenses/by-sa/4.0}{https://creativecommons.org/licenses/by-sa/4.0}.
+  You will also
   find there a link to the full text of the license.
   See also section \ref{section:Licensing} of this paper.}
 }
@@ -129,11 +152,11 @@
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2022 by John Sauter},
   pdfurl={https://drive.google.com/file/d/1VGMXCYG5VMQYVyC4y3aVwVf82yeisuWu/view},
-  pdfdate={2022-02-25},
+  pdfdate={2022-03-11},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-Us}
 }
-\date{2022-02-25}
+\date{2022-03-11}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -145,7 +168,7 @@
 \item[Keywords:]Coordinated Universal Time; UTC; proleptic UTC;
   Gregorian calendar; proleptic Gregorian calendar; leap seconds;
   delta T; $\Delta$T; proleptic UTC with leap seconds.
-\item[URL:]\url{https://drive.google.com/file/d/1VGMXCYG5VMQYVyC4y3aVwVf82yeisuWu/view}
+\item[URL:]\href{https://drive.google.com/file/d/1VGMXCYG5VMQYVyC4y3aVwVf82yeisuWu/view}{https://drive.google.com/file/d/1VGMXCYG5VMQYVyC4y3aVwVf82yeisuWu/view}
 \end{description}
   
 %\tableofcontents
@@ -190,7 +213,7 @@ of the day is called 23:59:60.
 
 The extraordinary days are scheduled by the International Earth
 Rotation and Reference Systems Service
-(IERS)\footnote{\url{https://www.iers.org/IERS/EN/Home/home_node.html}}
+(IERS)\footnote{\href{https://www.iers.org/IERS/EN/Home/home_node.html}{https://www.iers.org/IERS/EN/Home/home\_node.html}}
 based on observations of the Earth's rotation.  A long day is
 used when UTC is counting faster than the Earth is rotating, and a
 short day is used when UTC is counting slower than the Earth is
@@ -207,7 +230,7 @@ years 1700, 1800 and 1900 have not included February 29, but the years
 
 The IERS began scheduling extraordinary days in 1972 so that civil time could
 use the SI second rather than a variable\hyp{}length second.
-As of the time of this writing, in February of 2022,
+As of the time of this writing, in March of 2022,
 there have been \num{27} days of \num{86401}
 seconds and \num{0} days of \num{86399} seconds.
 
@@ -274,8 +297,8 @@ sufficient for our limited purpose.
 The Earth revolves around the Sun at a constant rate, so the schedule of
 366-day years is predictable.  The Earth's rotation rate, on the other hand,
 is unpredictable, and must be observed.  That observation is described
-as \href{https://en.wikipedia.org/wiki/%CE%94T}{$\Delta$T}, which is the
-  difference between
+as \href{https://en.wikipedia.org/wiki/%CE%94T_(timekeeping)}{$\Delta$T},
+  which is the difference between
   \href{https://en.wikipedia.org/wiki/Terrestrial_Time}{Terrestrial Time}%
   \footnote{Terrestrial Time differs from International Atomic Time by
     \num{32.184} seconds.}and UTC.
@@ -286,8 +309,8 @@ estimated the values of $\Delta$T from the year \num{-2000} to
 \embedfile[desc={Measurement of the Earth's Rotation: 720 BC to AD 2500},
   mimetype={application/PDF}]{@srcdir@/20160404.full.pdf}.
 The table below is based on the data calculated in that paper,
-presented at \url{http://astro.ukho.gov.uk/nao/lvm/}, as updated in
-February 2021.
+presented at \href{http://astro.ukho.gov.uk/nao/lvm/}{http://astro.ukho.gov.uk/nao/lvm/},
+as updated in February 2021.
 Where the data
 presented two different values of $\Delta$T for the same date,
 I have averaged the values.  In the table below I have presented
@@ -308,7 +331,7 @@ which starts the next day.
 Using this information we can schedule extraordinary days as though UTC
 were being used prior to 1972.  In 2006 Tony Finch created a proleptic
 UTC back to 1958 using US Naval Observatory
-tables\footnote{\url{https://fanf.livejournal.com/69586.html}}
+tables\footnote{\href{https://fanf.livejournal.com/69586.html}{https://fanf.livejournal.com/69586.html}}
 so I will follow his lead for those dates.
 
 To schedule extraordinary days, we establish an anchor point
@@ -326,7 +349,7 @@ which is embedded in this PDF file, as described in section
 UTC.\footnote{The definition of UTC
   is maintained by the International Telecommunications Union as their document
   ITU-R TF.460-6, which you can see at
-  \url{https://www.itu.int/dms\_pubrec/itu-r/rec/tf/R-REC-TF.460-6-200202-I!!PDF-E.pdf}
+  \href{https://www.itu.int/dms\_pubrec/itu-r/rec/tf/R-REC-TF.460-6-200202-I!!PDF-E.pdf}{https://www.itu.int/dms\_pubrec/itu-r/rec/tf/R-REC-TF.460-6-200202-I!!PDF-E.pdf}
   \embedfile[desc={ITR-R TF.460-6},mimetype={application/PDF}]
             {@srcdir@/R-REC-TF.460-6-200202-I!!PDF-E.pdf}
 }
@@ -346,7 +369,7 @@ $\Delta$T, as described above.  From 1958 through 1971 the dates are
 from Tony Finch.  From 1972 to the present they are the official days
 scheduled by the International Earth Rotation and Reference Systems
 Service
-(IERS)\footnote{\url{https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html}}.
+(IERS)\footnote{\href{https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html}{https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html}}.
 The schedule for the future is based on projections from the IERS
 and astronomical projections of $\Delta$T.
 \embedfile[desc={Schedule the Extraordinary Days from Delta T},
@@ -481,15 +504,15 @@ pendulum clock.
 \section{POSIX}
 POSIX is a portable operating system interface based on Unix, intended
 to maintain compatibility between operating systems\footnote{
-  \url{https://pubs.opengroup.org/onlinepubs/9699919799/}}.
+  \href{https://pubs.opengroup.org/onlinepubs/9699919799/}{https://pubs.opengroup.org/onlinepubs/9699919799/}}.
 The way POSIX represents time has been criticized for not handling UTC
 well.\footnote{
- \url{https://stackoverflow.com/questions/16539436/unix-time-and-leap-seconds}}%
+ \href{https://stackoverflow.com/questions/16539436/unix-time-and-leap-seconds}{https://stackoverflow.com/questions/16539436/unix-time-and-leap-seconds}}%
 \footnote{
-  \url{https://news.ycombinator.com/item?id=4112566}}
-Markus Kuhn\footnote{\url{https://www.cl.cam.ac.uk/~mgk25/time/c/}}
+  \href{https://news.ycombinator.com/item?id=4112566}{https://news.ycombinator.com/item?id=4112566}}
+Markus Kuhn\footnote{\href{https://www.cl.cam.ac.uk/~mgk25/time/c/}{https://www.cl.cam.ac.uk/~mgk25/time/c/}}
 and David Madore\footnote{
-  \url{http://www.madore.org/~david/computers/unix-leap-seconds.html}}
+  \href{http://www.madore.org/~david/computers/unix-leap-seconds.html}{http://www.madore.org/~david/computers/unix-leap-seconds.html}}
 have made proposals to improve the way POSIX deals with extraordinary days.
 These proposals require a table of extraordinary days.  Implementations
 of these proposals which wish to deal with dates before \num{1972} can
@@ -511,10 +534,10 @@ I propose to name this time scale ``proleptic UTC with leap seconds''.
 \section{Acknowledgments}
 I am grateful to the participants of the
 leapseconds\footnote{
-  \url{https://pairlist6.pair.net/mailman/listinfo/leapsecs}}
+  \href{https://pairlist6.pair.net/mailman/listinfo/leapsecs}{https://pairlist6.pair.net/mailman/listinfo/leapsecs}}
 mailing list for their comments on a previous draft of this paper.
 Zefram\footnote{See more work by Zefram at
-\url{https://www.fysh.org/~zefram/}, especially
+\href{https://www.fysh.org/~zefram/}{https://www.fysh.org/~zefram/}, especially
 \href{https://www.fysh.org/~zefram/time/prog_on_time_scales.pdf}
   {Programming Perspective on Time Scales}.}, in particular,
 provided an extensive and detailed review, which improved the paper
@@ -649,7 +672,7 @@ this paper.
   Also included is the same data in a CSV file.
 \item A plain text file named {\filename legalcode.txt}, downloaded from the
   Creative Commons web
-  site\footnote{\url{https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt}}.
+  site\footnote{\href{https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt}{https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt}}.
   In this file is the legal code for the license for this paper,
   in case the hyperlink in section \ref{section:Licensing} should fail.
   I do not assert copyright on this file.
@@ -658,8 +681,8 @@ this paper.
   using the form shown in table \ref{table:JDN_DTAI}.  This file lists all
   of the extraordinary days plotted in figure \ref{figure:DTAI},
   not just the subset in table \ref{table:JDN_DTAI}.
-\item A program named
-  {\filename read\_extraordinary\_days\_table}
+\item A Python script in file
+  {\filename read\_extraordinary\_days\_table.py}
   which reads the
   {\filename extra\-ordinary\_days.dat}
   data file.  This program is provided as an example
@@ -702,7 +725,7 @@ this paper.
     {\filename proleptic\_UTC.tex.in} and
     {\filename references.bib}.
   \item Update the ``time of this writing'' phrase in
-    secton {\ref{section:A_Brief_History_of_Timekeeping}}
+    section {\ref{section:A_Brief_History_of_Timekeeping}}
     if the previous update was in an earlier month.
   \item Update the revision history in file {\filename NEWS}.
   \item Update file {\filename proleptic\_utc\_with\_leap\_seconds.spec}
@@ -750,9 +773,12 @@ this paper.
     If file {\filename extraordinary\_days.dat} has not changed,
     there is little need to publish the updated PDF.  The only changes
     will be in the embedded files which were downloaded from the IERS.
+    If the only changes are in far future leap seconds, there is also
+    no need to re-publish, since these leap second predictons are very
+    speculative.
 
     There is a detailed checklist for updating this package in the
-    README file.
+    {\filename README} file.
   \end{enumerate}
   
   You will need Autotools, Python, {\LaTeX} and GNUplot.
@@ -939,7 +965,7 @@ this paper.
 As noted on the first page, this paper is licensed under a Creative
 Commons Attribution\hyp{}ShareAlike 4.0 International License.
 You can read the full text of the license at this URL:
-\url{https://creativecommons.org/licenses/by-sa/4.0/legalcode}%
+\href{https://creativecommons.org/licenses/by-sa/4.0/legalcode}{https://creativecommons.org/licenses/by-sa/4.0/legalcode}%
 \embedfile[desc={Plaintext version of Creative Commons BY-SA 4.0 license},%
 mimetype={text/plain}]{@srcdir@/legalcode.txt}.
 This section is a human\hyp{}readable summary of it.
@@ -966,7 +992,7 @@ freedoms as long as you follow the license terms.
   you must distribute your contributions under the same
   license\footnote{You may also use any of the licenses listed as compatible
     at the following web site:
-    \url{https://creativecommons.org/compatiblelicenses}}
+    \href{https://creativecommons.org/compatiblelicenses}{https://creativecommons.org/compatiblelicenses}}
   as the original.
 \item[No additional restrictions ---]You may not apply legal terms or
   technological measures\footnote{The license prohibits application of

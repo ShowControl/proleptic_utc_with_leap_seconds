@@ -1,5 +1,5 @@
 Name:           proleptic_utc_with_leap_seconds
-Version:        2022.02.25
+Version:        2022.03.11
 Release:        1%{?dist}
 Summary:        Schedule leap seconds
 
@@ -65,9 +65,13 @@ Summary: Comprehensive documentation for %{name}
 Requires: %{name} = %{version}-%{release}
 
 # gnuplot and texlive-scheme-full are needed only to rebuild the PDF file.
+# The PDF may use the Andika, Charis and Liberation Mono fonts.
 %if %{rebuild_pdf}
 BuildRequires:  gnuplot
 BuildRequires:  texlive-scheme-full
+BuildRequires: sil-andika-fonts
+BuildRequires: sil-charis-fonts
+BuildRequires: liberation-mono-fonts
 %endif
 
 %description doc
@@ -109,6 +113,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+ * Fri Mar 11 2022 John Sauter <John_Sauter@systemeyescomputerstore.com>
+ - 2022.03.11-1 Adjust future leap seconds starting in 2062.
  * Fri Feb 25 2022 John Sauter <John_Sauter@systemeyescomputerstore.com>
  - 2022.02.25-1 Adjust future leap seconds starting in 2030.
  * Sat Feb 19 2022 John Sauter <John_Sauter@systemeyescomputerstore.com>
