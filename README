@@ -1,5 +1,5 @@
 # proleptic_utc_with_leap_seconds
-Last updated January 8, 2022.
+Last updated March 13, 2022.
 
 Schedule leap seconds for the past and future using today's definition of UTC.
 
@@ -165,16 +165,15 @@ Makefile.am, go back to the autogen step.
 the last make distcheck.
 
 24. Type "gpg --verify proleptic*.asc proleptic*.tar.gz" to be sure the
-signagure is good.  At the end of this checklist you will use this signature to
+signature is good.  At the end of this checklist you will use this signature to
 verify that the tarball has not been accidently corrupted.
 
 25. Type "make RPMs" to build the source RPM from the tarball and verify
-that the binary RPMs build from it without error.  RPMlint will show some
-foolish spelling errors, will show that the tarball has not yet been uploaded
-to github, and may complain about a future date in the changelog.  Anything
-more serious needs to be investigated.  This is the first step which checks
-the spec file.  If you have to change it go back to the autogen step, since
-the spec file is included in the tarball.
+that the binary RPMs build from it without error.  Any errors other than
+RPMlist complaints about the debuginfo files and lack of documentation needs
+to be investigated.  This is the first step which checks the spec file.
+If you have to change it go back to the autogen step, since the spec file
+is included in the tarball.
 
 26. Use an internet browser to log in to the Fedora COPR web site.  Navigate
 to the proleptic_utc_with_leap_seconds project and make sure it is set to
