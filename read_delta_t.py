@@ -5,7 +5,7 @@
 # to estimate delta T, then creates various useful files based on
 # the data.
 #
-#   Copyright © 2021 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2022 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ parser = argparse.ArgumentParser (
   formatter_class=argparse.RawDescriptionHelpFormatter,
   description='Convert the file of Delta T values into '
   'a list of extraordinary days.',
-  epilog='Copyright © 2021 by John Sauter' + '\n' +
+  epilog='Copyright © 2022 by John Sauter' + '\n' +
   'License GPL3+: GNU GPL version 3 or later; ' + '\n' +
   'see <http://gnu.org/licenses/gpl.html> for the full text ' +
   'of the license.' + '\n' +
@@ -58,7 +58,7 @@ parser.add_argument ('input1_file',
 parser.add_argument ('output_file',
                      help='the resulting list of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_Delta_T 7.12 2021-03-02',
+                     version='read_Delta_T 8.0 2022-04-01',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -334,7 +334,7 @@ with open (file_name, 'rt') as csvfile:
       if ('day' in row):
         day_int = int(row['day'])
       this_JDN = jdn (year_int, month_int, day_int)
-      this_MJD = this_JDN - 2400000
+      this_MJD = this_JDN - 240000
       if ("MJD" in row):
         this_MJD = int(row["MJD"])
       this_delta_t = float(row['deltaT'])
@@ -688,85 +688,117 @@ if (do_IERS_final_input):
 
   # Read the values of UT1-UTC provided by the IERS.  These are daily
   # values since 1973 up to the present, and predicted for the next
-  # year.
-  finals_fieldnames = ["MJD", "Year", "Month", "Day",
-                       "type_pole", "x_pole", "sigma_x_pole",
-                       "y_pole", "sigma_y_pole",
-                       "type_UT1-UTC", "UT1-UTC", "sigma_UT1-UTC",
-                       "LOD", "sigma_LOD"]
-  with open (IERS_final_file_name, 'rt', newline="") as csvfile:
-    reader = csv.DictReader(csvfile,delimiter=';',
-                            fieldnames=finals_fieldnames, restkey="remainder")
-    for row in reader:
-      if (row["MJD"] != "MJD"):
-        # Convert year month and day into Julian Day Numbers
-        # and populate our dictionary.
-        year_float = float(row['Year'])
-        year_int = int (year_float)
-        month_int = (int ((year_float - float(year_int)) * 12.0) + 1)
-        if ('Month' in row):
-          month_int = int(row['Month'])
-          day_int = 1
-        if ('Day' in row):
-          day_int = int(row['Day'])
-        this_JDN = jdn (year_int, month_int, day_int)
-        this_MJD = this_JDN - 2400000
-        if ("MJD" in row):
-          this_MJD = int(row["MJD"])
-        if (do_trace == 1):
-          tracefile.write ("JDN " + str(this_JDN) + ": " +
-                           "Year " + str(year_int) + " " +
-                           "Month " + str(month_int) + " " +
-                           "Day of month " + str(day_int) + " " +
-                           "MJD " + str(this_MJD) + " " +
-                           "UT1-UTC " + str(row["UT1-UTC"]) +
-                           ".\n")
-        if (row['UT1-UTC'] != ''):
-          ut1_minus_utc = float(row['UT1-UTC'])
-          # We must deduce Delta T from UT1-UTC, which requires
-          # knowing how many leap seconds have passed.
-          leaps_since_jdn = leaps_since (this_JDN)
-          new_delta_t = 32.184 - ut1_minus_utc + leaps_since_jdn
-          source = "IERS UT1-UTC " + row["type_UT1-UTC"]
-          last_delta_T_from_IERS = new_delta_t
-          last_delta_T_from_IERS_date = this_JDN
-          if (do_trace == 1):
-            tracefile.write (" ut1_minus_utc = " + str(ut1_minus_utc) +
-                             " leaps since = " + str(leaps_since_jdn) +
-                             " source = " + source + ".\n")
-          if (this_JDN in delta_t):
-            old_delta_t = delta_t[this_JDN]
-            difference = new_delta_t - old_delta_t
-            if (do_trace == 1):
-              tracefile.write (greg(this_JDN, " ", 0) + ": Delta T changes" +
-                               " from " + str(old_delta_t) +
-                               " by " + str(difference) +
-                               " to " + str(new_delta_t) + ".\n")
-          else:
-            old_delta_t = deltaT(this_JDN)
-            difference = new_delta_t - old_delta_t
-            if (do_trace == 1):
-              tracefile.write (greg(this_JDN, " ", 0) + ": Delta T changes" +
-                               " from " + str(old_delta_t) +
-                               " (interpolated)" +
-                               " by " + str(difference) +
-                               " to " + str(new_delta_t) + ".\n")
-          delta_t [this_JDN] = new_delta_t
-          delta_t_source[this_JDN] = source
-          if (source not in delta_t_all):
-            delta_t_all[source] = dict()
-            source_list = source_list + [source]
-          this_delta_t_source = delta_t_all[source]
-          this_delta_t_source[this_JDN] = new_delta_t
+  # year.  The file is formatted as follows:
+  
+  # Col.#    Format  Quantity
+  # -------  ------  -----------------------------------------------------------
+  # 1-2      I2      low two digits of year (to get true calendar year,
+  #                  add 1900 for MJD<=51543 or add 2000 for MJD>=51544)
+  # 3-4      I2      month number
+  # 5-6      I2      day of month
+  # 7        X       [blank]
+  # 8-15     F8.2    fractional Modified Julian Date (MJD UTC)
+  # 16       X       [blank]
+  # 17       A1      IERS (I) or Prediction (P) flag for Bull. A
+  #                  polar motion values
+  # 18       X       [blank]
+  # 19-27    F9.6    Bull. A PM-x (sec. of arc)
+  # 28-36    F9.6    error in PM-x (sec. of arc)
+  # 37       X       [blank]
+  # 38-46    F9.6    Bull. A PM-y (sec. of arc)
+  # 47-55    F9.6    error in PM-y (sec. of arc)
+  # 56-57    2X      [blanks]
+  # 58       A1      IERS (I) or Prediction (P) flag for Bull. A UT1-UTC values
+  # 59-68    F10.7   Bull. A UT1-UTC (sec. of time)
+  # 69-78    F10.7   error in UT1-UTC (sec. of time)
+  # 79       X       [blank]
+  # 80-86    F7.4    Bull. A LOD (msec. of time) -- NOT ALWAYS FILLED
+  # 87-93    F7.4    error in LOD (msec. of time) -- NOT ALWAYS FILLED
+  # 94-95    2X      [blanks]
+  # 96       A1      IERS (I) or Prediction (P) flag for Bull. A nutation values
+  # 97       X       [blank]
+  # 98-106   F9.3    Bull. A dPSI (msec. of arc)
+  # 107-115  F9.3    error in dPSI (msec. of arc)
+  # 116      X       [blank]
+  # 117-125  F9.3    Bull. A dEPSILON (msec. of arc)
+  # 126-134  F9.3    error in dEPSILON (msec. of arc)
+  # 135-144  F10.6   Bull. B PM-x (sec. of arc)
+  # 145-154  F10.6   Bull. B PM-y (sec. of arc)
+  # 155-165  F11.7   Bull. B UT1-UTC (sec. of time)
+  # 166-175  F10.3   Bull. B dPSI (msec. of arc)
+  # 176-185  F10.3   Bull. B dEPSILON (msec. of arc)
 
-          # Track the limits of the date
-          new_year = float(row['Year'])
-          if ((min_year == -1.0) | (min_year > new_year)):
-            min_year = new_year
-            start_date = this_JDN
-          if ((max_year == -1.0) | (max_year < new_year)):
-            max_year = new_year
-            end_date = this_JDN
+  with open (IERS_final_file_name) as fnf_file:
+    for this_record in fnf_file:
+      this_MJD = float(this_record[7:15])
+      this_MJD = int(this_MJD);
+      ut1_minus_utc = this_record[58:68]
+      if (ut1_minus_utc.isspace()):
+        continue;
+      ut1_minus_utc = float(ut1_minus_utc)
+      type_UT1_UTC = this_record[57:58]
+      if (type_UT1_UTC == "I"):
+        type_UT1_UTC = "final"
+      else:
+        if (type_UT1_UTC == "P"):
+          type_UT1_UTC = "prediction"
+      this_year = int(this_record[0:2])
+      if (this_MJD <= 51543):
+        this_year = this_year + 1900
+      else:
+        this_year = this_year + 2000
+    
+      this_JDN = this_MJD + 2400000
+      if (do_trace == 1):
+        tracefile.write ("JDN " + str(this_JDN) + ": " +
+                         "MJD " + str(this_MJD) + " " +
+                         "UT1-UTC " + str(ut1_minus_utc) + " " +
+                         "type_UT1-UTC " + type_UT1_UTC + " " +
+                         "Year " + str(this_year) +
+                         ".\n")
+      # We must deduce Delta T from UT1-UTC, which requires
+      # knowing how many leap seconds have passed.
+      leaps_since_jdn = leaps_since (this_JDN)
+      new_delta_t = 32.184 - ut1_minus_utc + leaps_since_jdn
+      source = "IERS UT1-UTC " + type_UT1_UTC
+      last_delta_T_from_IERS = new_delta_t
+      last_delta_T_from_IERS_date = this_JDN
+      if (do_trace == 1):
+        tracefile.write (" ut1_minus_utc = " + str(ut1_minus_utc) +
+                         " leaps since = " + str(leaps_since_jdn) +
+                         " source = " + source + ".\n")
+      if (this_JDN in delta_t):
+        old_delta_t = delta_t[this_JDN]
+        difference = new_delta_t - old_delta_t
+        if (do_trace == 1):
+          tracefile.write (greg(this_JDN, " ", 0) + ": Delta T changes" +
+                         " from " + str(old_delta_t) +
+                         " by " + str(difference) +
+                         " to " + str(new_delta_t) + ".\n")
+      else:
+        old_delta_t = deltaT(this_JDN)
+        difference = new_delta_t - old_delta_t
+        if (do_trace == 1):
+          tracefile.write (greg(this_JDN, " ", 0) + ": Delta T changes" +
+                           " from " + str(old_delta_t) +
+                           " (interpolated)" +
+                           " by " + str(difference) +
+                           " to " + str(new_delta_t) + ".\n")
+      delta_t [this_JDN] = new_delta_t
+      delta_t_source[this_JDN] = source
+      if (source not in delta_t_all):
+        delta_t_all[source] = dict()
+        source_list = source_list + [source]
+      this_delta_t_source = delta_t_all[source]
+      this_delta_t_source[this_JDN] = new_delta_t
+
+      # Track the limits of the date
+      if ((min_year == -1.0) | (min_year > this_year)):
+        min_year = this_year
+        start_date = this_JDN
+      if ((max_year == -1.0) | (max_year < this_year)):
+        max_year = this_year
+        end_date = this_JDN
 
   rebuild_interpolations()
   #

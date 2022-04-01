@@ -1,8 +1,8 @@
-# File: Makefile.am, author: John Sauter, date: September 12, 2021.
+# File: Makefile.am, author: John Sauter, date: April 1, 2022.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
-#   Copyright © 2021 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2022 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #     telephone: (603) 424-1188
 #     e-mail: John_Sauter@systemeyescomputerstore.com
 
+# The main target is the file extraordinary_days.dat
 all: extraordinary_days.dat 
 .PHONEY: all
 
@@ -59,8 +60,8 @@ find_next_leap_second.py \
 proleptic_UTC.tex.in fix_files.sh autogen.sh
 
 EXTRA_DIST += \
-references.bib exdays_01.dat exdays_04.dat finals.all.csv \
-6_BULLETIN_A_V2013_016.txt 16_BULLETIN_C16.txt \
+references.bib exdays_01.dat exdays_04.dat finals.all \
+ser7.dat bulletinc.dat \
 values_of_delta_T.csv USNO_delta_T.csv plot_extraordinary_days.gnuplot \
 plot_extraordinary_days_since_1500.gnuplot \
 plot_extraordinary_days_since_1600.gnuplot \
@@ -87,7 +88,7 @@ RPMs:
 	bash build_RPMs.sh
 
 # The spec file is ueed to build RPMs for RPM-based distributions
-# of GNU/Linux, including RHEL and Fedora.
+# of GNU/Linux, including RHEL, CENTOS and Fedora.
 EXTRA_DIST += proleptic_utc_with_leap_seconds.spec
 
 # Run luaLaTeX four times to get the forward references and
@@ -99,7 +100,7 @@ values_of_DTAI_since_1500.tex values_of_DTAI_since_1600.tex \
 values_of_DTAI_since_1700.tex values_of_DTAI_since_1800.tex \
 values_of_DTAI_since_1900.tex values_of_DTAI_since_1950.tex \
 values_of_DTAI_since_2000.tex exdays_01.dat exdays_04.dat \
-finals.all.csv 
+finals.all 
 	lualatex ${builddir}/proleptic_UTC.tex
 	lualatex ${builddir}/proleptic_UTC.tex
 	lualatex ${builddir}/proleptic_UTC.tex
@@ -117,7 +118,7 @@ values_of_DTAI_since_1500.tex values_of_DTAI_since_1600.tex \
 values_of_DTAI_since_1700.tex values_of_DTAI_since_1800.tex \
 values_of_DTAI_since_1900.tex values_of_DTAI_since_1950.tex \
 values_of_DTAI_since_2000.tex exdays_01.dat exdays_04.dat \
-finals.all.csv 
+finals.all 
 	echo " " >${builddir}/proleptic_UTC.bbl
 	lualatex ${builddir}/proleptic_UTC.tex
 	bibtex ${builddir}/proleptic_UTC.aux
@@ -131,15 +132,15 @@ finals.all.csv
 # computed from the other four files, and exdays_05.dat is the output
 # of the algorithm which converts Delta T into a schedule of extraordinary days.
 
-# You can download an updated IERS finals.all.csv file from
-# https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html
-# click on finals.all (IAU1980) version metadata, then save the link at
-# finals.all.csv as file finals.all.csv.  The UT1-UTC projections
-# beyond finals.all.csv use a formula in the latest issue of IERS Bulletin A,
-# which is on the same web site, as is IERS Bulletin C which contains
-# the expiraton date.
-#
-# The recipe below downloads the three files from the IERS web site and
+# You can download an updated IERS finals.all file from
+# https://maia.usno.navy.mil/ser7/finals.all.
+# The UT1-UTC projections beyond finals.all use a formula
+# in the latest issue of IERS Bulletin A, at
+# https://maia.usno.navy.mil/ser7/ser7.dat.
+# The expiration date is in IERS Bulletin C, at
+# https://hpiers.obspm.fr/iers/bul/bulc/bulletinc.dat
+
+# The recipe below downloads the three files and
 # prints some information from the bulletins.  It also preserves the
 # previous different download, so we can see what changed.
 
@@ -165,8 +166,7 @@ download:
 # the changes in the schedule of leap seconds.
 # The old value for IERS-projection-days was 1461.
 #
-exdays_05.dat : read_delta_t.py values_of_delta_T.csv finals.all.csv \
-6_BULLETIN_A_V2013_016.txt
+exdays_05.dat : read_delta_t.py values_of_delta_T.csv finals.all ser7.dat
 	if [ -f ${builddir}/exdays_05.dat ]; then \
 	   mv ${builddir}/exdays_05.dat ${builddir}/exdays_05_previous.dat ; \
 	fi
@@ -177,10 +177,10 @@ exdays_05.dat : read_delta_t.py values_of_delta_T.csv finals.all.csv \
 ${builddir}/exdays_05.dat \
 --latex-output ${builddir}/IERS_delta_t.tex \
 --csv-output ${builddir}/delta_T.csv  \
---IERS-final=${srcdir}/finals.all.csv --Tony-Finch-leaps --IERS-leaps \
+--IERS-final=${srcdir}/finals.all --Tony-Finch-leaps --IERS-leaps \
 --UT1UTC-output=${builddir}/UT1UTC.csv --UT1UTC-start-jdn=2305814 \
 --USNO-delta-t=${srcdir}/USNO_delta_T.csv \
---IERS-Bulletin-A=${srcdir}/6_BULLETIN_A_V2013_016.txt \
+--IERS-Bulletin-A=${srcdir}/ser7.dat \
 --IERS-projection-days=0
 	if [ -f ${builddir}/exdays_05_previous.dat ]; then \
 	   bash do_compare.sh ; \
@@ -190,13 +190,13 @@ ${builddir}/exdays_05.dat \
 # used the IERS projection for UT2, make the following file:
 
 no_parabola_exdays_05.dat : read_delta_t.py values_of_delta_T.csv \
-finals.all.csv 6_BULLETIN_A_V2013_016.txt
+finals.all ser7.dat
 	python3 ${srcdir}/read_delta_t.py ${srcdir}/values_of_delta_T.csv \
 ${builddir}/no_parabola_exdays_05.dat \
---IERS-final=${srcdir}/finals.all.csv --Tony-Finch-leaps --IERS-leaps \
+--IERS-final=${srcdir}/finals.all --Tony-Finch-leaps --IERS-leaps \
 --UT1UTC-output=${builddir}/UT1UTC.csv --UT1UTC-start-jdn=2305814 \
 --USNO-delta-t=${srcdir}/USNO_delta_T.csv \
---IERS-Bulletin-A=${srcdir}/6_BULLETIN_A_V2013_016.txt \
+--IERS-Bulletin-A=${srcdir}/ser7.dat \
 --IERS-projection-days=-1
 
 delta_t.tex : reformat_delta_t.py values_of_delta_T.csv
@@ -210,8 +210,8 @@ ${builddir}/exdays_03.dat ${srcdir}/exdays_04.dat \
 ${builddir}/exdays_05.dat > ${builddir}/extraordinary_days.dat
 	python3 ${srcdir}/find_next_leap_second.py ${builddir}/UT1UTC.csv
 
-exdays_02.dat : parse_bulletin_C.py 16_BULLETIN_C16.txt
-	python3 ${srcdir}/parse_bulletin_C.py ${srcdir}/16_BULLETIN_C16.txt \
+exdays_02.dat : parse_bulletin_C.py bulletinc.dat
+	python3 ${srcdir}/parse_bulletin_C.py ${srcdir}/bulletinc.dat \
 --expiration-date-file=${builddir}/exdays_02.dat
 
 # Compute the checksum by first creating a file without the checksum line
@@ -226,7 +226,7 @@ ${builddir}/exdays.dat --checksum-file=${builddir}/exdays_03.dat
 
 # If you omit the latex-start and latex-end from the following recipe
 # you will get the whole extraordinary days table from the year -2000
-# to the year 2500,  which will make your paper over 1500 pages long.
+# to the year 2500,  which will make the PDF over 1500 pages long.
 extraordinary_days.tex : read_extraordinary_days_table.py extraordinary_days.dat
 	python3 ${srcdir}/read_extraordinary_days_table.py \
 ${builddir}/extraordinary_days.dat \
@@ -236,7 +236,7 @@ ${builddir}/extraordinary_days.dat \
 # The figures are created using GNUplot.  If you change the spacing of
 # the dates along the horizontal axis, in addition to editing the
 # .gnuplot.in file you will need to edit this section of the Makefile.am
-# to provide a rule for building the xtics file, and add it to the
+# file to provide a rule for building the xtics file, and add it to the
 # dependencies for the figure.
 gnuplot.dat : extraordinary_days.dat
 	python3 ${srcdir}/read_extraordinary_days_table.py \
@@ -371,7 +371,7 @@ plot_extraordinary_days_since_2000.gnuplot set_xtics_005yr.gnuplot
 	gnuplot plot_extraordinary_days_since_2000.gnuplot
 
 # The following charts are not used in the document, but may be
-# bult using Make.  They show the increasing frequency of leap
+# built using Make.  They show the increasing frequency of leap
 # seconds in the future.  By 2500 it will be common to have three
 # in a year.
 
@@ -391,7 +391,8 @@ plot_extraordinary_days_since_2490.gnuplot set_xtics_006mo.gnuplot
 pdf-local: proleptic_UTC.pdf
 .PHONEY: pdf-local
 
-# Include the signature file in the repository
+# Include the PGP signature file in the repository.  Create it using
+# "make signature".
 signature : ${PACKAGE}-${VERSION}.tar.gz.asc
 .PHONEY: signature
 
