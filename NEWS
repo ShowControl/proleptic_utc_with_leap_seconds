@@ -1,3 +1,8 @@
+2022-04-15
+  Adjust future leap seconds starting in 2029.  The next leap second
+  is predicted to be on June 30, 2029, and it will be a negative
+  leap second.
+  
 2022-04-01
   The IERS web site is down, so switch back to the USNO web site.
   Adjust future leap seconds starting in 2029.  The next leap second
