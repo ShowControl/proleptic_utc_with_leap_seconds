@@ -37,7 +37,7 @@ from jdcal import gcal2jd, jd2gcal, is_leap
 import numpy as np
 from numpy.polynomial import Polynomial
 import pandas as pd
-from scipy.interpolate import interpolate
+from scipy import interpolate
 import pprint
 import argparse
 
@@ -58,7 +58,7 @@ parser.add_argument ('input1_file',
 parser.add_argument ('output_file',
                      help='the resulting list of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_Delta_T 8.0 2022-04-01',
+                     version='read_Delta_T 8.1 2022-05-06',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
