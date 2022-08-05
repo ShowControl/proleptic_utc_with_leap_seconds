@@ -3,7 +3,7 @@
 #
 # Parse the text file of IERS Bulletin A.
 
-#   Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2022 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ import argparse
 parser = argparse.ArgumentParser (
   formatter_class=argparse.RawDescriptionHelpFormatter,
   description='Parse IERS Bulletin A',
-  epilog='Copyright © 2020 by John Sauter' + '\n' +
+  epilog='Copyright © 2022 by John Sauter' + '\n' +
   'License GPL3+: GNU GPL version 3 or later; ' + '\n' +
   'see <http://gnu.org/licenses/gpl.html> for the full text ' +
   'of the license.' + '\n' +
@@ -54,7 +54,7 @@ parser.add_argument ('--latest-date-output_file',
                      metavar='latest_date_output_file',
                      help='write the latest Bulletin A date to the specified file')
 parser.add_argument ('--version', action='version', 
-                     version='parse_bulletin_A 3.5 2021-01-08',
+                     version='parse_bulletin_A 3.6 2022-07-28',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -125,7 +125,14 @@ def process_file (file_name):
         if (do_trace == 1):
           tracefile.write ('date = ' + date_string + '.\n')
       if (next_line_is_DUT1 == 1):
-        DUT1 = float(stripped_text_line[1:8])
+        find_DUT1 = stripped_text_line[1:8];
+        if (do_trace == 1):
+          tracefile.write ("finding DUT1 in " + find_DUT1 + ".\n");
+        if (find_DUT1[-1] != " "):
+          find_DUT1 = stripped_text_line[1:7]
+          if (do_trace == 1):
+            tracefile.write ("finding DUT1 in " + find_DUT1 + ".\n");
+        DUT1 = float(find_DUT1)
         next_line_is_DUT1 = 0
       if (stripped_text_line=='DUT1= (UT1-UTC) transmitted with time signals'):
         next_line_is_DUT1 = 1
