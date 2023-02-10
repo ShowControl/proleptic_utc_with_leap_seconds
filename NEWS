@@ -1,3 +1,8 @@
+2023-02-10
+  Adjust future leap seconds starting in 2029.
+  The next leap second is predicted to be on June 30, 2030
+  and it will be a negative leap second.
+  
 2023-02-03
   Adjust future leap seconds starting in 2229.
   
@@ -12,7 +17,7 @@
   Computer Store.
   
   Adjust future leap seconds starting in 2029.
-  THe next leap second is predicted to be on December 31, 2029
+  The next leap second is predicted to be on December 31, 2029
   and it will be a negative leap second.
   
 2023-01-06
