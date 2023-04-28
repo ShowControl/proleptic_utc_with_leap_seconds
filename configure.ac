@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.67])
-AC_INIT([proleptic_utc_with_leap_seconds],[2023.04.21],
+AC_INIT([proleptic_utc_with_leap_seconds],[2023.04.28],
 [John_Sauter@systemeyescomputerstore.com],
 [proleptic_utc_with_leap_seconds],
 ["github@github.com:ShowControl/proleptic_utc_with_leap_seconds.git"])
