@@ -1,8 +1,8 @@
-# File: Makefile.am, author: John Sauter, date: April 1, 2022.
+# File: Makefile.am, author: John Sauter, date: May 13, 2023.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
-#   Copyright © 2022 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2023 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -75,6 +75,7 @@ plot_extraordinary_days_since_2400.gnuplot \
 plot_extraordinary_days_since_2490.gnuplot
 
 EXTRA_DIST += 20160404.full.pdf \
+rspa20200776_si_001.pdf \
 R-REC-TF.460-6-200202-I!!PDF-E.pdf \
 legalcode.txt values_of_delta_T.ods\
 USNO_deltat_preds.csv gpl.txt John_Sauter_public_key.asc
