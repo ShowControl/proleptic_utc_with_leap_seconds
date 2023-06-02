@@ -1,5 +1,5 @@
 # proleptic_utc_with_leap_seconds
-Last updated March 13, 2022.
+Last updated June 1, 2023.
 
 Schedule leap seconds for the past and future using today's definition of UTC.
 
@@ -113,7 +113,7 @@ the year of the first change in the leap second table.
 
 11. Edit file proleptic_UTC.tex.in to update the date on the cover page and
 in the PDF metadata.  If the previous edit to this file was in an earlier month,
-update the "at the time of this writing" phrase.  There are some details
+update the "time of this writing" phrase.  There are some details
 about updating the package in the PDF.
 
 12. Edit references.bib to update the publication date of this PDF and
