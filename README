@@ -1,5 +1,5 @@
 # proleptic_utc_with_leap_seconds
-Last updated June 1, 2023.
+Last updated July 14, 2023.
 
 Schedule leap seconds for the past and future using today's definition of UTC.
 
@@ -147,7 +147,8 @@ change in the predicted leap second has not changed.  If it has changed
 you will need to start the process over, as in the previous step.
 
 19. Type "make check" to verify that the checksum in extraordinary_days.dat
-is correct.
+is correct.  Every six months, when IERS Bulletin C updates the expiration
+date for UTC-TAI, you will have to update the expected output.
 
 20. Type "make pdf" to build the PDF.  If it builds without error, examine
 it using evince to be sure the date in the cover sheet is correct and
