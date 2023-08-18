@@ -1,5 +1,5 @@
 # proleptic_utc_with_leap_seconds
-Last updated July 14, 2023.
+Last updated August 17, 2023.
 
 Schedule leap seconds for the past and future using today's definition of UTC.
 
@@ -54,7 +54,7 @@ To re-create the PDF, type make pdf.
 If you wish to distribute your updated package, you can create your own
 signature file by typing make signature after make distcheck.  In that
 case you should update this README file to include the listing of your
-own pgp public key above.
+own pgp public key as illustrated above.
 
 Note that the PDF file contains all the files needed to rebuild the tarball
 as embedded files, so when you add your public key you should update
@@ -138,7 +138,7 @@ If either has changed, the IERS is still in the process of updating
 their data.  Wait a few minutes in the hope that they will be done,
 and start this whole procedure again.  The updates of the version number
 and the entry in the spec file's changelog will already be in place,
-but you will need to change the date and/or direction of the next
+but you may need to change the date and/or direction of the next
 leap second and the year of the first change in the predicted leap seconds.
 
 18.  Type "diff /usr/share/proleptic_utc_with_leap_seconds/data/extraordinary_
@@ -186,23 +186,24 @@ remainder of the srpm file name.  This will start the build on COPR,
 which will take some time.  When it is complete, use the browser to verify
 that the package was built successfully on all of the important platforms.
 If any of the builds failed for what appear to be transient reasons, you can
-resubmit them using the COPR web site.  While the build is running you
-can do some additional checking.
+resubmit them using the COPR web site.
 
-28. Type the following commands to place the PDF in a fresh subdirectory
+28. While the build is running you can do some additional checking.
+
+29. Type the following commands to place the PDF in a fresh subdirectory
 and enter it:
 
     mkdir test_pdf
     cp proleptic_UTC.pdf test_pdf/
     cd test_pdf/
     
-29. Type "pdfdetach -saveall proleptic_UTC.pdf" to extract the embedded
+30. Type "pdfdetach -saveall proleptic_UTC.pdf" to extract the embedded
 files from the PDF.
 
-30. Type "bash fix_files.sh" to fix the file protections on the files, since
+31. Type "bash fix_files.sh" to fix the file protections on the files, since
 file protections are not remembered in embedded files.
 
-31. Type the following commands to make sure all the files needed
+32. Type the following commands to make sure all the files needed
 to rebuild the tarball have been embedded in the PDF.  Fixing any errors
 requires updating proleptic_UTC.tex.in.  If this is needed, delete this
 subdirectory and go back to the autogen step, to make sure the update
@@ -217,46 +218,57 @@ did not introduce any errors.
     make distcheck
     make RPMs
 
-32. Type ./autogen.sh --download to make sure the autogen script is present
+33. Type ./autogen.sh --download to make sure the autogen script is present
 and working.  The autogen command is at the end instead of before configure
 since configure is supposed to work without first running autogen.
     
-33. Type "cd .." and "rm -r test_pdf/".  We are done with this subdirectory.
+34. Type "cd .." and "rm -r test_pdf/".  We are done with this subdirectory.
 
-34. Type "cp references.bib ~/Projects/Theatre/show_control/libtime/"
+35. Type "cp references.bib ~/Projects/Theatre/show_control/libtime/"
 to provide the updated copy of references.bib to the libtime subproject
 of the show_control project.
 
-35. Type "cd ../survey_UT2_slope/", "make download" and "make" to create
+36. Type "cd ../survey_UT2_slope/", "make download" and "make" to create
 a PDF file named UT2_slope.pdf which display the changes in the predictions
 of future values of UT2, and another named DUT1.pdf which displays past values
 of DUT1.  Examine them using evince to be sure they look OK.  The logic to
 download files from the IERS and parse those files is in this subdirectory.
 Note that one of the parsers is a soft link to avoid duplicating code.
 
-36. Type "cd ../Proleptic_UTC/".
+37. Type "cd ../Proleptic_UTC/".
 
-37. When the build is complete, check to see if any important configurations
+38. When the build is complete, check to see if any important configurations
 failed to build for what appear to be transient reasons.  If so, resubmit
 the build.  If you have to make any corrections to the tarball or spec
-file, go back to the autogen step.  When all of the important configurations
-have built successfully, regenerate the repositories.
+file, go back to the autogen step.
 
-38. Wait a few minutes for the repositories to populate, then type
+39. When all of the important configurations have built successfully,
+delete the old builds and regenerate the repositories.
+
+40. Wait a few minutes for the repositories to populate, then type
 "sudo dnf update --refresh".  You should get the new version of
 proleptic_utc_with_leap seconds installed.  Use diff to verify that
 the local copy of extraordinary_days.dat matches what was installed
 in /usr/share/proleptic_utc_with_leap_seconds/data/.
 
-39. Once the regeneration of the repositories is complete, you can
-delete the COPR builds for previous versions of
-proleptic_utc_with_leap_seconds.
+41. Now that you have the latest version of proleptic_utc_with_leap_seconds
+installed, you can rebuild libtime.  Note that rebulding libtime will copy
+the latest vesion of avoid_time_t.pdf into the bokeh sub-project of
+the leap_seconds project.
 
-40. Now that you have the latest version of proleptic_utc_with_leap_seconds
-installed, you can rebuild libtime.  Note that rebulding libtime makes use
-of the bokeh sub-project, which depends on file proleptic_UTC.pdf.
+42. Update the local image of the web site that shows a chart of leap seconds
+and advocates for the libtime project.
 
-41. Clean up the sub-projects:
+    cd ../bokeh/
+    make
+    firefox index.html
+
+43. Verify that the chart and its table look good.  Verify that the interactive
+features of the chart work.  Verify that the links work.  If everything looks 
+good type "make publish" to update the files on the local copy of the web site.
+
+44. Clean up the sub-projects:
+    cd ../Proleptic_UTC/
     make distclean
     cd ../bokeh/
     make clean
@@ -268,28 +280,30 @@ of the bokeh sub-project, which depends on file proleptic_UTC.pdf.
 
 You should now be in the leap_seconds project.
 
-42. Type "git add ." and "git commit -a -m " followed by a comment in
-auotation marks.  The comment should describe the year of the next modified
+45. Type "git add ." and "git commit -a -m " followed by a comment in
+quotation marks.  The comment should describe the year of the next modified
 leap second prediction.  This updates the git repository for the leap_seconds
 project.
 
-43. Type "bash push_public.sh" to update the local copy of the github
+46. Type "bash push_public.sh" to update the local copy of the github
 repository.
 
-44. Type "cd ~/Projects/Theatre/show_control/repositories/proleptic_utc_with_
+47. Type "cd ~/Projects/Theatre/show_control/repositories/proleptic_utc_with_
 leap_seconds".
 
-45. Type "git add ." and "git commit -a -m" with the same comment as above.
+48. Type "git add ." and "git commit -a -m" with the same comment as above.
 
-46. Type "git tag -s " followed by the version number as in the spec file,
+49. Type "git tag -s " followed by the version number as in the spec file,
 followed by -m and the same comment as above.
 
-47. Type "git push" and "git push --tags" to upload the project to github.
+50. Type "git push" and "git push --tags" to upload the project to github.
 
-48. Type "gpg --verify proleptic*.asc proleptic*.tar.gz".  Gpg should say
+51. Type "gpg --verify proleptic*.asc proleptic*.tar.gz".  Gpg should say
 that it has a good signature for the tarball.  If it doesn't either the
 tarball or the signature has been corrupted since you created them.
 Go back to the autogen step and build everything again.
 
-End of file README
+52. The bokeh sub-project will have published the new files for the web
+site onto the local copy.  Export that local copy to the live web site.
 
+End of file README
