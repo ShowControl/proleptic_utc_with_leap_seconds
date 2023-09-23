@@ -550,8 +550,8 @@ EXTRA_DIST = build_xtic_labels.py build_xtic_monthly_labels.py \
 	plot_extraordinary_days_since_2400.gnuplot \
 	plot_extraordinary_days_since_2490.gnuplot 20160404.full.pdf \
 	rspa20200776_si_001.pdf R-REC-TF.460-6-200202-I!!PDF-E.pdf \
-	legalcode.txt values_of_delta_T.ods USNO_deltat_preds.csv \
-	gpl.txt John_Sauter_public_key.asc build_RPMs.sh \
+	legalcode.txt values_of_delta_T.ods gpl.txt \
+	John_Sauter_public_key.asc build_RPMs.sh \
 	proleptic_utc_with_leap_seconds.spec do_downloads.sh \
 	do_compare.sh
 

@@ -78,7 +78,7 @@ EXTRA_DIST += 20160404.full.pdf \
 rspa20200776_si_001.pdf \
 R-REC-TF.460-6-200202-I!!PDF-E.pdf \
 legalcode.txt values_of_delta_T.ods\
-USNO_deltat_preds.csv gpl.txt John_Sauter_public_key.asc
+gpl.txt John_Sauter_public_key.asc
 
 # Distribute the shell script which builds the RPMs.
 EXTRA_DIST += build_RPMs.sh

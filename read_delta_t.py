@@ -5,7 +5,7 @@
 # to estimate delta T, then creates various useful files based on
 # the data.
 #
-#   Copyright © 2022 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2023 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ parser = argparse.ArgumentParser (
   formatter_class=argparse.RawDescriptionHelpFormatter,
   description='Convert the file of Delta T values into '
   'a list of extraordinary days.',
-  epilog='Copyright © 2022 by John Sauter' + '\n' +
+  epilog='Copyright © 2023 by John Sauter' + '\n' +
   'License GPL3+: GNU GPL version 3 or later; ' + '\n' +
   'see <http://gnu.org/licenses/gpl.html> for the full text ' +
   'of the license.' + '\n' +
@@ -58,15 +58,12 @@ parser.add_argument ('input1_file',
 parser.add_argument ('output_file',
                      help='the resulting list of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_Delta_T 8.1 2022-05-06',
+                     version='read_Delta_T 8.2 2023-09-16',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
 parser.add_argument ('--USNO-delta-t', metavar='USNO_delta_t_input_file',
                      help='Read Delta T information from the USNO')
-parser.add_argument ('--USNO-delta-t-predictions',
-                     metavar='USNO_delta_t_preds_input_file',
-                     help='Read Delta T predictions from the USNO')
 parser.add_argument ('--IERS-Bulletin-A',
                      metavar='IERS_Bulletin_A_input_file',
                      help='Read UT1-UTC projection formula from IERS Bulletin A')
@@ -119,8 +116,6 @@ do_USNO_delta_t_input = 0
 USNO_delta_t_input_file = ""
 do_IERS_projections = 0
 IERS_Bulletin_A_input_file = ""
-do_USNO_delta_t_preds_input = 0
-USNO_delta_t_preds_input_file = ""
 do_IERS_final_input = 0
 IERS_final_input_file = ""
 do_IERS_leaps = 0
@@ -178,7 +173,6 @@ def greg (jdn, separator, format_no):
 
 # Subroutine to convert a Gregorian year, month and day to its
 # Julian Day Number.
-
 def jdn (year_no, month_no, day_no):
   seq = gcal2jd (year_no, month_no, day_no)
   val = seq[0] + seq[1] - 0.5
@@ -204,10 +198,6 @@ if (arguments ['trace'] != None):
 if (arguments ['USNO_delta_t'] != None):
   do_USNO_delta_t_input = 1
   USNO_delta_t_file_name = arguments ['USNO_delta_t']
-
-if (arguments ['USNO_delta_t_predictions'] != None):
-  do_USNO_delta_t_preds_input = 1
-  USNO_delta_t_preds_file_name = arguments ['USNO_delta_t_predictions']
 
 if (arguments ['IERS_final'] != None):
   do_IERS_final_input = 1
@@ -382,50 +372,8 @@ DTAI_base_dt = delta_t [DTAI_base_date]
 
 rebuild_interpolations()
 
-# Optionally, include the near-future estimates of Delta T from the
-# U. S. Naval Observatory, overriding the predictions based on historical
-# data.
-if (do_USNO_delta_t_preds_input):
-  source = "USNO delta T projection"
-  if (do_trace == 1):
-    tracefile.write ("Delta T predictions from USNO:\n")
-  with open (USNO_delta_t_preds_file_name, 'rt') as csvfile:
-    reader = csv.DictReader(csvfile,delimiter=';')
-    for row in reader:
-      year_float = float(row['YEAR'])
-      year_int = int (year_float)
-      month_int = (int ((year_float - float(year_int)) * 12.0) + 1)
-      day_int = 1
-      this_JDN = jdn (year_int, month_int, day_int)
-      new_delta_t = float(row['TT-UT Pred']) 
-      if (this_JDN in delta_t):
-        old_delta_t = delta_t[this_JDN]
-        difference = new_delta_t - old_delta_t
-        if (do_trace == 1):
-          tracefile.write (greg(this_JDN, " ", 0) + ": Delta T changes" +
-                           " from " + str(old_delta_t) +
-                           " by " + str(difference) +
-                           " to " + str(new_delta_t) + ".\n")
-      else:
-        old_delta_t = deltaT(this_JDN)
-        difference = new_delta_t - old_delta_t
-        if (do_trace == 1):
-          tracefile.write (greg(this_JDN, " ", 0) + ": Delta T changes" +
-                           " from " + str(old_delta_t) + " (interpolated)" +
-                           " by " + str(difference) +
-                           " to " + str(new_delta_t) + ".\n")
-      delta_t[this_JDN] = new_delta_t
-      delta_t_source[this_JDN] = source
-      if (source not in delta_t_all):
-        delta_t_all[source] = dict()
-        source_list = source_list + [source]
-      this_delta_t_source = delta_t_all[source]
-      this_delta_t_source[this_JDN] = new_delta_t
-
-    rebuild_interpolations()
-      
-# Optionally, override the Delta T values from historical data and from
-# the USNO's own predictions with observed data from USNO.
+# Optionally, override the Delta T values from historical data
+# with observed data from USNO.
 if (do_USNO_delta_t_input):
   source = "USNO delta T records"
   if (do_trace == 1):
@@ -594,13 +542,13 @@ if (do_IERS_projections):
   start_MJD = UT2_base_MJD
   projection_start_JDN = start_MJD + 2400000
   # If the number of days to project is not specified, project
-  # to 2040.  If negative, project to the end of the data.
+  # to September 20, 2042.  If negative, project to the end of the data.
   perform_fade = 1
   if (IERS_projection_days < 0):
     IERS_projection_days = jdn(2500,1,1) - projection_start_JDN
     perform_fade = 0
   if (IERS_projection_days == 0):
-    IERS_projection_days = jdn(2040,1,1) - projection_start_JDN
+    IERS_projection_days = jdn(2042,9,20) - projection_start_JDN
   end_MJD = start_MJD + IERS_projection_days
   projection_end_JDN = end_MJD + 2400000
   if (verbosity_level > 0):
@@ -861,12 +809,12 @@ if (last_delta_T_from_IERS_date > 0):
     2.0
   ]
 
-  # Rather than use the important points, use all the points since 1700.
-  #x_vals=list()
-  #weights=list()
-  #for jdn_val in range(jdn(1700,1,1), end_date+1):
-  #  x_vals.append(jdn_val)
-  #  weights.append(1.0)
+  # Rather than use the important points, use all the points since -2000
+  x_vals=list()
+  weights=list()
+  for jdn_val in range(start_date, end_date+1):
+    x_vals.append(jdn_val)
+    weights.append(1.0)
 
   # The Y value corresponding to each X value is the value of delta T
   # at that date.
@@ -875,12 +823,6 @@ if (last_delta_T_from_IERS_date > 0):
   for pos_index in range(len(x_vals)):
     y_vals.append(deltaT(x_vals[pos_index]))
     
-  if (verbosity_level > 0):
-    print ("Parabola inputs (x1,y1),(x2,y2),(x3,y3) = " +
-           "(" + str(x_vals[0] ) + "," + str(y_vals[0]) + ")," +
-           "(" + str(x_vals[1] ) + "," + str(y_vals[1]) + ")," +
-           "(" + str(x_vals[2] ) + "," + str(y_vals[2]) + ").")
-           
   if (do_trace > 0):
     tracefile.write ("Parabola: dates, delta T and weights:\n")
     for pos_index in range(len(x_vals)):
@@ -967,21 +909,15 @@ if (last_delta_T_from_IERS_date > 0):
   # Calculate the points of the parabola into a dictionary,
   # adding the annual UT2 fluctuation.
   y_pos=dict()
-  for this_JDN in range (jdn(1700,1,1), end_date+1):
+  for this_JDN in range (start_date, end_date+1):
     y_pos[this_JDN] = ((a*(this_JDN**2))+(b*this_JDN)+c)
 
-  if (verbosity_level > 0):
-    print ("Parabola points: " +
-           "(" + str(x_vals[0]) + "," + str(y_pos[x_vals[0]]) + ")," +
-           "(" + str(x_vals[1]) + "," + str(y_pos[x_vals[1]]) + ")," +
-           "(" + str(x_vals[2]) + "," + str(y_pos[x_vals[2]]) + ").")
-
   # Add the UT2 correction to the parabola.
-  for this_JDN in range (jdn(1700,1,1), end_date+1):
+  for this_JDN in range (start_date, end_date+1):
       y_pos[this_JDN] = y_pos[this_JDN] + UT2_seasonal(this_JDN)
       
   # Stretch the oarabola so it passes through the following point.
-  parabola_anchor_X = jdn(2030,1,1)
+  parabola_anchor_X = jdn(2042,9,20)
   parabola_anchor_Y = deltaT(parabola_anchor_X)
     
   parabola_offset = (parabola_anchor_Y - y_pos[parabola_anchor_X])
@@ -993,7 +929,7 @@ if (last_delta_T_from_IERS_date > 0):
   # Stretch the parabola so it matches the anchor point.
   parabola_max_found = 0
   parabola_min_found = 0
-  for this_JDN in range (jdn(1700,1,1), end_date+1):
+  for this_JDN in range (start_date, end_date+1):
     if (parabola_max_found == 0):
       parabola_max = y_pos[this_JDN]
       parabola_max_found = 1
@@ -1015,7 +951,7 @@ if (last_delta_T_from_IERS_date > 0):
            str(y_pos[parabola_anchor_X]) + ".")
     print ("Parabola stretch: " + str(parabola_stretch) + ".")
   
-  for this_JDN in range (jdn(1700,1,1), end_date+1):
+  for this_JDN in range (start_date, end_date+1):
     y_pos[this_JDN] = ((parabola_stretch * (y_pos[this_JDN] - parabola_height))
                         + parabola_height)
 
@@ -1083,10 +1019,12 @@ if (last_delta_T_from_IERS_date > 0):
              format(astro_interpolate(last_delta_T_from_IERS_date +
                                       fade_time), ".7f") + ".")
 
-      future_delta_T_source = "Astronomical Projection"
-      future_delta_T_source = "Parabola"
       for this_JDN in range (last_delta_T_from_IERS_date, end_date+1):
         the_fraction = (this_JDN - last_delta_T_from_IERS_date) / fade_time
+        if (the_fraction < 1.0):
+          future_delta_T_source = "Astronomical Projection"
+        else:
+          future_delta_T_source = "Astronomical Projection"
         if (the_fraction > 1.0):
           the_fraction = 1.0
         if ((the_fraction < 1.0) and (this_JDN in projection_delta_t_dict)):
