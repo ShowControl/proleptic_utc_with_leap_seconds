@@ -58,7 +58,7 @@ parser.add_argument ('input1_file',
 parser.add_argument ('output_file',
                      help='the resulting list of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_Delta_T 8.2 2023-09-16',
+                     version='read_Delta_T 8.3 2023-09-24',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -542,13 +542,13 @@ if (do_IERS_projections):
   start_MJD = UT2_base_MJD
   projection_start_JDN = start_MJD + 2400000
   # If the number of days to project is not specified, project
-  # to September 20, 2042.  If negative, project to the end of the data.
+  # to January 1, 2048.  If negative, project to the end of the data.
   perform_fade = 1
   if (IERS_projection_days < 0):
     IERS_projection_days = jdn(2500,1,1) - projection_start_JDN
     perform_fade = 0
   if (IERS_projection_days == 0):
-    IERS_projection_days = jdn(2042,9,20) - projection_start_JDN
+    IERS_projection_days = jdn(2048,1,1) - projection_start_JDN
   end_MJD = start_MJD + IERS_projection_days
   projection_end_JDN = end_MJD + 2400000
   if (verbosity_level > 0):
@@ -761,7 +761,7 @@ if (do_IERS_final_input):
 
 #
 # Create a parabola based on the IERS delta T information and
-# future predictions of delta T up until 2500.
+# future predictions of delta T.
 #
 if (last_delta_T_from_IERS_date > 0):
   if (verbosity_level > 0):
@@ -782,12 +782,12 @@ if (last_delta_T_from_IERS_date > 0):
 
   x_vals = [
 #    jdn(1700,1,1),
-#    jdn(1895,1,1),
-    last_delta_T_from_IERS_date,
-    projection_end_JDN,
-#    jdn(2030,1,1),
-#    jdn(2040,1,1),
-#    jdn(2050,1,1),
+    jdn(1895,1,1),
+#    last_delta_T_from_IERS_date,
+#    projection_end_JDN,
+    jdn(2030,1,1),
+    jdn(2040,1,1),
+    jdn(2050,1,1),
     jdn(2100,1,1),
 #    jdn(2200,1,1),
 #    jdn(2300,1,1),
@@ -796,12 +796,12 @@ if (last_delta_T_from_IERS_date > 0):
   ]
   weights = [
 #    1.0,
-#    1.0,
-    1024.0,
-    512.0,
-#    256.0,
-#    128.0,
-#    64.0,
+    1.0,
+#    1024.0,
+#    512.0,
+    256.0,
+    128.0,
+    64.0,
     32.0,
 #    16.0,
 #    8.0,
@@ -810,11 +810,11 @@ if (last_delta_T_from_IERS_date > 0):
   ]
 
   # Rather than use the important points, use all the points since -2000
-  x_vals=list()
-  weights=list()
-  for jdn_val in range(start_date, end_date+1):
-    x_vals.append(jdn_val)
-    weights.append(1.0)
+#  x_vals=list()
+#  weights=list()
+#  for jdn_val in range(start_date, end_date+1):
+#    x_vals.append(jdn_val)
+#    weights.append(1.0)
 
   # The Y value corresponding to each X value is the value of delta T
   # at that date.
@@ -906,8 +906,7 @@ if (last_delta_T_from_IERS_date > 0):
                        str(this_delta_t) + ".\n")
     return (this_delta_t)
       
-  # Calculate the points of the parabola into a dictionary,
-  # adding the annual UT2 fluctuation.
+  # Calculate the points of the parabola into a dictionary.
   y_pos=dict()
   for this_JDN in range (start_date, end_date+1):
     y_pos[this_JDN] = ((a*(this_JDN**2))+(b*this_JDN)+c)
@@ -916,8 +915,8 @@ if (last_delta_T_from_IERS_date > 0):
   for this_JDN in range (start_date, end_date+1):
       y_pos[this_JDN] = y_pos[this_JDN] + UT2_seasonal(this_JDN)
       
-  # Stretch the oarabola so it passes through the following point.
-  parabola_anchor_X = jdn(2042,9,20)
+  # The following point is used as an anchor for stretching the parabola.
+  parabola_anchor_X = jdn(2050,1,1)
   parabola_anchor_Y = deltaT(parabola_anchor_X)
     
   parabola_offset = (parabola_anchor_Y - y_pos[parabola_anchor_X])
@@ -926,9 +925,10 @@ if (last_delta_T_from_IERS_date > 0):
            ", Y = " + str(parabola_anchor_Y) + ".")
     print ("Parabola offset: " + str(parabola_offset) + ".")
 
-  # Stretch the parabola so it matches the anchor point.
+  # Stretch the parabola so it touches the anchor point.
   parabola_max_found = 0
   parabola_min_found = 0
+  parabola_anchor_found = 0
   for this_JDN in range (start_date, end_date+1):
     if (parabola_max_found == 0):
       parabola_max = y_pos[this_JDN]
@@ -937,31 +937,58 @@ if (last_delta_T_from_IERS_date > 0):
       parabola_max = y_pos[this_JDN]
     if (parabola_min_found == 0):
       parabola_min = y_pos[this_JDN]
+      parabola_X_at_Y_min = this_JDN
       parabola_min_found = 1
     if (y_pos[this_JDN] < parabola_min):
       parabola_min = y_pos[this_JDN]
+      parabola_X_at_Y_min = this_JDN
+    if (parabola_anchor_found == 0):
+      parabola_X_anchor = this_JDN
+      parabola_delta = abs(parabola_anchor_Y - y_pos[this_JDN])
+      parabola_anchor_found = 1
+    if ((abs(parabola_anchor_Y - y_pos[this_JDN])) < parabola_delta):
+      parabola_X_anchor = this_JDN
+      parabola_delta = abs(parabola_anchor_Y - y_pos[this_JDN])
   parabola_height = parabola_max - parabola_min
-  parabola_stretch = ((parabola_anchor_Y - parabola_height) /
+  parabola_width = end_date - start_date
+  parabola_height_stretch = ((parabola_anchor_Y - parabola_height) /
                       (y_pos[parabola_anchor_X] - parabola_height))
+  parabola_width_stretch = ((parabola_anchor_X - parabola_width) /
+                      (parabola_anchor_X - parabola_width))
   if (verbosity_level > 0):
-    print ("Parabola max: " + str(parabola_max) + ".")
-    print ("Parabola min: " + str(parabola_min) + ".")
+    print ("Parabola Y max: " + str(parabola_max) + ".")
+    print ("Parabola at Y min: " + str(parabola_X_at_Y_min) + ": " +
+           str(y_pos[parabola_X_at_Y_min]) + ".")
+    print ("Parabola X min: " + str(start_date) + ".")
+    print ("Parabola X max: " + str(end_date) + ".")
     print ("Parabola height: " + str(parabola_height) + ".")
-    print ("Parabola at " + str(parabola_anchor_X) + ": " +
+    print ("Parabola width: " + str(parabola_width) + ".")
+    print ("Parabola at X anchor: " + str(parabola_anchor_X) + ": " +
            str(y_pos[parabola_anchor_X]) + ".")
-    print ("Parabola stretch: " + str(parabola_stretch) + ".")
-  
+    print ("Parabola at Y anchor: " + str(parabola_X_anchor) + ": " +
+           str(y_pos[parabola_X_anchor]) + ".")
+    print ("Parabola delta: " + str(parabola_delta) + ".")
+    print ("Parabola height stretch: " + str(parabola_height_stretch) + ".")
+    print ("Parabola width stretch: " + str(parabola_width_stretch) + ".")
+
+  # Perform the stretch
   for this_JDN in range (start_date, end_date+1):
-    y_pos[this_JDN] = ((parabola_stretch * (y_pos[this_JDN] - parabola_height))
+    y_pos[this_JDN] = ((parabola_height_stretch *
+                        (y_pos[this_JDN] - parabola_height))
                         + parabola_height)
 
   if (do_trace > 0):
     tracefile.write ("Parabola results:\n")
     tracefile.write (" Max: " + str(parabola_max) + ".\n")
-    tracefile.write (" Min: " + str(parabola_min) + ".\n")
+    tracefile.write (" Min: " + str(parabola_min) +
+                     " at " + str(parabola_X_at_Y_min) + ".\n")
     tracefile.write (" Meight: " + str(parabola_height) + ".\n")
+    tracefile.write (" Width: " + str(parabola_width) + ",\n")
     tracefile.write (" Offset: " + str(parabola_offset) + ".\n")
-    tracefile.write (" Stretch: " + str(parabola_stretch) + ".\n")
+    tracefile.write (" Height stretch: " + str(parabola_height_stretch) + ".\n")
+    tracefile.write (" Width stretch: " + str(parabola_width_stretch) + ".\n")
+    tracefile.write (" Anchor_X: " + str(parabola_anchor_X) + ".\n")
+    tracefile.write (" delta: " + str(parabola_delta) + ".\n")
     tracefile.write (" Values:\n")
     pprint.pprint (y_pos, tracefile)
     
