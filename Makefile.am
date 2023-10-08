@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: May 13, 2023.
+# File: Makefile.am, author: John Sauter, date: October 7, 2023.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -47,7 +47,7 @@ dist_doc_DATA = \
 	NEWS
 
 # Conditionally build the PDF.
-# Doing this will require texlive-scheme-full and gnuplot.
+# Doing this will require texlive-scheme-full, gnuplot and several fonts.
 if ENABLE_PDF
   dist_doc_DATA += proleptic_UTC.pdf
 endif

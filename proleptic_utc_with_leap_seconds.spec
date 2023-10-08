@@ -1,6 +1,6 @@
 Name:           proleptic_utc_with_leap_seconds
-Version:        2023.09.29
-Release:        1%{?dist}
+Version:        2023.10.07
+Release:        2%{?dist}
 Summary:        Schedule leap seconds
 
 License:        GPLv3+
@@ -20,13 +20,6 @@ BuildRequires:  python3-pandas
 
 %global _hardened_build 1
 
-# Do not rebuild the PDF file on ELN, since it does not have TeX.
-%if 0%{?rhel}
-%global rebuild_pdf 0
-%else
-%global rebuild_pdf 1
-%endif
-
 %description
 Schedule leap seconds in the distant past and far future
 based on historical astronomical observations and
@@ -37,12 +30,8 @@ information from the International Earth Rotation System Service (IERS).
 
 %build
 
-# Tell configure to rebuild the PDF file if TeX is present.
-%if %{rebuild_pdf}
+# Tell configure to rebuild the PDF file
 %configure --enable-pdf
-%else
-%configure
-%endif
 
 %make_build
 
@@ -64,15 +53,13 @@ contains the man file for %{name}.
 Summary: Comprehensive documentation for %{name}
 Requires: %{name} = %{version}-%{release}
 
-# gnuplot and texlive-scheme-full are needed only to rebuild the PDF file.
+# gnuplot and texlive-scheme-full are needed to rebuild the PDF file.
 # The PDF may use the Andika, Charis and Liberation Mono fonts.
-%if %{rebuild_pdf}
 BuildRequires:  gnuplot
 BuildRequires:  texlive-scheme-full
 BuildRequires: sil-andika-fonts
 BuildRequires: sil-charis-fonts
 BuildRequires: liberation-mono-fonts
-%endif
 
 %description doc
 The %{name}-doc package contains the documentation
@@ -113,6 +100,10 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+ * Sat Oct 07 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
+ - 2023.10.07-2 Remove support for not rebuilding the documentation.
+ * Sat Oct 07 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
+ - 2023.10.07-1 Adjust future leap seconds starting in 2029.
  * Fri Sep 29 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
  - 2023.09.29-1 Adjust future leap seconds starting in 2029.
  * Fri Sep 22 2023 John Sauter <John_Sauter@systemeyescomputerstore.com>
