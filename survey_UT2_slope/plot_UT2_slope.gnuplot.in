@@ -1,0 +1,18 @@
+set title "History of Predicted Slope of UT2-UTC\nas of @latest_date@" \
+    font "Serif,18"
+set xlabel "Date of Prediction; year numbers mark January 1"
+set xtics out rotate by 45 right
+set xtics format "%Y"
+set xtics 31557600
+set grid xtics
+set ylabel "predicted slope of UT2-UTC from IERS Bulletin A\nin seconds per day"
+set minussign
+set format y "%+08.5f"
+set grid ytics
+set terminal pdfcairo font "Sans,12" fontscale 1.0 size 10,8
+set output "UT2_slope.pdf"
+set datafile separator comma
+set nokey
+set xdata time
+set timefmt "%Y-%m-%d"
+plot 'UT2_slope.csv' using 2:3 with lines

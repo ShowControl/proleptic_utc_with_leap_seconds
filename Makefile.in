@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am, author: John Sauter, date: October 7, 2023.
+# File: Makefile.am, author: John Sauter, date: October 28, 2023.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -536,9 +536,16 @@ EXTRA_DIST = build_xtic_labels.py build_xtic_monthly_labels.py \
 	parse_bulletin_A.py parse_bulletin_C.py read_delta_t.py \
 	read_extraordinary_days_table.py reformat_delta_t.py \
 	find_next_leap_second.py proleptic_UTC.tex.in fix_files.sh \
-	autogen.sh references.bib exdays_01.dat exdays_04.dat \
-	finals.all ser7.dat bulletinc.dat values_of_delta_T.csv \
-	USNO_delta_T.csv plot_extraordinary_days.gnuplot \
+	autogen.sh survey_UT2_slope/build_download_script.py \
+	survey_UT2_slope/edit_DUT1_gnuplot_file.sh \
+	survey_UT2_slope/edit_UT2_slope_gnuplot_file.sh \
+	survey_UT2_slope/Makefile survey_UT2_slope/parse_bulletin_D.py \
+	survey_UT2_slope/plot_DUT1.gnuplot.in \
+	survey_UT2_slope/plot_UT2_slope.gnuplot.in \
+	chart5/chart_deltaT.py chart5/Makefile references.bib \
+	exdays_01.dat exdays_04.dat finals.all ser7.dat bulletinc.dat \
+	values_of_delta_T.csv USNO_delta_T.csv \
+	plot_extraordinary_days.gnuplot \
 	plot_extraordinary_days_since_1500.gnuplot \
 	plot_extraordinary_days_since_1600.gnuplot \
 	plot_extraordinary_days_since_1700.gnuplot \

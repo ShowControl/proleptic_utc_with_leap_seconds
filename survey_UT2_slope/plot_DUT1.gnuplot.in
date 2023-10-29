@@ -1,0 +1,22 @@
+set title "History of DUT1 as of @latest_date@\nJumps by 1 second are caused by leap seconds." \
+    font "Serif,18"
+set xlabel "Year numbers mark January 1"
+set xtics out rotate by 45 right
+set xtics format "%Y" font "Sans,8"
+set xtics 31557600
+set grid xtics
+set ylabel "DUT1 setting in seconds from IERS Bulletin D,\nwith missing information provided by Brooks Harris and other sources" \
+    font "Serif,10"
+set minussign
+set format y "%+04.1f"
+set yrange [-0.9:0.9]
+set ytics 0.1
+set ytics nomirror
+set grid ytics
+set terminal pdfcairo font "Sans,12" fontscale 1.0 size 10,8 
+set output "DUT1.pdf"
+set datafile separator comma
+set nokey
+set xdata time
+set timefmt "%Y-%m-%d"
+plot 'DUT1.csv' using 4:5 with lines

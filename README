@@ -1,5 +1,5 @@
 # README file for proleptic_utc_with_leap_seconds
-Last updated October 27, 2023.
+Last updated October 29, 2023.
 
 Schedule leap seconds for the past and future using today's definition of UTC.
 
@@ -206,43 +206,51 @@ as recorded in the spec file and elsewhere.
 
 
 If you are even more ambitious you can improve the algorithm for predicting
-leap seconds.  I have created several tools to assist in this process,
-though not all are yet in the github repository.  I have also developed
-a longer checklist which does more verification to prevent mistakes.
+leap seconds.  I have created several tools to assist in this process
+and developed longer checklist which does more verification to prevent mistakes.
 
-I organize files on my personal computer into projects.  In my home directory
-is a directory called "Projects" and each project is a subdirectory within it.
-So, for example I have a "leap_seconds" project and within it is a
-directory called "Proleptic_UTC".  I use that as a working directory,
-copying files to the clone of the github project and uploading them only when
-I am happy with the changes I have made in the project.
+Here is the longer checklist.  I start at the prolepitc_utc_with_leap_seconds
+directory when I return home from work on Thursday.
 
-Here is my personal checklist.  I start in the working directory, at
-~/Projects/leap_seconds/Proleptic_UTC/ when I return home from work on Thursday.
+1. Create the Makefile
 
-1. Type "./configure --prefix=/usr" to create the Makefile.
+    ./configure --prefix=/usr
 
-2. Type "make download" every few minutes until the date of IERS Bulletin A
-changes from last Thursday to today.  This will also show a new size for file
-finals.all.  The make download command will not download files if they
-have not yet been updated.
+2. Download the IERS data from their web site:
 
-3. Type "make" to create UT1UTC.csv and extraordinary_days.dat.  Note the
-date of the next leap second and whether it is positive or negative.
+    make download
 
-4. Type "diff /usr/share/proleptic_utc_with_leap_seconds/data/extraordinary_
-days.dat extraordinary_days.dat | less" to compare the old file with
-the new one.  Note the first year in which the predicted leap second changed.
+The make download command will not download files if they have not yet been
+updated.
 
-5. To visualize the data that was used to create the table of leap seconds,
-type "cd ../chart5/" and "make" to create and display a chart of delta T.
+3. Create UT1UTC.csv and extraordinary_days.dat.
+
+    make
+
+Note the date of the next leap second and whether it is positive or negative.
+
+4. Compare the old extraordinary_days.dat file with the new one.
+
+    diff /usr/share/proleptic_utc_with_leap_seconds/data/extraordinary_days.dat\
+    extraordinary_days.dat | less
+
+Note the first year in which the date of the predicted leap second changed.
+
+5. Create and display a chart of delta T to visualize the data that was used
+to create the table of leap seconds.
+
+    cd ./chart5/
+    make
+
 The chart will focus on the present, but it is an interactive chart so you
 can look around in it to be sure that the future of delta T is plausable
 given the data from the IERS and the astronomical predictions of future
 values of delta T.  If it is not, update the algorithm as described in
-the PDF.  This procedure is not yet in the github repository.
+the PDF.
 
-6. Type "cd ../Proleptic_UTC/".
+6. Return to the main directory:
+
+    cd ..
 
 7. Edit the configure.ac file.  The only thing that needs to change is
 the version number, which should be the day after the IERS update.  I use
@@ -266,27 +274,34 @@ in the PDF metadata.  If the previous edit to this file was in an earlier month,
 update the "time of this writing" phrase in the body of the document.
 There are some details about updating the package in the PDF.
 
-12. Edit references.bib to update the publication date of this PDF and
-the PDF for libtime, which I will also be updating since it depends
-on proleptic_utc_with_leap_seconds.  Copy the file to the libtime
-working directory so we won't have to update two copies:
+12. Edit references.bib to update the publication date of
+"Extending Coordinates Universal Time to Dates Before 1972".  This is the
+documentation for this project, which you will be updating below.
 
-    cp references.bib ~/Projects/Theatre/show_control/libtime
+13. Rebuild the configure file and the files it uses from configure.ac and
+Makefile.am.
 
-13. Type "./autogen.sh --download" to rebuild the configure file and the
-files it uses from configure.ac and Makefile.am.
+    ./autogen.sh --download
+    ./configure --prefix=/usr
+    
+Prefix=/usr is needed because the package will be loaded from a repository,
+and it will want to put its data file in
+/usr/share/propeptic_utc_with_leap_seconds/data/.
 
-14. Type "./configure --prefix=/usr".  Prefix=/usr is needed because
-the package will be loaded from a repository, and it will want to put its
-data file in /usr/share/propeptic_utc_with_leap_seconds/data/.
+14. Make sure the build will not use any files built previously:
 
-15. Type "make clean", "rm *.gz" and "rm *.rpm" to be sure the build will
-not use any files built previously.
+    make clean
+    rm *.gz
+    rm *.rpm
 
-16. Type "make download" again to be sure you have the latest data from the
-IERS.
+15. Make sure you have the latest data from the IERS:
 
-17. Type "make" to build UT1UTC.csv and extraordinary_days.dat again.
+    make download
+
+16. Build UT1UTC.csv and extraordinary_days.dat again.
+
+    make
+    
 This time extraordinary_days.dat will have the correct revision date.
 Verify that the date and sign of the next leap second have not changed.
 If either has changed, the IERS is still in the process of updating
@@ -296,73 +311,92 @@ and the entry in the spec file's changelog will already be in place,
 but you may need to change the date and/or direction of the next
 leap second and the year of the first change in the predicted leap seconds.
 
-18.  Type "diff /usr/share/proleptic_utc_with_leap_seconds/data/extraordinary_
-days.dat extraordinary_days.dat | less" to verify that the year of the first
-change in the predicted leap second has not changed.  If it has changed
-you will need to start the process over, as in the previous step.
+17  Verify that the year of the first change in the predicted leap second
+has not changed.  If it has changed you will need to start the process over,
+as in the previous step.
 
-19. Type "make check" to verify that the checksum in extraordinary_days.dat
-is correct.  Every six months, when IERS Bulletin C updates the expiration
-date for UTC-TAI, you will have to update the expected output in file
-check_expected_output.txt.
+    diff /usr/share/proleptic_utc_with_leap_seconds/data/extraordinary_days.dat\
+    extraordinary_days.dat | less" 
 
-20. Type "make pdf" to build the PDF.  If it builds without error, examine
-it using evince to be sure the date in the cover sheet is correct and
-the plots look OK, particularly the one that shows leap seconds between
-the years 2000 and 2100.
+18. Verify that the checksum in extraordinary_days.dat is correct.
+Every six months, when IERS Bulletin C updates the expiration date for UTC-TAI,
+you will have to update the expected output in file check_expected_output.txt.
 
-21. Type "make dist" to be sure the tarball builds without error.
+    make check
 
-22. Type "make distcheck" to be sure the tarball contains everything
-necessary to build the tarball.  If the build needs a file that you
-did not mention in Makefile.am, this will catch it.  If you must modify
-Makefile.am, go back to the autogen step.
+19. Build the PDF:
 
-23. Type "make signature" to sign the tarball.  This must be done after
-the last make distcheck.
+    make pdf
 
-24. Type "gpg --verify proleptic*.asc proleptic*.tar.gz" to be sure the
-signature is good.  At the end of this checklist you will use this signature to
-verify that the tarball has not been accidently corrupted.
+If it builds without error, examine it using evince to be sure the date in the
+cover sheet is correct and the plots look OK, particularly the one that shows
+leap seconds between the years 2000 and 2100.
 
-25. Type "make RPMs" to build the source RPM from the tarball and verify
-that the binary RPMs build from it without error.  Any errors other than
+20. Make sure the tarball builds without error:
+
+    make dist
+    
+21. Make sure the tarball contains everything necessary to build the tarball.
+If the build needs a file that you did not mention in Makefile.am, this will
+catch it.  If you must modify Makefile.am, go back to the autogen step.
+
+    make distcheck
+
+22. Sign the tarball.  This must be done after the last make distcheck.
+
+    make signature
+
+23. Make sure the signature is good:
+
+    gpg --verify proleptic*.asc proleptic*.tar.gz
+
+At the end of this checklist you will use this signature to verify that the
+tarball has not been accidently corrupted.
+
+24. Create a PDF file named UT2_slope.pdf which displays the changes in the
+predictions of future values of UT2, and another named DUT1.pdf which displays
+past values of DUT1.  Note that one of the parsers is a soft link to avoid
+duplicating code.
+
+    cd ./survey_UT2_slope/
+    make download
+    make
+
+Examine the charts using evince to be sure they look OK.
+
+25. Return to the main directory
+
+    cd ..
+
+26. Build the source RPM from the tarball and verify that the binary RPMs
+build from it without error.  Any errors other than
 RPMlist complaints about the debuginfo files and lack of documentation needs
 to be investigated.  This is the first step which checks the spec file.
 If you have to change it go back to the autogen step, since the spec file
 is included in the tarball.
 
-26. Use an internet browser to log in to the Fedora Copr web site.  Navigate
-to the proleptic_utc_with_leap_seconds project and make sure it is set to
-compile the package on ail available platforms.
-
-27. Type "copr-cli build proleptic_utc_with_leap_seconds 
-proleptic_utc_with_leap_seconds-*.src.rpm".  This will start the build on Copr,
-which will take some time.  When it is complete, use the browser to verify
-that the package was built successfully on all of the important platforms.
-If any of the builds failed for what appear to be transient reasons, you can
-resubmit them using the Copr web site.
-
-28. While the build is running you can do some additional checking.
-
-29. Type the following commands to place the PDF in a fresh subdirectory
-and enter it:
+    make RPMs
+    
+27. Place the PDF in a fresh subdirectory and enter it:
 
     mkdir test_pdf
     cp proleptic_UTC.pdf test_pdf/
     cd test_pdf/
     
-30. Type "pdfdetach -saveall proleptic_UTC.pdf" to extract the embedded
-files from the PDF.
+28. Extract the embedded files from the PDF.
 
-31. Type "bash fix_files.sh" to fix the file protections on the files, since
-file protections are not remembered in embedded files.
+    mkdir survey_UT2_slope chart5
+    pdfdetach -saveall proleptic_UTC.pdf
 
-32. Type the following commands to make sure all the files needed
-to rebuild the tarball have been embedded in the PDF.  Fixing any errors
-requires updating proleptic_UTC.tex.in.  If this is needed, delete this
-subdirectory and go back to the autogen step, to make sure the update
-did not introduce any errors.
+29. Fix the file protections on the files, since file protections are not
+remembered in embedded files.
+
+    bash fix_files.sh
+    
+30. Make sure all the files needed to rebuild the tarball have been embedded
+in the PDF.  Fixing any errors requires updating proleptic_UTC.tex.in.
+If this is needed, delete this subdirectory and go back to the autogen step,
+to make sure the update did not introduce any errors.
 
     ./configure --prefix=/usr
     make download
@@ -372,113 +406,90 @@ did not introduce any errors.
     make dist
     make distcheck
     make RPMs
+    cd chart5
+    make
+    cd ../survey_UT2_slope
+    make download
+    make
+    cd ..
 
-33. Type ./autogen.sh --download to make sure the autogen script is present
-and working.  The autogen command is at the end instead of before configure
-since configure is supposed to work without first running autogen.
+31. Make sure the autogen script is present and working.
+
+    ./autogen.sh --download
+
+The autogen command is at the end instead of before configure since configure
+is supposed to work without first running autogen.
     
-34. Type "cd .." and "rm -r test_pdf/".  We are done with this subdirectory.
+32. We are done with this subdirectory.
 
-35. Type "cp references.bib ~/Projects/Theatre/show_control/libtime/"
-to provide the updated copy of references.bib to the libtime subproject
-of the show_control project.  Skip this step if you are just updating
-proleptic_utc_with_leap_seconds.
+    cd ..
+    rm -r test_pdf/
 
-36. Type "cd ../survey_UT2_slope/", "make download" and "make" to create
-a PDF file named UT2_slope.pdf which displays the changes in the predictions
-of future values of UT2, and another named DUT1.pdf which displays past values
-of DUT1.  Examine them using evince to be sure they look OK.  The logic to
-download files from the IERS and parse those files is in this subdirectory.
-Note that one of the parsers is a soft link to avoid duplicating code.
-This directory is not yet in the github repository.
+33. Use an internet browser to log in to the Fedora Copr web site.  Navigate
+to the proleptic_utc_with_leap_seconds project and make sure it is set to
+compile the package on ail available platforms.
 
-37. Type "cd ../Proleptic_UTC/".
+34. Start the build on Copr.
 
-38. When the Copr build is complete, check to see if any important
-configurations failed to build for what appear to be transient reasons.
-If so, resubmit the build.  If you have to make any corrections to the tarball
+    copr-cli build proleptic_utc_with_leap_seconds \
+     proleptic_utc_with_leap_seconds-*.src.rpm
+
+When the build is complete, use the browser to verify that the package was
+built successfully on all of the important platforms.  If any of the builds
+failed for what appear to be transient reasons, you can resubmit them using
+the Copr web site.  If you have to make any corrections to the tarball
 or spec file, go back to the autogen step.
 
-39. When all of the important configurations have built successfully,
+35. When all of the important configurations have built successfully,
 delete the old builds and regenerate the repositories.
 
-40. Wait a few minutes for the repositories to populate, then type
-"sudo dnf update --refresh".  You should get the new version of
-proleptic_utc_with_leap seconds installed.  Use diff to verify that
-the local copy of extraordinary_days.dat matches what was installed
-in /usr/share/proleptic_utc_with_leap_seconds/data/.
+36. Wait a few minutes for the repositories to populate, then update
+your version of proleptic_utc_with_leap seconds:
 
-41. Now that you have the latest version of proleptic_utc_with_leap_seconds
-installed, you can rebuild libtime.  Note that rebulding libtime will copy
-the latest vesion of avoid_time_t.pdf into the bokeh sub-project of
-the leap_seconds project.  Skip this step if you are just updating
-proleptic_utc_with_leap_seconds.
+    sudo dnf update --refresh
 
-42. Update the local image of the web site that shows a chart of leap seconds
-and advocates for the libtime project.
+37. Use diff to verify that the local copy of extraordinary_days.dat matches
+what was installed in /usr/share/proleptic_utc_with_leap_seconds/data/.
 
-    cd ../bokeh/
-    make
-    firefox index.html
+    diff /usr/share/proleptic_utc_with_leap_seconds/data/extraordinary_days.dat\
+     extraordinary_days.dat
 
-This step and the next step are based on having a page on my web site which
-I update whenever I update the list of leap seconds.  If you have such a page,
-you will have your own way of keeping it up to date.  This is a good place
-to do that, because the PDF files and the schedule of leap seconds are
-available.
+38. If you have a web site which offers proleptic_UTC.pdf this would be
+a good time to copy that file to the web site, since it will be deleted
+in the next step.
 
-43. Verify that the chart and its table look good.  Verify that the interactive
-features of the chart work.  Verify that the links work.  If everything looks 
-good type "make publish" to update the files on the local copy of the web site.
-
-44. Clean up the sub-projects:
-    cd ../Proleptic_UTC/
+39. Clean up the directory:
     make distclean
-    cd ../bokeh/
-    make clean
-    cd ../chart5/
+    cd ./chart5/
     make clean
     cd ../survey_UT2_slope.
     make clean
     cd ..
 
-You should now be in the leap_seconds project.
+40.  Update the local clone of the git repository:
 
-This step depends heavily on the way I organize files on my personal
-computer.  You will have your own organization and thus your own way
-to clean up the generated files.
+    git add .
+    git commit -a -m "Adjust future leap seconds"
+    git tag -s "<version>" -m "Adjust future leap seconds"
 
-45. Type "git add ." and "git commit -a -m " followed by a comment in
-quotation marks.  The comment should describe the year of the next modified
-leap second prediction.  This updates the git repository for the leap_seconds
-project.  Note that this is a working directory and not the clone of the
-github repository.  We will update that below.
+You may wish to add the date of the first leap second change to the
+comments above.  The notation <version> means the version number
+as recorded in the spec file and elsewhere.
 
-46. Type "bash push_public.sh" to update the clone of the github
-repository.  This pushes only the files I wish to make public.
+41. Upload the changes to github:
 
-47. Type "cd ~/Projects/Theatre/show_control/repositories/proleptic_utc_with_
-leap_seconds".  This gets us to the clone of the repository.
+    git push
+    git push --tags
 
-48. Type "git add ." and "git commit -a -m" with the same comment as above.
+42.  Verify that the signature is good:
 
-49. Type "git tag -s " followed by the version number as in the spec file,
-followed by -m and the same comment as above.
+    gpg --verify proleptic*.asc proleptic*.tar.gz
 
-50. Type "git push" and "git push --tags" to upload the project to github.
+Gpg should say that it has a good signature for the tarball.
+If it doesn't either the tarball or the signature has been corrupted
+since you created them.  Go back to the autogen step and build everything again.
 
-51. Type "gpg --verify proleptic*.asc proleptic*.tar.gz".  Gpg should say
-that it has a good signature for the tarball.  If it doesn't either the
-tarball or the signature has been corrupted since you created them.
-Go back to the autogen step and build everything again.
-
-52. The bokeh sub-project will have published the new files for the web
-site onto the local copy.  Export that local copy to the live web site.
-This step, like the others involving bokeh, depends on having a web page
-which advertises this project.  If you have such a page you will organize
-it the way you want, so consider this step as a place to update your web site.
-
-53.  Verify that the project can be downloaded and built from the github
+43.  Verify that the project can be downloaded and built from the github
 repository.  Find a convenient location on your computer's file system,
 clone the repository you just updated, build the list of leap seconds,
 and verify it.
@@ -493,12 +504,12 @@ then build and verify the list of leap seconds:
     cd proleptic_utc_with_leap_seconds/
     ./configure --prefix=/usr
     make
-    diff /usr/share/proleptic_uts_with_leap_seconds/data/\
-     extraordinarydays.dat extraordinary_days.dat
+    diff /usr/share/proleptic_uts_with_leap_seconds/data/extraordinarydays.dat\
+     extraordinary_days.dat
 
 The two files should have identical content.
 
-54.  Delete the temporary clone of the project:
+44.  Delete the temporary clone of the project:
 
      cd ..
      rm -rf proleptic_uts_with_leap_seconds

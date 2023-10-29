@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: October 7, 2023.
+# File: Makefile.am, author: John Sauter, date: October 28, 2023.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -58,6 +58,19 @@ parse_bulletin_A.py parse_bulletin_C.py read_delta_t.py \
 read_extraordinary_days_table.py reformat_delta_t.py \
 find_next_leap_second.py \
 proleptic_UTC.tex.in fix_files.sh autogen.sh
+
+EXTRA_DIST += \
+survey_UT2_slope/build_download_script.py \
+survey_UT2_slope/edit_DUT1_gnuplot_file.sh \
+survey_UT2_slope/edit_UT2_slope_gnuplot_file.sh \
+survey_UT2_slope/Makefile \
+survey_UT2_slope/parse_bulletin_D.py \
+survey_UT2_slope/plot_DUT1.gnuplot.in \
+survey_UT2_slope/plot_UT2_slope.gnuplot.in
+
+EXTRA_DIST += \
+chart5/chart_deltaT.py \
+chart5/Makefile
 
 EXTRA_DIST += \
 references.bib exdays_01.dat exdays_04.dat finals.all \

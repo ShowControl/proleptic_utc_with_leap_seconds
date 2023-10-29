@@ -58,7 +58,7 @@ parser.add_argument ('input1_file',
 parser.add_argument ('output_file',
                      help='the resulting list of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_Delta_T 8.4 2023-10-07',
+                     version='read_Delta_T 8.5 2023-10-28',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -541,14 +541,12 @@ if (do_IERS_projections):
   UT2_base_JDN = UT2_base_MJD + 2400000
   start_MJD = UT2_base_MJD
   projection_start_JDN = start_MJD + 2400000
-  # If the number of days to project is not specified, project
-  # to September 8, 2042.  If negative, project to the end of the data.
   perform_fade = 1
   if (IERS_projection_days < 0):
     IERS_projection_days = jdn(2500,1,1) - projection_start_JDN
     perform_fade = 0
   if (IERS_projection_days == 0):
-    IERS_projection_days = jdn(2042,9,8) - projection_start_JDN
+    IERS_projection_days = jdn(2100,1,1) - projection_start_JDN
   end_MJD = start_MJD + IERS_projection_days
   projection_end_JDN = end_MJD + 2400000
   if (verbosity_level > 0):
@@ -918,9 +916,31 @@ if (last_delta_T_from_IERS_date > 0):
   # Add the UT2 correction to the parabola.
   for this_JDN in range (start_date, end_date+1):
       y_pos[this_JDN] = y_pos[this_JDN] + UT2_seasonal(this_JDN)
-      
-  # The following point is used as an anchor for stretching the parabola.
-  parabola_anchor_X = jdn(2042,9,8)
+
+  # Find the date at which the astronomical projection intersets with
+  # the projection from the IERS.
+  intersection_delta = -1
+  intersection_JDN = projection_end_JDN + 1
+  source = "IERS UT1-UTC projection"
+  this_delta_t_source = delta_t_all[source]
+  
+  for this_JDN in range (projection_start_JDN, projection_end_JDN):
+    astro_delta_t = astro_interpolate(this_JDN)
+    projection_delta_t = this_delta_t_source[this_JDN]
+    if (intersection_delta < 0):
+      intersection_JDN = this_JDN
+      intersection_delta = abs(astro_delta_t - projection_delta_t)
+    if (intersection_delta > abs(astro_delta_t - projection_delta_t)):
+      intersection_JDN = this_JDN
+      intersection_delta = abs(astro_delta_t - projection_delta_t)
+  if (verbosity_level > 0):
+    print ("Astro and IERS projection intersection at " +
+           str(intersection_JDN) + " = " + greg(intersection_JDN, "-", 0) + ".")
+    print ("intersection delta: " + str(intersection_delta) + ".")
+  
+  # The intersection between the astronomical projection and the IERS projection
+  # is used as an anchor for stretching the parabola.
+  parabola_anchor_X = intersection_JDN
   parabola_anchor_Y = deltaT(parabola_anchor_X)
     
   parabola_offset = (parabola_anchor_Y - y_pos[parabola_anchor_X])
@@ -1015,7 +1035,7 @@ if (last_delta_T_from_IERS_date > 0):
 
     # Dates for fading
     date_A = last_delta_T_from_IERS_date
-    date_B = projection_end_JDN
+    date_B = intersection_JDN
     date_C = end_date
     
     source_1_delta_t_dict = delta_t_all[source_1]
