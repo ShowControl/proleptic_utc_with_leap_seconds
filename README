@@ -1,5 +1,5 @@
 # README file for proleptic_utc_with_leap_seconds
-Last updated October 29, 2023.
+Last updated November 3, 2023.
 
 Schedule leap seconds for the past and future using today's definition of UTC.
 
@@ -120,6 +120,7 @@ project, which you will be publishing as part of updating the project.
 11. Rebuild and verify the extraordinary_daye.dat file using the updated files:
 
     ./autogen.sh --download
+    ./configure --prefix=/usr
     make
     make check
 
