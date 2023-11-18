@@ -4,7 +4,7 @@
 # read_extraordinary_days_table is a sample program which illustrates how
 # to read the table of extraordinary days.
 
-#   Copyright © 2019 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2023 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ parser = argparse.ArgumentParser (
 parser.add_argument ('input_file',
                      help='the table of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_extraordinary_days_table 2.3 2019-06-18',
+                     version='read_extraordinary_days_table 2.4 2023-11-16',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -183,9 +183,9 @@ for byte_string in file_data:
 # The file data is assumed to be coded as utf-8.  Decode it into Unicode.
   line = byte_string.decode ('utf-8')
   line_number = line_number + 1
-  if (re.match ("^\s*(#.*)?\n$", line)):
+  if (re.match ("^\\s*(#.*)?\n$", line)):
     continue;                   #  ignore empty lines.
-  matchc = re.match ("^\s*(?P<keyword>(\w)+)\s*=\s*(?P<value>(\w)+)\s*(#.*)?\n$", line)
+  matchc = re.match ("^\\s*(?P<keyword>(\\w)+)\\s*=\\s*(?P<value>(\\w)+)\\s*(#.*)?\n$", line)
   if (matchc):
     # This line has the form keyword = value
     keyword = matchc.groupdict () ['keyword']
@@ -198,7 +198,7 @@ for byte_string in file_data:
       tracefile.write ("Keyword " + keyword + "=" + value + "\n")
     continue
 
-  matchd = re.match ("^\s*(?P<jdn>(\d)+)\s+(?P<lod>(\d)+)\s+(?P<DTAI>-?(\d)+)\s*(#.*)?\n$", line)
+  matchd = re.match ("^\\s*(?P<jdn>(\\d)+)\\s+(?P<lod>(\\d)+)\\s+(?P<DTAI>-?(\\d)+)\\s*(#.*)?\n$", line)
   if (matchd):
     # This line has the form julian_day_number DTAI
     jdn = int(matchd.groupdict () ['jdn'])
@@ -305,7 +305,7 @@ if (error_counter == 0):
     # Don't include the checksum line.
     omit_checksum = 0
     line = byte_string.decode ('utf-8')
-    matchc = re.match ("^\s*(?P<keyword>(\w)+)\s*=\s*(?P<value>(\w)+)\s*(#.*)?\n$", line)
+    matchc = re.match ("^\\s*(?P<keyword>(\\w)+)\\s*=\\s*(?P<value>(\\w)+)\\s*(#.*)?\n$", line)
     if (matchc):
       # This line has the form keyword = value
       keyword = matchc.groupdict () ['keyword']

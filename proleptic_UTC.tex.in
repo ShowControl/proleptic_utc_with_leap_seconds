@@ -116,9 +116,13 @@
 
 \begin{document}
 \embedfile[desc={Extending Coordinated Universal Time to Dates Before 1972},
-  mimetype={text/plain}]{@builddir@/proleptic_UTC.tex}
+  mimetype={text/plain},
+  ucfilespec={@builddir@/proleptic\_UTC.tex}]
+          {@builddir@/proleptic_UTC.tex}
 \embedfile[desc={Extending Coordinated Universal Time to Dates Before 1972},
-  mimetype={text/plain}]{@srcdir@/proleptic_UTC.tex.in}
+  mimetype={text/plain},
+  ucfilespec={@srcdir@/proleptic\_UTC.tex.in}]
+          {@srcdir@/proleptic_UTC.tex.in}
 \title{Extending Coordinated Universal Time \\ to Dates Before
   1972\footnote{Copyright {\copyright} 2023 by John Sauter.
   This paper is made available under a
@@ -152,11 +156,11 @@
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2023 by John Sauter},
   pdfurl={https://www.systemeyescomputerstore.com/leap\%5Fseconds/proleptic\%5FUTC.pdf},
-  pdfdate={2023-11-03},
+  pdfdate={2023-11-17},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-Us}
 }
-\date{2023-11-03}
+\date{2023-11-17}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -308,13 +312,15 @@ and M.~Zawilski have
 estimated the values of $\Delta$T from the year \num{-2000} to
 \num{2500}\citep{Stephenson20160404}%
 \embedfile[desc={Measurement of the Earth's Rotation: 720 BC to AD 2500},
-  mimetype={application/PDF}]{@srcdir@/20160404.full.pdf}.
+  mimetype={application/PDF},]{@srcdir@/20160404.full.pdf}.
 The table below is based on the data calculated in that paper,
 presented at \href{http://astro.ukho.gov.uk/nao/lvm/}{http://astro.ukho.gov.uk/nao/lvm/},
 as updated in February 2021\citep{Stephenson20210217}%
 \embedfile[desc={Addendum 2020 to {\textquoteleft}Measurement of the 
         Eartht{\textquoteright}s rotation: 720 BC to AD 2015{\textquoteright}},
-    mimetype={application/PDF}]{@srcdir@/rspa20200776_si_001.pdf}.
+  mimetype={application/PDF},
+  ucfilespec={@srcdir@/rspa20200776\_si\_001.pdf}]
+          {@srcdir@/rspa20200776_si_001.pdf}.
 Where the data
 presented two different values of $\Delta$T for the same date,
 I have averaged the values.  In the table below I have presented
@@ -329,7 +335,9 @@ which starts the next day.
 {\addfontfeatures{Numbers={Monospaced,Lining}}%
 \input{delta_t.tex}}
 \embedfile[desc={Table of historical Delta T values},
-  mimetype={application/latex}]{@builddir@/delta_t.tex}.
+  mimetype={application/latex},
+  ucfilespec={@builddir@/delta\_t.tex}]
+          {@builddir@/delta_t.tex}.
 
 \section{Schedule of Extraordinary Days}
 Using this information we can schedule extraordinary days as though UTC
@@ -377,32 +385,49 @@ Service
 The schedule for the future is based on projections from the IERS
 and astronomical projections of $\Delta$T.
 \embedfile[desc={Schedule the Extraordinary Days from Delta T},
-  mimetype={application/python}]{@srcdir@/read_delta_t.py}
+  mimetype={application/python},
+  ucfilespec={@srcdir@/read\_delta\_t.py}]{@srcdir@/read_delta_t.py}
 \embedfile[desc={Reformat the Delta T data into a LaTeX table},
-  mimetype={application/python}]{@srcdir@/reformat_delta_t.py}
+  mimetype={application/python},
+  ucfilespec={@srcdir@/reformat\_delta\_t.py}]{@srcdir@/reformat_delta_t.py}
 \embedfile[desc={Estimates of Delta T, as a CSV file},
-  mimetype={text/csv}]{@srcdir@/values_of_delta_T.csv}
+  mimetype={text/csv},
+  ucfilespec={@srcdir@/values\_of\_delta\_T.csv}]
+          {@srcdir@/values_of_delta_T.csv}
 \embedfile[desc={Measurements of Delta T, as text file, from the IERS},
   mimetype={text/csv}]{@srcdir@/finals.all}
 \embedfile[desc={IERS Bulletin A, which has the formula for projecting UT1-UTC},
   mimetype={text/csv}]{@srcdir@/ser7.dat}
 \embedfile[desc={Estimates of Delta T, as a LibreOffice spreadsheet file},
-  mimetype={Application/LibreOffice}]{@srcdir@/values_of_delta_T.ods}
+  mimetype={Application/LibreOffice},
+  ucfilespec={@srcdir@/values\_of\_delta\_T.ods}]
+          {@srcdir@/values_of_delta_T.ods}
 \embedfile[desc={Delta T information from the US Naval Observatory},
-  mimetype={text/csv}]{@srcdir@/USNO_delta_T.csv}
+  mimetype={text/csv},
+  ucfilespec={@srcdir@/USNO\_delta\_T.csv}]{@srcdir@/USNO_delta_T.csv}
 \embedfile[desc={Table of Extraordinary Days},
-  mimetype={text/plain}]{@builddir@/extraordinary_days.dat}
+  mimetype={text/plain},
+  ucfilespec={@builddir@/extraordinary\_days.dat}]
+          {@builddir@/extraordinary_days.dat}
 \embedfile[desc={MAN file},
-  mimetype={text/plain}]{@srcdir@/extraordinary_days.dat.5}
+  mimetype={text/plain},
+  ucfilespec={@srcdir@/extraordinary\_days.dat.5}]
+          {@srcdir@/extraordinary_days.dat.5}
 \embedfile[desc={Read the Extraordinary Days Table},
-  mimetype={application/python}]{@srcdir@/read_extraordinary_days_table.py}
+  mimetype={application/python},
+  ucfilespec={@srcdir@/read\_extraordinary\_days\_table.py}]
+          {@srcdir@/read_extraordinary_days_table.py}
 \embedfile[desc={Find the Next Leap Second},
-  mimetype={application/python}]{@srcdir@/find_next_leap_second.py}
+  mimetype={application/python},
+  ucfilespec={@srcdir@/find\_next\_leap\_second.py}]
+          {@srcdir@/find_next_leap_second.py}
 \embedfile[desc={GNU General Public License (GPL), version 3}.
   mimetype={text/plain}]{@srcdir@/gpl.txt}
 \embedfile[desc={LaTeX Source Created by Reading the Table of Extraordinary
     Days},
-  mimetype={application/latex}]{@builddir@/extraordinary_days.tex}
+  mimetype={application/latex},
+  ucfilespec={@builddir@/extraordinary\_days.tex}]
+          {@builddir@/extraordinary_days.tex}
 
 {\addfontfeatures{Numbers={Monospaced,Lining}}%
 \input{extraordinary_days.tex}}
@@ -424,7 +449,9 @@ that has been measurable since the invention of the telescope and the
 pendulum clock.
 
 \embedfile[desc={Values of DTAI since the year \num{-2000}},
-  mimetype=(application/latex)]{@builddir@/values_of_DTAI.tex}
+  mimetype=(application/latex),
+  ucfilespec={@builddir@/values\_of\_DTAI.tex}]
+          {@builddir@/values_of_DTAI.tex}
 \begin{figure}[htb]
   \begin{center}
     \include{@builddir@/values_of_DTAI}
@@ -434,7 +461,9 @@ pendulum clock.
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 1500},
-  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_1500.tex}
+  mimetype=(application/latex),
+  ucfilespec={@builddir@/values\_of\_DTAI\_since\_1500.tex}]
+          {@builddir@/values_of_DTAI_since_1500.tex}
 \begin{figure}[htb]
   \begin{center}
     \include{@builddir@/values_of_DTAI_since_1500}
@@ -444,7 +473,9 @@ pendulum clock.
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 1600},
-  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_1600.tex}
+  mimetype=(application/latex),
+  ucfilespec={@builddir@/values\_of\_DTAI\_since\_1600.tex}]
+          {@builddir@/values_of_DTAI_since_1600.tex}
 \begin{figure}[htb]
   \begin{center}
     \include{@builddir@/values_of_DTAI_since_1600}
@@ -454,7 +485,9 @@ pendulum clock.
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 1700},
-  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_1700.tex}
+  mimetype=(application/latex),
+  ucfilespec={@builddir@/values\_of\_DTAI\_since\_1700.tex}]
+          {@builddir@/values_of_DTAI_since_1700.tex}
 \begin{figure}[htb]
   \begin{center}
     \include{@builddir@/values_of_DTAI_since_1700}
@@ -464,7 +497,9 @@ pendulum clock.
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 1800},
-  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_1800.tex}
+  mimetype=(application/latex),
+  ucfilespec={@builddir@/values\_of\_DTAI\_since\_1800.tex}]
+          {@builddir@/values_of_DTAI_since_1800.tex}
 \begin{figure}[htb]
   \begin{center}
     \include{@builddir@/values_of_DTAI_since_1800}
@@ -474,7 +509,9 @@ pendulum clock.
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 1900},
-  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_1900.tex}
+  mimetype=(application/latex),
+  ucfilespec={@builddir@/values\_of\_DTAI\_since\_1900.tex}]
+          {@builddir@/values_of_DTAI_since_1900.tex}
 \begin{figure}[htb]
   \begin{center}
     \include{@builddir@/values_of_DTAI_since_1900}
@@ -484,7 +521,9 @@ pendulum clock.
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 1950},
-  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_1950.tex}
+  mimetype=(application/latex),
+  ucfilespec={@builddir@/values\_of\_DTAI\_since\_1950.tex}]
+          {@builddir@/values_of_DTAI_since_1950.tex}
 \begin{figure}[htb]
   \begin{center}
     \include{@builddir@/values_of_DTAI_since_1950}
@@ -494,7 +533,9 @@ pendulum clock.
 \end{figure}
 
 \embedfile[desc={Values of DTAI since 2000},
-  mimetype=(application/latex)]{@builddir@/values_of_DTAI_since_2000.tex}
+  mimetype=(application/latex),
+  ucfilespec={@builddir@/values\_of\_DTAI\_since\_2000.tex}]
+          {@builddir@/values_of_DTAI_since_2000.tex}
 \begin{figure}[htb]
   \begin{center}
     \include{@builddir@/values_of_DTAI_since_2000}
@@ -789,7 +830,9 @@ this paper.
   {\filename proleptic\_utc\_with\_leap\_seconds.spec}.
   
   \embedfile[desc={correct the modes of extracted files},
-    mimetype={text/plain}]{@srcdir@/fix_files.sh}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/fix\_files.sh}]
+            {@srcdir@/fix_files.sh}
   \embedfile[desc={run autotools to create configure and Makefile.in},
     mimetype={text/plain}]{@srcdir@/autogen.sh}
   \embedfile[desc={read this file after unpacking the source tarball},
@@ -819,49 +862,82 @@ this paper.
   \embedfile[desc={used by Autotools},
     mimetype={text/plain}]{@srcdir@/missing}
   \embedfile[desc={turn the source tarball into source and binary RPMs},
-    mimetype={text/plain}]{@srcdir@/build_RPMs.sh}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/build\_RPMs.sh}]
+            {@srcdir@/build_RPMs.sh}
   \embedfile[desc={Download the latest data from the IERS},
-    mimetype={text/plain}]{@srcdir@/do_downloads.sh}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/do\_downloads.sh}]
+            {@srcdir@/do_downloads.sh}
   \embedfile[desc={Compare downloaded files to see if they changed},
-    mimetype={text/plain}]{@srcdir@/do_compare.sh}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/do\_compare.sh}]
+            {@srcdir@/do_compare.sh}
   \embedfile[desc={specification file for building RPMs},
-    mimetype={text/plain}]{@srcdir@/proleptic_utc_with_leap_seconds.spec}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/proleptic\_utc\_with\_leap\_seconds.spec}]
+            {@srcdir@/proleptic_utc_with_leap_seconds.spec}
   \embedfile[desc={rebuild proleptic\_UTC.pdf from its sources},
     mimetype={application/make}]{@srcdir@/Makefile.am}
   \embedfile[desc={rebuild proleptic\_UTC.pdf from its sources},
     mimetype={application/make}]{@srcdir@/Makefile.in}
   \embedfile[desc={extract information from the IERS Bulletin A},
-    mimetype={text/plain}]{@srcdir@/parse_bulletin_A.py}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/parse\_bulletin\_A.py}]
+            {@srcdir@/parse_bulletin_A.py}
   \embedfile[desc={extract information from the IERS Bulletin C},
-    mimetype={text/plain}]{@srcdir@/parse_bulletin_C.py}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/parse\_bulletin\_C.py}]
+            {@srcdir@/parse_bulletin_C.py}
   \embedfile[desc={IERS Bulletin C used for this PDF},
     mimetype={text/plain}]{@srcdir@/bulletinc.dat}
   \embedfile[desc={expected output of Make Check},
-    mimetype={text/plain}]{@srcdir@/check_expected_output.txt}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/check\_expected\_output.txt}]
+            {@srcdir@/check_expected_output.txt}
   \embedfile[desc={template of script to verify Make Check},
-    mimetype={text/plain}]{@srcdir@/verify_files_template.sh}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/verify\_files\_template.sh}]
+            {@srcdir@/verify_files_template.sh}
   \embedfile[desc={script used by Make Check},
     mimetype={text/plain}]{@srcdir@/test-driver}
   \embedfile[desc={John Sauter's public PGP key, referenced in README},
-    mimetype={text/plain}]{@srcdir@/John_Sauter_public_key.asc}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/John\_Sauter\_public\_key.asc}]
+            {@srcdir@/John_Sauter_public_key.asc}
 
   \embedfile[desc={create bash script for downloading},
-    mimetype={text/plain}]{@srcdir@/survey_UT2_slope/build_download_script.py}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/survey\_UT2\_slope/build\_download\_script.py}]
+            {@srcdir@/survey_UT2_slope/build_download_script.py}
   \embedfile[desc={build the DUT1 and UT2 slope charts},
-    mimetype={text/plain}]{@srcdir@/survey_UT2_slope/Makefile}
+    mimetype={text/plain},ucfilespec={@srcdir@/survey\_UT2\_slope/Makefile}]
+            {@srcdir@/survey_UT2_slope/Makefile}
   \embedfile[desc={plot the UT2 slope prototype},
-    mimetype={text/plain}]{@srcdir@/survey_UT2_slope/plot_UT2_slope.gnuplot.in}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/survey\_UT2\_slope/plot\_UT2\_slope.gnuplot.in}]
+            {@srcdir@/survey_UT2_slope/plot_UT2_slope.gnuplot.in}
   \embedfile[desc={put the date of the last IERS bulletin A in the chart},
-    mimetype={text/plain}]{@srcdir@/survey_UT2_slope/edit_DUT1_gnuplot_file.sh}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/survey\_UT2\_slope/edit\_DUT1\_gnuplot\_file.sh}]
+            {@srcdir@/survey_UT2_slope/edit_DUT1_gnuplot_file.sh}
   \embedfile[desc={parse IERS bulletin D},
-    mimetype={text/plain}]{@srcdir@/survey_UT2_slope/parse_bulletin_D.py}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/survey\_UT2\_slope/parse\_bulletin\_D.py}]
+            {@srcdir@/survey_UT2_slope/parse_bulletin_D.py}
   \embedfile[desc={put the date of the last IERS bulletin A in the chart},
-    mimetype={text/plain}]{@srcdir@/survey_UT2_slope/edit_UT2_slope_gnuplot_file.sh}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/survey\_UT2\_slope/edit\_UT2\_slope\_gnuplot\_file.sh}]
+            {@srcdir@/survey_UT2_slope/edit_UT2_slope_gnuplot_file.sh}
   \embedfile[desc={plot DUT1 prototype},
-    mimetype={text/plain}]{@srcdir@/survey_UT2_slope/plot_DUT1.gnuplot.in}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/survey\_UT2\_slope/plot\_DUT1.gnuplot.in}]
+            {@srcdir@/survey_UT2_slope/plot_DUT1.gnuplot.in}
   
   \embedfile[desc={chart the inputs to the delta T algorithm},
-    mimetype={text/plain}]{@srcdir@/chart5/chart_deltaT.py}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/chart5/chart\_deltaT.py}]
+            {@srcdir@/chart5/chart_deltaT.py}
   \embedfile[desc={chart the inputs to the delta T algorithm},
     mimetype={text/plain}]{@srcdir@/chart5/Makefile}
 
@@ -898,9 +974,13 @@ this paper.
   File {\filename Makefile.am} also has the recipes for building
   {\filename gnuplot.dat} and {\filename extra\-ordin\-ary\_\-days.tex}.
   \embedfile[desc={file for constructing extraordinary\_days.dat},
-    mimetype={text/plain}]{@srcdir@/exdays_01.dat}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/exdays\_01.dat}]
+            {@srcdir@/exdays_01.dat}
   \embedfile[desc={file for constructing extraordinary\_days.dat},
-    mimetype={text/plain}]{@srcdir@/exdays_04.dat}}
+    mimetype={text/plain},
+    ucfilespec={@srcdir@/exdays\_04.dat}]
+            {@srcdir@/exdays_04.dat}}
 
   To update the figures after changing the schedule of extraordinary days
   you will need GNUplot.  All of the files needed are embedded in this PDF.
@@ -910,76 +990,101 @@ this paper.
     mimetype={text/plain}]{@builddir@/gnuplot.dat}
   
   \embedfile[desc={Plot Extraordinary Days},
-    mimetype={application/gnuplot}]{@builddir@/plot_extraordinary_days.gnuplot}
+    mimetype={application/gnuplot},
+    ucfilespec={@builddir@/plot\_extraordinary\_days.gnuplot}]
+            {@builddir@/plot_extraordinary_days.gnuplot}
   \embedfile[desc={Plot Extraordinary Days},
-    mimetype={application/gnuplot}]{@srcdir@/plot_extraordinary_days.gnuplot.in}
+    mimetype={application/gnuplot},
+    ucfilespec={@srcdir@/plot\_extraordinary\_days.gnuplot.in}]
+            {@srcdir@/plot_extraordinary_days.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 1500},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@builddir@/plot\_extraordinary\_days\_since\_1500.gnuplot}]
             {@builddir@/plot_extraordinary_days_since_1500.gnuplot}
   \embedfile[desc={Plot Extraordinary Days since 1500},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@srcdir@/plot\_extraordinary\_days\_since\_1500.gnuplot.in}]
             {@srcdir@/plot_extraordinary_days_since_1500.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 1600},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@builddir@/plot\_extraordinary\_days\_since\_1600.gnuplot}]
             {@builddir@/plot_extraordinary_days_since_1600.gnuplot}
   \embedfile[desc={Plot Extraordinary Days since 1600},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@srcdir@/plot\_extraordinary\_days\_since\_1600.gnuplot.in}]
             {@srcdir@/plot_extraordinary_days_since_1600.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 1700},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@builddir@/plot\_extraordinary\_days\_since\_1700.gnuplot}]
             {@builddir@/plot_extraordinary_days_since_1700.gnuplot}
   \embedfile[desc={Plot Extraordinary Days since 1700},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@srcdir@/plot\_extraordinary\_days\_since\_1700.gnuplot.in}]
             {@srcdir@/plot_extraordinary_days_since_1700.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 1800},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@builddir@/plot\_extraordinary\_days\_since\_1800.gnuplot}]
             {@builddir@/plot_extraordinary_days_since_1800.gnuplot}
   \embedfile[desc={Plot Extraordinary Days since 1800},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@srcdir@/plot\_extraordinary\_days\_since\_1800.gnuplot.in}]
             {@srcdir@/plot_extraordinary_days_since_1800.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 1900},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@builddir@/plot\_extraordinary\_days\_since\_1900.gnuplot}]
             {@builddir@/plot_extraordinary_days_since_1900.gnuplot}
   \embedfile[desc={Plot Extraordinary Days since 1900},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@srcdir@/plot\_extraordinary\_days\_since\_1900.gnuplot.in}]
             {@srcdir@/plot_extraordinary_days_since_1900.gnuplot.in}
 
   \embedfile[desc={Plot Extraordinary Days since 1950},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@builddir@/plot\_extraordinary\_days\_since\_1950.gnuplot}]
             {@builddir@/plot_extraordinary_days_since_1950.gnuplot}
   \embedfile[desc={Plot Extraordinary Days since 1950},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@srcdir@/plot\_extraordinary\_days\_since\_1950.gnuplot.in}]
             {@srcdir@/plot_extraordinary_days_since_1950.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 2000},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@builddir@/plot\_extraordinary\_days\_since\_2000.gnuplot}]
             {@builddir@/plot_extraordinary_days_since_2000.gnuplot}
   \embedfile[desc={Plot Extraordinary Days since 2000},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@srcdir@/plot\_extraordinary\_days\_since\_2000.gnuplot.in}]
             {@srcdir@/plot_extraordinary_days_since_2000.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 2015},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@srcdir@/plot\_extraordinary\_days\_since\_2015.gnuplot.in}]
             {@srcdir@/plot_extraordinary_days_since_2015.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 2400},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@srcdir@/plot\_extraordinary\_days\_since\_2400.gnuplot.in}]
             {@srcdir@/plot_extraordinary_days_since_2400.gnuplot.in}
   
   \embedfile[desc={Plot Extraordinary Days since 2490},
-    mimetype={application/gnuplot}]
+    mimetype={application/gnuplot},
+    ucfilespec={@srcdir@/plot\_extraordinary\_days\_since\_2490.gnuplot.in}]
             {@srcdir@/plot_extraordinary_days_since_2490.gnuplot.in}
   
   \embedfile[desc={program to write one xtics file},
-    mimetype=(application/python)]{@srcdir@/build_xtic_labels.py}
+    mimetype=(application/python),
+    ucfilespec={@srcdir@/build\_xtic\_labels.py}]
+            {@srcdir@/build_xtic_labels.py}
 
   \embedfile[desc={program to write one xtics file},
-    mimetype=(application/python)]{@srcdir@/build_xtic_monthly_labels.py}
+    mimetype=(application/python),
+    ucfilespec={@srcdir@/build\_xtic\_monthly\_labels.py}]
+            {@srcdir@/build_xtic_monthly_labels.py}
   
 \end{enumerate}
 
@@ -1041,6 +1146,8 @@ freedoms as long as you follow the license terms.
 \embedfile[desc={Bibliography},mimetype={text/biblatex}]
           {@srcdir@/references.bib}
 \embedfile[desc={Bibliography references},
-  mimetype={text/biblatex}]{@builddir@/proleptic_UTC.bbl}
+  mimetype={text/biblatex},
+  ucfilespec={@builddir@/proleptic\_UTC.bbl}]
+          {@builddir@/proleptic_UTC.bbl}
 
 \end{document}
