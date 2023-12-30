@@ -1,5 +1,5 @@
 # README file for proleptic_utc_with_leap_seconds
-Last updated November 3, 2023.
+Last updated December 28, 2023.
 
 Schedule leap seconds for the past and future using today's definition of UTC.
 
@@ -208,7 +208,8 @@ as recorded in the spec file and elsewhere.
 
 If you are even more ambitious you can improve the algorithm for predicting
 leap seconds.  I have created several tools to assist in this process
-and developed longer checklist which does more verification to prevent mistakes.
+and developed s longer checklist which does more verification to prevent
+mistakes.
 
 Here is the longer checklist.  I start at the prolepitc_utc_with_leap_seconds
 directory when I return home from work on Thursday.
