@@ -1,6 +1,6 @@
 % Main LaTeX source file for proleptic_UTC.pdf
 
-% Copyright © 2023 by John Sauter.
+% Copyright © 2024 by John Sauter.
 % Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
 % license.  See https://creativecommons.org/license/by-sa/4.0/.
 
@@ -124,7 +124,7 @@
   ucfilespec={@srcdir@/proleptic\_UTC.tex.in}]
           {@srcdir@/proleptic_UTC.tex.in}
 \title{Extending Coordinated Universal Time \\ to Dates Before
-  1972\footnote{Copyright {\copyright} 2023 by John Sauter.
+  1972\footnote{Copyright {\copyright} 2024 by John Sauter.
   This paper is made available under a
   Creative Commons Attribution\hyp{}ShareAlike 4.0 International License.
   You can read a human\hyp{}readable summary of the license at
@@ -154,13 +154,13 @@
   pdfcontactpostcode={03063-4066},
   pdfcontactregion={New Hampshire},
   pdfcontacturl={https://www.systemeyescomputerstore.com},
-  pdfcopyright={Copyright {\copyright} 2023 by John Sauter},
+  pdfcopyright={Copyright {\copyright} 2024 by John Sauter},
   pdfurl={https://www.systemeyescomputerstore.com/leap\%5Fseconds/proleptic\%5FUTC.pdf},
-  pdfdate={2023-12-29},
+  pdfdate={2024-01-05},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-Us}
 }
-\date{2023-12-29}
+\date{2024-01-05}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -234,7 +234,7 @@ years 1700, 1800 and 1900 have not included February 29, but the years
 
 The IERS began scheduling extraordinary days in 1972 so that civil time could
 use the SI second rather than a variable\hyp{}length second.
-As of the time of this writing, in December of 2023,
+As of the time of this writing, in January of 2024,
 there have been \num{27} days with \num{86401}
 seconds and \num{0} days with \num{86399} seconds.
 
@@ -756,75 +756,7 @@ this paper.
   {\filename extraordinary\_days.dat} and this paper when the
   IERS updates its information about the Earth's rotation.
   This is also useful if you modify the paper as described above.
-  The IERS publishes new information on Thursday, so to keep
-  up with its latest information, do the following late on Thursday:
-
-  \begin{enumerate}
-  \item After extracting the files, type {\filename bash fix\_files.sh}
-    to get the modes of the files set correctly, since they are lost
-    when embedded in the PDF.
-  \item Update the revision dates in the following four files:
-    {\filename exdays\_01.dat},
-    {\filename config\-ure.ac},
-    {\filename proleptic\_UTC.tex.in} and
-    {\filename references.bib}.
-  \item Update the ``time of this writing'' phrase in
-    section {\ref{section:A_Brief_History_of_Timekeeping}}
-    if the previous update was in an earlier month.
-  \item Update the revision history in file {\filename NEWS}.
-  \item Update file {\filename proleptic\_utc\_with\_leap\_seconds.spec}
-    to show the revision date as the version number, and add to
-    the change log.
-  \item Type {\filename ./autogen.sh {-}{-}download} to
-    download the latest autotools support files.
-    {\filename Autogen.sh} will also build
-    {\filename configure} from {\filename configure.ac}
-    and {\filename Makefile.in} from {\filename Makefile.am}.
-  \item Type {\filename ./configure {-}{-}prefix=/usr} to build
-    {\filename Makefile} and several other files
-    from their {\filename .in} templates.
-  \item Type {\filename make download} to download the latest
-    Earth rotation information from the IERS.
-    Bulletin C, which announces leap seconds, is updated every six months.
-    Bulletin A, which lists the time it took for the Earth to rotate each day,
-    is updated every week.
-  \item \label{step:make} Type {\filename make} to create file
-    {\filename extraordinary\_days.dat}.
-  \item Type {\filename make pdf} to create file
-    {\filename proleptic\_UTC.pdf}.
-  \item Type {\filename rm *.gz} to delete the old source tarball.
-  \item Type {\filename make dist} to create a new source tarball.
-  \item Type {\filename rm *.rpm} to delete the old source RPM file.
-  \item Type {\filename make RPMs} to create a new source RPM file.
-    See the comments in file {\filename build\_RPM.sh} for details.
-  \item Type {\filename make distcheck} to validate the source tarball.
-  \item Type {\filename sudo make install} to copy file
-    {\filename extraordinary\_days.dat} to directory
-    {\filename /usr/share/proleptic\_utc\_with\_leap\_seconds/data}
-    so other programs can find it.
-  \item If file {\filename extraordinary\_days.dat} has changed:
-    \begin{enumerate}
-      \item Rebuild everything that depends on it, so those programs can
-        be apprised of the new leap second schedule.
-      \item Update files 
-        {\filename proleptic\_utc\_with\_leap\_seconds.spec}
-        and {\filename NEWS} to describe
-        the changes in file {\filename extraordinary\_days.dat}.
-      \item Create a new source tarball using this procedure
-        by starting at step {\ref{step:make}}.
-        File {\filename extraordinary\_days.dat} will not change again.
-    \end{enumerate}
-    If file {\filename extraordinary\_days.dat} has not changed,
-    there is little need to publish the updated PDF.  The only changes
-    will be in the embedded files which were downloaded from the IERS.
-    If the only changes are in far future leap seconds, there is also
-    no need to re-publish, since these leap second predictons are very
-    speculative.
-
-    There is a detailed checklist for updating this package in the
-    {\filename README} file.
-  \end{enumerate}
-  
+  See file {\filename README} for details.
   You will need Autotools, Python, {\LaTeX} and GNUplot.
   Details of the dependencies are in file
   {\filename proleptic\_utc\_with\_leap\_seconds.spec}.

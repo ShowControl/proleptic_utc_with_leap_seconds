@@ -1,5 +1,5 @@
 # README file for proleptic_utc_with_leap_seconds
-Last updated December 28, 2023.
+Last updated January 5, 2024.
 
 Schedule leap seconds for the past and future using today's definition of UTC.
 
@@ -101,15 +101,17 @@ number and add to the changelog.  The comment in the changelog should mention
 the year of the first change in the leap second table.
 
 7. Edit file exdays_01.dat to update the revision date that will appear
-in file extraordinary_days.dat.
+in file extraordinary_days.dat.  Update the copyright date if necessary.
 
 8. Edit file proleptic_UTC.tex.in to update the date on the cover page and
 in the PDF metadata.  If the previous edit to this file was in an earlier month,
 update the "time of this writing" phrase in the body of the document.
+Update the copyright date if necessary.
 
 9. Edit references.bib to update the publication date of "Extending Coordinated
 Universal Time to Dates Before 1972".  This is the documentation for the
 project, which you will be publishing as part of updating the project.
+Update the copyright date if necessary.
 
 10. Remove the files from the previous version of the project:
 
@@ -269,16 +271,17 @@ number and the changelog.  The comment in ths changelog should mention
 the year of the first change in the leap second table.
 
 10. Edit file exdays_01.dat to update the revision date that will appear
-in file extraordinary_days.dat
+in file extraordinary_days.dat.  Update the copyright date if necessary.
 
 11. Edit file proleptic_UTC.tex.in to update the date on the cover page and
 in the PDF metadata.  If the previous edit to this file was in an earlier month,
 update the "time of this writing" phrase in the body of the document.
-There are some details about updating the package in the PDF.
+Update the copyright date if necessary.
 
 12. Edit references.bib to update the publication date of
 "Extending Coordinates Universal Time to Dates Before 1972".  This is the
 documentation for this project, which you will be updating below.
+Update the copyright date if necessary.
 
 13. Rebuild the configure file and the files it uses from configure.ac and
 Makefile.am.
