@@ -1,8 +1,8 @@
-# File: do_downloads.sh, author: John Sauter, date: April 1, 2022.
+# File: do_downloads.sh, author: John Sauter, date: March 21, 2024.
 #
 # Download data files from the IERS.
 
-#   Copyright © 2022 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2024 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
