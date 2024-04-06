@@ -1,5 +1,5 @@
 # README file for proleptic_utc_with_leap_seconds
-Last updated January 5, 2024.
+Last updated March 23, 2024.
 
 Schedule leap seconds for the past and future using today's definition of UTC.
 
@@ -517,6 +517,6 @@ The two files should have identical content.
 44.  Delete the temporary clone of the project:
 
      cd ..
-     rm -rf proleptic_uts_with_leap_seconds
+     rm -rf proleptic_utc_with_leap_seconds
 
 End of file README
