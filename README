@@ -1,5 +1,5 @@
 # README file for proleptic_utc_with_leap_seconds
-Last updated March 23, 2024.
+Last updated May 9, 2024.
 
 Schedule leap seconds for the past and future using today's definition of UTC.
 
@@ -316,12 +316,12 @@ and the entry in the spec file's changelog will already be in place,
 but you may need to change the date and/or direction of the next
 leap second and the year of the first change in the predicted leap seconds.
 
-17  Verify that the year of the first change in the predicted leap second
+17. Verify that the year of the first change in the predicted leap second
 has not changed.  If it has changed you will need to start the process over,
 as in the previous step.
 
     diff /usr/share/proleptic_utc_with_leap_seconds/data/extraordinary_days.dat\
-    extraordinary_days.dat | less" 
+    extraordinary_days.dat | less
 
 18. Verify that the checksum in extraordinary_days.dat is correct.
 Every six months, when IERS Bulletin C updates the expiration date for UTC-TAI,

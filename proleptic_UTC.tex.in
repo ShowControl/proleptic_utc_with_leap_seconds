@@ -161,11 +161,11 @@
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2024 by John Sauter},
   pdfurl={https://www.systemeyescomputerstore.com/leap\%5Fseconds/proleptic\%5FUTC.pdf},
-  pdfdate={2024-04-26},
+  pdfdate={2024-05-10},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-Us}
 }
-\date{2024-04-26}
+\date{2024-05-10}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -239,7 +239,7 @@ years 1700, 1800 and 1900 have not included February 29, but the years
 
 The IERS began scheduling extraordinary days in 1972 so that civil time could
 use the SI second rather than a variable\hyp{}length second.
-As of the time of this writing, in April of 2024,
+As of the time of this writing, in May of 2024,
 there have been \num{27} days with \num{86401}
 seconds and \num{0} days with \num{86399} seconds.
 
