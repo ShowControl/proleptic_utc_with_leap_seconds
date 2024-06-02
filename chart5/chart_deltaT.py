@@ -3,7 +3,7 @@
 #
 # chart_deltaT plots Delta T.
 #
-#   Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2024 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ parser.add_argument ('input1_file',
 parser.add_argument ('--output-file', metavar='output_file',
                      help='A picture of Delta T over time')
 parser.add_argument ('--version', action='version', 
-                     version='chart_delta_T 2.0 2020-06-05',
+                     version='chart_delta_T 2.1 2024-06-01',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -146,14 +146,16 @@ data.set_index(["JDN"], inplace=True)
 
 last_JDN = data.index[-1]
 first_JDN = data.index[0]
-print ("JDN range is " + str(first_JDN) + ".5 to " + str(last_JDN) + ".5.")
+print ("JDN range of input file is " + str(first_JDN) + ".5 to "
+       + str(last_JDN) + ".5.")
 
 if (have_start_JDN == 0):
   start_JDN = first_JDN
 if (have_end_JDN == 0):
   end_JDN = last_JDN
 
-print ("Range limited to " + str(start_JDN) + ".5 and " + str(end_JDN) + ".5.")
+print ("JDN range limited to " + str(start_JDN) + ".5 and "
+       + str(end_JDN) + ".5.")
 bottom_deltaT = 69
 top_deltaT = 70
 print ("Domain is " + str(bottom_deltaT) + " to " + str(top_deltaT) + ".")
@@ -174,7 +176,7 @@ fig, ax = plt.subplots(1, 1)
 ax.set_title("Delta T")
 lineno = 0
 for source_name, source_data in \
-    data["delta_t"].groupby(data["Delta_T_source"]):
+    data["delta_t"].groupby(data["Delta_T_source"], observed=True):
   ax.plot(source_data,
           color=colors_list[lineno], linewidth=1.0,
           label=source_name)
