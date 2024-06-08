@@ -1,5 +1,5 @@
 #
-# Table of Extraordinary Days, last modified May 31, 2024.
+# Table of Extraordinary Days, last modified June 7, 2024.
 #
 # Copyright © 2024 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -20,24 +20,25 @@
 # a symbol.  Certain symbols have meaning, as described below.  (3) data lines,
 # formatted as three numbers: the Julian Day Number of the extraordinary day,
 # the length of that day in seconds, and the value of DTAI at the end of that
-# day.  Data lines must be ascending: earlier dates must come before later ones.
+# day.  Data lines must be ascending: earlier dates must come before later
+# dates.
 #
 # The Julian Day Number is a simple count of days, starting on
 # November 24, -4713.  This file contains only the integer part of the
 # Julian Day number: to get a proper Julian Day Number add 0.5.  If you
 # prefer to use Modified Julian Days (MJD) subtract 2400000 instead.
 #
-# DTAI is the difference between International Atomic
-# Time (TAI) and Coordinated Universal Time (UTC).  That difference is 0
+# DTAI is the difference between International Atomic Time (TAI) and
+# Coordinated Universal Time (UTC).  That difference is defined as 0 seconds
 # on January 1, 1958.  Every extraordinary day changes the value of DTAI
 # at its end by +1 second for days with 86,401 seconds, or -1 second for
 # days with 86,399 seconds.  Since the data lines must be ordered,
 # each will have a DTAI that differs from the preceeding and succeeding line
-# by plus or minus 1.
+# by plus or minus 1 second.
 #
 # The symbols used in this file are as follows:
 #
-# START_DATE the Julian Day Number of the beginning of the data.  There may
+# START_DATE is the Julian Day Number of the beginning of the data.  There may
 # be extraordinary days before this date, but they are not recorded in this
 # file.  An attempt to determine the time between two dates, either of which
 # is before the START_DATE, is likely to be inaccurate.
@@ -48,10 +49,11 @@
 # after the END_DATE, is likely to be inaccurate.
 #
 # EXPIRATION_DATE is the Julian Day Number after which this file should have
-# been updated.  If you find yourself using this file after its EXPIRATION_DATE,
-# look for an updated version of the file.  If necessary you can update it
-# yourself, using IERS Bulletin C.  Extraordinary days after the expiration date
-# are projections, and are subject to change in later revisions of this file.
+# been updated.  If you find yourself using this file after its
+# EXPIRATION_DATE, look for an updated version of the file.  If necessary you
+# can update it yourself, using IERS Bulletin C.  Extraordinary days after the
+# expiration date are projections, and are subject to change in later
+# revisions of this file.
 #
 # CHECKSUM is 64 hex digits of the SHA256 hash of this file, excluding the
 # CHECKSUM line.  The sample reading software verifies the checksum, to

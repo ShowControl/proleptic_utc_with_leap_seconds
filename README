@@ -1,5 +1,5 @@
 # README file for proleptic_utc_with_leap_seconds
-Last updated May 26, 2024.
+Last updated June 7, 2024.
 
 Schedule leap seconds for the past and future using today's definition of UTC.
 
@@ -104,14 +104,17 @@ the year of the first change in the leap second table.
 in file extraordinary_days.dat.  Update the copyright date if necessary.
 
 8. Edit file proleptic_UTC.tex.in to update the date on the cover page and
-in the PDF metadata.  If the previous edit to this file was in an earlier month,
-update the "time of this writing" phrase in the body of the document.
+in the PDF metadata.  If the previous edit to this file was in an earlier
+month, update the "time of this writing" phrase in the body of the document.
 Update the copyright date if necessary.
 
 9. Edit references.bib to update the publication date of "Extending Coordinated
-Universal Time to Dates Before 1972".  This is the documentation for the
-project, which you will be publishing as part of updating the project.
-Update the copyright date if necessary.
+Universal Time to Dates Before 1972".  This document is the documentation for
+this project, which you will be re-publishing as part of updating the project.
+The libtime project depends on this project, so it will necessarily be updated
+when this project is updated.  In anticipation of that, update the publication
+date of "Avoid Using POSIX time_t for Telling Time".  Update the copyright
+date if necessary.
 
 10. Remove the files from the previous version of the project:
 
@@ -119,7 +122,7 @@ Update the copyright date if necessary.
     rm *.gz
     rm *.rpm
 
-11. Rebuild and verify the extraordinary_daye.dat file using the updated files.
+11. Rebuild and verify the extraordinary_days.dat file using the updated files.
 You will need packages autoconf, automake and libtool.
 
     ./autogen.sh --download
@@ -279,9 +282,12 @@ in the PDF metadata.  If the previous edit to this file was in an earlier month,
 update the "time of this writing" phrase in the body of the document.
 Update the copyright date if necessary.
 
-12. Edit references.bib to update the publication date of
-"Extending Coordinates Universal Time to Dates Before 1972".  This is the
-documentation for this project, which you will be updating below.
+12. Edit references.bib to update the publication date of "Extending
+Coordinated Universal Time to Dates Before 1972".  This document is the
+documentation for this project, which you will be re-publishing as part of
+updating the project.  The libtime project depends on this project, so it will
+necessarily be updated when this project is updated.  In anticipation of that,
+update the publication date of "Avoid Using POSIX time_t for Telling Time".
 Update the copyright date if necessary.
 
 13. Rebuild the configure file and the files it uses from configure.ac and
