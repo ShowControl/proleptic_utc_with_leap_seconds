@@ -3,7 +3,7 @@
 #
 # Parse the text file of IERS Bulletin D.
 
-#   Copyright © 2021 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2024 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -37,14 +37,15 @@ import argparse
 
 parser = argparse.ArgumentParser (
   formatter_class=argparse.RawDescriptionHelpFormatter,
-  description='Parse IERS Bulletin A',
-  epilog='Copyright © 2021 by John Sauter' + '\n' +
+  description='Parse IERS Bulletin D',
+  epilog='Copyright © 2024 by John Sauter' + '\n' +
   'License GPL3+: GNU GPL version 3 or later; ' + '\n' +
   'see <http://gnu.org/licenses/gpl.html> for the full text ' +
   'of the license.' + '\n' +
-  'This is free software: you are free to change and redistribute it. ' + '\n' +
+  'This is free software: you are free to change and redistribute it. ' +
+  '\n' +
   'There is NO WARRANTY, to the extent permitted by law. ' + '\n' + '\n'
-  'The input file is the IERS Bulletin A text file; ' +
+  'The input file is the IERS Bulletin D text file; ' +
   'the output is an extraction of the information. ' + '\n')
 parser.add_argument ('input_file',
                      help='IERS Bulletin D as a text file')
@@ -52,9 +53,10 @@ parser.add_argument ('--csv-output_file', metavar='csv_output_file',
                      help='write CSV output to the specified file')
 parser.add_argument ('--latest-date-output_file',
                      metavar='latest_date_output_file',
-                     help='write the latest Bulletin D date to the specified file')
+                     help='write the latest Bulletin D date ' +
+                     'to the specified file')
 parser.add_argument ('--version', action='version', 
-                     version='parse_bulletin_A 1.1 2021-07-01',
+                     version='parse_bulletin_D 1.2 2024-08-15',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -166,7 +168,8 @@ def process_file (file_name):
            (right_side[-4] == '\tParis,') or
            (right_side[-4] == '\t\t\t\tParis,'))):
         date_found = 1
-        date_text = right_side[-3] + " " + right_side[-2] + " " + right_side[-1]
+        date_text = (right_side[-3] + " " + right_side[-2] + " " +
+           right_side[-1])
         datetime_object = datetime.datetime.strptime (date_text, '%d %B %Y')
         date_object = datetime_object.date()
         if (date_object > latest_date):
@@ -260,7 +263,8 @@ DUT1_values = dict()
 for the_date in sorted(bull_info):
   if (prev_date != None):
     for target_date in range (prev_date.toordinal(), the_date.toordinal()):
-      DUT1_values[datetime.date.fromordinal(target_date)] = bull_info[prev_date]
+      DUT1_values[datetime.date.fromordinal(target_date)] = (
+                                                          bull_info[prev_date])
   prev_date = the_date
 # And then to the latest date seen
 for target_date in range (prev_date.toordinal(), latest_date.toordinal()+1):
@@ -310,3 +314,5 @@ if (do_trace == 1):
 
 if (error_counter > 0):
   print ("Encountered " + str(error_counter) + " errors.")
+
+# End of file parse_bulletin_D.py
