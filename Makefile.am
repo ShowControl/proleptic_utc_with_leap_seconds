@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: October 28, 2023.
+# File: Makefile.am, author: John Sauter, date: October 27, 2024.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -144,7 +144,8 @@ finals.all
 # is the data.  Exdays_01.dat and exdays_04.dat are source files.
 # Exdays_02.dat is computed from IERS Bulletin C.  Exdays_03.dat is
 # computed from the other four files, and exdays_05.dat is the output
-# of the algorithm which converts Delta T into a schedule of extraordinary days.
+# of the algorithm which converts Delta T into a schedule of extraordinary
+# days.
 
 # You can download an updated IERS finals.all file from
 # https://maia.usno.navy.mil/ser7/finals.all.
