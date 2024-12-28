@@ -3,7 +3,7 @@
 #
 # Parse the text file of IERS Bulletin A.
 
-#   Copyright © 2022 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2024 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -38,11 +38,12 @@ import argparse
 parser = argparse.ArgumentParser (
   formatter_class=argparse.RawDescriptionHelpFormatter,
   description='Parse IERS Bulletin A',
-  epilog='Copyright © 2022 by John Sauter' + '\n' +
+  epilog='Copyright © 2024 by John Sauter' + '\n' +
   'License GPL3+: GNU GPL version 3 or later; ' + '\n' +
   'see <http://gnu.org/licenses/gpl.html> for the full text ' +
   'of the license.' + '\n' +
-  'This is free software: you are free to change and redistribute it. ' + '\n' +
+  'This is free software: you are free to change and redistribute it. '
+  + '\n' +
   'There is NO WARRANTY, to the extent permitted by law. ' + '\n' + '\n'
   'The input file is the IERS Bulletin A text file; ' +
   'the output is an extraction of the information. ' + '\n')
@@ -54,7 +55,7 @@ parser.add_argument ('--latest-date-output_file',
                      metavar='latest_date_output_file',
                      help='write the latest Bulletin A date to the specified file')
 parser.add_argument ('--version', action='version', 
-                     version='parse_bulletin_A 3.6 2022-07-28',
+                     version='parse_bulletin_A 3.7 2024-12-26',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -132,6 +133,10 @@ def process_file (file_name):
           find_DUT1 = stripped_text_line[1:7]
           if (do_trace == 1):
             tracefile.write ("finding DUT1 in " + find_DUT1 + ".\n");
+        if (find_DUT1[-1] != " "):
+          find_DUT1 = stripped_text_line[1:6]
+          if (do_trace == 1):
+            tracefile.write ("finding DUT1 in " + find_DUT1 + ".\n");
         DUT1 = float(find_DUT1)
         next_line_is_DUT1 = 0
       if (stripped_text_line=='DUT1= (UT1-UTC) transmitted with time signals'):
@@ -207,3 +212,6 @@ if (do_trace == 1):
 
 if (error_counter > 0):
   print ("Encountered " + str(error_counter) + " errors.")
+
+# End of file parse_bulletin_A.py
+  
