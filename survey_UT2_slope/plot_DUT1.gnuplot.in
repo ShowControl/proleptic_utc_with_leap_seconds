@@ -3,7 +3,7 @@ set title "History of DUT1 as of @latest_date@\nJumps by 1 second are caused by 
 set xlabel "Year numbers mark January 1"
 set xtics out rotate by 45 right
 set xtics format "%Y" font "Sans,8"
-set xtics 31557600
+#set xtics 31557600
 set grid xtics
 set ylabel "DUT1 setting in seconds from IERS Bulletin D,\nwith missing information provided by Brooks Harris and other sources" \
     font "Serif,10"

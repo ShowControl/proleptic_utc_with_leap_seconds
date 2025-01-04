@@ -14,11 +14,11 @@
 
 @SET_MAKE@
 
-# File: Makefile.am, author: John Sauter, date: October 27, 2024.
+# File: Makefile.am, author: John Sauter, date: January 4, 2025.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
-#   Copyright © 2023 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2025 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by

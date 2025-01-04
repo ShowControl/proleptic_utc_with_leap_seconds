@@ -3,7 +3,7 @@ set title "History of Predicted Slope of UT2-UTC\nas of @latest_date@" \
 set xlabel "Date of Prediction; year numbers mark January 1"
 set xtics out rotate by 45 right
 set xtics format "%Y"
-set xtics 31557600
+#set xtics 31557600
 set grid xtics
 set ylabel "predicted slope of UT2-UTC from IERS Bulletin A\nin seconds per day"
 set minussign
