@@ -1,5 +1,5 @@
 #
-# Table of Extraordinary Days, last modified May 23, 2025.
+# Table of Extraordinary Days, last modified May 30, 2025.
 #
 # Copyright © 2025 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -22,6 +22,10 @@
 # the length of that day in seconds, and the value of DTAI at the end of that
 # day.  Data lines must be ascending: earlier dates must come before later
 # dates.
+#
+# Years are numbered based on the astronomical convention.  Positive numbers
+# are the AD year according to the Gregorian calendar.  The year before year 1
+# is called year 0, the year before year 0 is called year -1, and so forth.
 #
 # The Julian Day Number is a simple count of days, starting on
 # November 24, -4713.  This file contains only the integer part of the

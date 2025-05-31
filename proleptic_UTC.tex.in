@@ -140,11 +140,35 @@
 %\newcommand{\filename}{\ttfamily\smaller}
 
 % 13. New Computer Modern, book weight
+\usepackage{fontspec}
 \usepackage{unicode-math}
-\usepackage{newcomputermodern}
+
+\setmainfont[%
+Numbers=OldStyle,%
+ItalicFont=NewCM10-Italic.otf,%
+BoldFont=NewCM10-Bold.otf,%
+BoldItalicFont=NewCM10-BoldItalic.otf,%
+SmallCapsFeatures={Numbers=OldStyle}]{NewCM10-Regular.otf}
+
+\setsansfont[%
+Numbers=OldStyle,%
+ItalicFont=NewCMSans10-Oblique.otf,%
+BoldFont=NewCMSans10-Bold.otf,%
+BoldItalicFont=NewCMSans10-BoldOblique.otf,%
+SmallCapsFeatures={Numbers=OldStyle}]{NewCMSans10-Regular.otf}
+
+\setmonofont[ItalicFont=NewCMMono10-Italic.otf,%
+Numbers=OldStyle,%
+BoldFont=NewCMMono10-Bold.otf,%
+BoldItalicFont=NewCMMono10-BoldOblique.otf,%
+SmallCapsFeatures={Numbers=OldStyle}]{NewCMMono10-Regular.otf}
+
+\setmathfont{NewCMMath-Regular.otf}
+
+\addfontfeatures{Renderer=Harfbuzz}
 \newcommand{\filename}{\ttfamily\smaller}
 
-% 14. Bonum, not yet available in TexLive-2024/Fedora 40 as of July 28, 2024
+% 14. Bonum, not yet available in TexLive-2023/Fedora 40 as of July 28, 2024
 %\usepackage{unicode-math}
 %\usepackage{bonum-otf}
 %\newcommand{\filename}{\ttfamily\smaller}
@@ -208,17 +232,17 @@
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2025 by John Sauter},
   pdfurl={https://www.systemeyescomputerstore.com/leap\%5Fseconds/proleptic\%5FUTC.pdf},
-  pdfdate={2025-05-23},
+  pdfdate={2025-05-30},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-Us}
 }
-\date{2025-05-23}
+\date{2025-05-30}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
   using the modern definition of Coordinated Universal Time to cover the
-  past \num{4000} years.  Use that time scale to construct a table of
-  leap seconds.
+  past \num[mode=text]{4000} years.
+  Use that time scale to construct a table of leap seconds.
 \end{abstract}
 \begin{description}
 \item[Keywords:]Coordinated Universal Time; UTC; proleptic UTC;
@@ -255,16 +279,17 @@ by 100.  However, if the year is also evenly divisible by 400 it shall
 have a February 29.
 
 \section{Matching SI Seconds to the Rotation of the Earth}
-To fit the SI second into days, UTC starts a new day every \num{86399},
-\num{86400} or \num{86401} seconds.
-Most days are ordinary days with \num{86400} seconds.
+To fit the SI second into days, UTC starts a new day every
+\num[mode=text]{86399}, \num[mode=text]{86400} or \num[mode=text]{86401}
+seconds.
+Most days are ordinary days with \num[mode=text]{86400} seconds.
 The last day of a month can be an extraordinary day, with
-\num{86399} or \num{86401} seconds.
-In an extraordinary day with \num{86399} seconds, the last second
+\num[mode=text]{86399} or \num[mode=text]{86401} seconds.
+In an extraordinary day with \num[mode=text]{86399} seconds, the last second
 of the day is called 23:59:58.
-In an ordinary day with \num{86400} seconds, the last second of the
+In an ordinary day with \num[mode=text]{86400} seconds, the last second of the
 day is called 23:59:59.
-In an extraordinary day with \num{86401} seconds, the last second
+In an extraordinary day with \num[mode=text]{86401} seconds, the last second
 of the day is called 23:59:60.
 
 The extraordinary days are scheduled by the International Earth
@@ -286,8 +311,9 @@ years 1700, 1800 and 1900 have not included February 29, but the years
 
 The IERS began scheduling extraordinary days in 1972 so that civil time could
 use the SI second rather than a variable\hyp{}length second.
-As of the time of this writing, in May of 2025, there have been \num{27}
-days with \num{86401} seconds and \num{0} days with \num{86399} seconds.
+As of the time of this writing, in May of 2025, there have been
+\num[mode=text]{27} days with \num[mode=text]{86401} seconds and
+\num[mode=text]{0} days with \num[mode=text]{86399} seconds.
 
 Before 1972 there was a time scale also called UTC, but which used a
 different method of matching SI seconds to the Earth's rotation.
@@ -314,7 +340,8 @@ the rotation rate of the Earth in the past.
 \subsection{Time Scale}
 For a time scale to be useful for measuring events, it must be based
 on some physical property that can be measured.  UTC is based on the
-SI second, which is defined as the duration of \num{9192631770} periods of the
+SI second, which is defined as the duration of \num[mode=text]{9192631770}
+periods of the
 radiation corresponding to the transition between the two hyperfine levels of
 the ground state of the cesium~133 atom when it is at rest with respect to
 the Earth, at a temperature of 0~Kelvin, and located at mean sea level.
@@ -335,19 +362,20 @@ the SI second as it is presently defined.
 However, when describing ancient events, we do not need to actually measure
 time, we can instead imagine that we are measuring it.  For example, we say
 that the Big Bang that marked the start of the Universe took place
-\num{13.787}~billion
+\num[mode=text]{13.787}~billion
 years ago.  In this context, ``years'' does not refer to the number of times
 that the Earth has gone around the Sun since the Big Bang, because the Earth
-has only been in existence for the last \num{4.54}~billion years.
+has only been in existence for the last \num[mode=text]{4.54}~billion years.
 Instead, we take the present duration of a year and project it back in time,
 thus imagining that we are measuring time using the year as it presently
 exists.
 
 Similarly, we can imagine that atomic clocks have been measuring time for
-the last \num{4000} years, and use that as our time scale.  This imaginary time
+the last \num[mode=text]{4000} years, and use that as our time scale.
+This imaginary time
 scale does not have the precision of International Atomic Time, since
-there were not, in fact, atomic clocks \num{4000} years ago, but it is
-sufficient for our limited purpose.
+there were not, in fact, atomic clocks \num[mode=text]{4000} years ago,
+but it is sufficient for our limited purpose.
 \subsection{Rotation Rate of the Earth}
 The Earth revolves around the Sun at a constant rate, so the schedule of
 366-day years is predictable.  The Earth's rotation rate, on the other hand,
@@ -356,12 +384,12 @@ as \href{https://en.wikipedia.org/wiki/%CE%94T_(timekeeping)}{$\Delta$T},
   which is the difference between
   \href{https://en.wikipedia.org/wiki/Terrestrial_Time}{Terrestrial Time}%
   \footnote{Terrestrial Time differs from International Atomic Time by
-    \num{32.184} seconds.}and UTC.
+    \num[mode=text]{32.184} seconds.}and UTC.
 Using historical records of astronomical
 observations, F.~R.~Stephenson, L.~V.~Morrison, C.~Y.~Hohenkerk
 and M.~Zawilski have
-estimated the values of $\Delta$T from the year \num{-2000} to
-\num{2500}\citep{Stephenson20160404}%
+estimated the values of $\Delta$T from the year \num[mode=text]{-2000} to
+\num[mode=text]{2500}\citep{Stephenson20160404}%
 \embedfile[desc={Measurement of the Earth's Rotation: 720 BC to AD 2500},
   mimetype={application/PDF},]{@srcdir@/20160404.full.pdf}.
 The table below is based on the data calculated in that paper,
@@ -378,12 +406,12 @@ I have averaged the values.  In the table below I have presented
 $\Delta$T as seconds, omitted the estimated error, and added a column
 showing the Julian Day Number for each date.
 The Julian Day Number is the count of days since noon on
-November 24, \num{-4713},
+November 24, -4713,
 so using it to measure time avoids the complexity of the Gregorian calendar.
-Because the Julian Day starts at noon, adding \num{0.5} means the midnight
-which starts the next day.
+Because the Julian Day starts at noon, adding \num[mode=text]{0.5} means the
+midnight which starts the next day.
 
-{\addfontfeatures{Numbers={Monospaced,Lining}}%
+{\addfontfeatures{Numbers={Monospaced,Lining,Tabular}}%
 \input{delta_t.tex}}
 \embedfile[desc={Table of historical Delta T values},
   mimetype={application/latex},
@@ -400,7 +428,7 @@ so I will follow his lead for those dates.
 To schedule extraordinary days, we establish an anchor point
 and march forward through time, observing the deviation of
 $\Delta$T from the value at the anchor point.
-Before the deviation reaches \num{0.9} seconds, we must designate
+Before the deviation reaches \num[mode=text]{0.9} seconds, we must designate
 an extraordinary day.
 If the interval includes a June~30 or December~31,
 we will designate that day.  If it does not, the next dates to choose
@@ -415,14 +443,14 @@ UTC.\footnote{The definition of UTC
             {@srcdir@/R-REC-TF.460-6-200202-I!!PDF-E.pdf}
 }.  However, if the value of $\Delta$T changes so much that two extraordinary
 days are needed in the same month, we designate the
-\num{15}{\textsuperscript {th}} and the last day of the month.
+\num[mode=text]{15}{\textsuperscript {th}} and the last day of the month.
 Details of this process are in file {\filename read\_delta\_t.py},
 which is embedded in this PDF file, as described in section
 \ref{section:EmbeddedFiles}.
 
 At the end of each extraordinary day, the difference between UTC and
 International Atomic Time changes by one second.  That difference is
-called DTAI, and it is defined to be \num{0} at the beginning of
+called DTAI, and it is defined to be \num[mode=text]{0} at the beginning of
 January~1, 1958.
 
 The result of the scheduling process is too large for this paper, but
@@ -483,33 +511,33 @@ and astronomical projections of $\Delta$T.
   ucfilespec={@builddir@/extraordinary\_days.tex}]
           {@builddir@/extraordinary_days.tex}
 
-{\addfontfeatures{Numbers={Monospaced,Lining}}%
+{\addfontfeatures{Numbers={Monospaced,Lining,Tabular}}%
 \input{extraordinary_days.tex}}
 
 Another way of presenting the change in DTAI over time is by a
 series of charts.
-Figure \ref{figure:DTAI} shows DTAI from the year \num{-2000} to \num{2500},
-\ref{figure:DTAI_since_1500} from \num{1500} to \num{2050},
-\ref{figure:DTAI_since_1600} from \num{1600} to \num{2050},
-\ref{figure:DTAI_since_1700} from \num{1700} to \num{2050},
-\ref{figure:DTAI_since_1800} from \num{1800} to \num{2050},
-\ref{figure:DTAI_since_1900} from \num{1900} to \num{2050},
-\ref{figure:DTAI_since_1950} from \num{1950} to \num{2050} and
-\ref{figure:DTAI_since_2000} from \num{2000} to \num{2100}.
+Figure \ref{figure:DTAI} shows DTAI from the year -2000 to 2500,
+\ref{figure:DTAI_since_1500} from 1500 to 2050,
+\ref{figure:DTAI_since_1600} from 1600 to 2050,
+\ref{figure:DTAI_since_1700} from 1700 to 2050,
+\ref{figure:DTAI_since_1800} from 1800 to 2050,
+\ref{figure:DTAI_since_1900} from 1900 to 2050,
+\ref{figure:DTAI_since_1950} from 1950 to 2050 and
+\ref{figure:DTAI_since_2000} from 2000 to 2100.
 
 The first chart shows only a smooth line.  Subsequent charts focus closer
 to the present and so show the randomness in the Earth's rate of rotation
 that has been measurable since the invention of the telescope and the
 pendulum clock.
 
-\embedfile[desc={Values of DTAI since the year \num{-2000}},
+\embedfile[desc={Values of DTAI since the year -2000},
   mimetype=(application/latex),
   ucfilespec={@builddir@/values\_of\_DTAI.tex}]
           {@builddir@/values_of_DTAI.tex}
 \begin{figure}[htb]
   \begin{center}
     \include{@builddir@/values_of_DTAI}
-    \caption{Values of DTAI from \num{-2000} to \num{2500}}
+    \caption{Values of DTAI from -2000 to 2500}
     \label{figure:DTAI}
   \end{center}
 \end{figure}
@@ -593,7 +621,7 @@ pendulum clock.
 \begin{figure}[htb]
   \begin{center}
     \include{@builddir@/values_of_DTAI_since_2000}
-    \caption{Values of DTAI from \num{2000} to \num{2100}}
+    \caption{Values of DTAI from 2000 to 2100}
     \label{figure:DTAI_since_2000}
   \end{center}
 \end{figure}
@@ -612,11 +640,12 @@ and David Madore\footnote{
   \href{http://www.madore.org/~david/computers/unix-leap-seconds.html}{http://www.madore.org/~david/computers/unix-leap-seconds.html}}
 have made proposals to improve the way POSIX deals with extraordinary days.
 These proposals require a table of extraordinary days.  Implementations
-of these proposals which wish to deal with dates before \num{1972} can
+of these proposals which wish to deal with dates before 1972 can
 use table \ref{table:JDN_DTAI}.
     
 \section{Conclusion}
-The exact choice of when to have days with \num{86399} or \num{86401}
+The exact choice of when to have days with \num[mode=text]{86399} or
+\num[mode=text]{86401}
 seconds in ancient times is somewhat arbitrary, since we don't have
 sufficiently accurate records of the Earth's rotation
 rate before the invention of the telescope and the pendulum clock.
