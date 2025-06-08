@@ -1,12 +1,14 @@
 set encoding utf8
+set minussign
 set style data steps
 set grid xtics
 set grid ytics
 set xtics rotate by 90
 set xtics right
 set title "Values of DTAI 2015 to 2100"
-set xlabel "Date"
+set xlabel "Date" offset 0,-1
 set ylabel "DTAI"
+set format y "\\num[mode=text]{%g}"
 set xrange [2457024:2488869]
 set yrange [30:70]
 load "@builddir@/set_xtics_005yr.gnuplot"

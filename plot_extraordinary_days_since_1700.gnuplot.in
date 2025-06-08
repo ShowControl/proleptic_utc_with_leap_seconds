@@ -1,14 +1,16 @@
 set encoding utf8
+set minussign
 set style data steps
 set grid xtics
 set grid ytics
 set xtics rotate by 90
 set xtics right
 set title "Values of DTAI Since 1700"
-set xlabel "Date"
+set xlabel "Date" offset 0,-1
 set ylabel "DTAI"
+set format y "\\num[mode=text]{%g}"
 set xrange [2341972:2470000]
-load "@builddir@/set_xtics_015yr.gnuplot"
+load "@builddir@/set_xtics_020yr.gnuplot"
 set nokey
 set xtic rotate by 45
 set terminal lua tikz size 12,7 latex
