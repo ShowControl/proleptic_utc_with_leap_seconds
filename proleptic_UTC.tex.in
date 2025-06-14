@@ -144,24 +144,24 @@
 \usepackage{unicode-math}
 
 \setmainfont[%
-Numbers=OldStyle,%
+Numbers=Lowercase,%
 ItalicFont=NewCM10-Italic.otf,%
 BoldFont=NewCM10-Bold.otf,%
 BoldItalicFont=NewCM10-BoldItalic.otf,%
-SmallCapsFeatures={Numbers=OldStyle}]{NewCM10-Regular.otf}
+SmallCapsFeatures={Numbers=Lowercase}]{NewCM10-Regular.otf}
 
 \setsansfont[%
-Numbers=OldStyle,%
+Numbers=Lowercase,%
 ItalicFont=NewCMSans10-Oblique.otf,%
 BoldFont=NewCMSans10-Bold.otf,%
 BoldItalicFont=NewCMSans10-BoldOblique.otf,%
-SmallCapsFeatures={Numbers=OldStyle}]{NewCMSans10-Regular.otf}
+SmallCapsFeatures={Numbers=Lowercase}]{NewCMSans10-Regular.otf}
 
 \setmonofont[ItalicFont=NewCMMono10-Italic.otf,%
-Numbers=OldStyle,%
+Numbers=Lowercase,%
 BoldFont=NewCMMono10-Bold.otf,%
 BoldItalicFont=NewCMMono10-BoldOblique.otf,%
-SmallCapsFeatures={Numbers=OldStyle}]{NewCMMono10-Regular.otf}
+SmallCapsFeatures={Numbers=Lowercase}]{NewCMMono10-Regular.otf}
 
 \setmathfont{NewCMMath-Regular.otf}
 
@@ -232,11 +232,11 @@ SmallCapsFeatures={Numbers=OldStyle}]{NewCMMono10-Regular.otf}
   pdfcontacturl={https://www.systemeyescomputerstore.com},
   pdfcopyright={Copyright {\copyright} 2025 by John Sauter},
   pdfurl={https://www.systemeyescomputerstore.com/leap\%5Fseconds/proleptic\%5FUTC.pdf},
-  pdfdate={2025-06-06},
+  pdfdate={2025-06-13},
   pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0},
   pdfmetalang={en-Us}
 }
-\date{2025-06-06}
+\date{2025-06-13}
 \maketitle
 \begin{abstract}
   Using ancient observations of the Sun and Moon, construct a time scale
@@ -411,7 +411,7 @@ so using it to measure time avoids the complexity of the Gregorian calendar.
 Because the Julian Day starts at noon, adding \num[mode=text]{0.5} means the
 midnight which starts the next day.
 
-{\addfontfeatures{Numbers={Monospaced,Lining,Tabular}}%
+{\addfontfeatures{Numbers={Monospaced}}
 \input{delta_t.tex}}
 \embedfile[desc={Table of historical Delta T values},
   mimetype={application/latex},
@@ -510,9 +510,8 @@ and astronomical projections of $\Delta$T.
   mimetype={application/latex},
   ucfilespec={@builddir@/extraordinary\_days.tex}]
           {@builddir@/extraordinary_days.tex}
-
-{\addfontfeatures{Numbers={Monospaced,Lining,Tabular}}%
-\input{extraordinary_days.tex}}
+  
+\input{extraordinary_days.tex}
 
 Another way of presenting the change in DTAI over time is by a
 series of charts.

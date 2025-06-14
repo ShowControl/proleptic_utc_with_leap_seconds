@@ -4,7 +4,7 @@
 # read_extraordinary_days_table is a sample program which illustrates how
 # to read the table of extraordinary days.
 
-#   Copyright © 2023 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2025 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ parser = argparse.ArgumentParser (
 parser.add_argument ('input_file',
                      help='the table of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_extraordinary_days_table 2.4 2023-11-16',
+                     version='read_extraordinary_days_table 3.0 2025-06-14',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -338,7 +338,7 @@ if (error_counter == 0):
 #
 if ((do_latex_output == 1) & (error_counter == 0)):
   latex_output_file = open (latex_output_file_name, 'wt')
-  latex_output_file.write ("\\begin{longtable}{|r|r|r|l|}" + "\n")
+  latex_output_file.write ("\\begin{longtable}{|c|c|r|l|}" + "\n")
   latex_output_file.write ("\\caption{Extraordinary days ")
   latex_output_file.write ("from " + greg (latex_start_jdn, " ") + " to " +
                            greg (latex_end_jdn, " ") + "} \\\\" + "\n")
@@ -356,7 +356,8 @@ if ((do_latex_output == 1) & (error_counter == 0)):
         jdn_length = day_length [extraordinary_day]
       else:
         jdn_length = 86400
-      latex_output_file.write ("\\num{" + str(extraordinary_day) + "}.5 & " +
+      latex_output_file.write ("\\num{" +
+                               str(extraordinary_day) + ".5} & " +
                                "\\num{" + str(jdn_length) + "} & " +
                                "\\num{" + str(DTAI) + "} & " +
                                "\\# " + greg (extraordinary_day, " ") +
