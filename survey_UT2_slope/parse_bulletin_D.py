@@ -3,7 +3,7 @@
 #
 # Parse the text file of IERS Bulletin D.
 
-#   Copyright © 2024 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2025 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ import argparse
 parser = argparse.ArgumentParser (
   formatter_class=argparse.RawDescriptionHelpFormatter,
   description='Parse IERS Bulletin D',
-  epilog='Copyright © 2024 by John Sauter' + '\n' +
+  epilog='Copyright © 2025 by John Sauter' + '\n' +
   'License GPL3+: GNU GPL version 3 or later; ' + '\n' +
   'see <http://gnu.org/licenses/gpl.html> for the full text ' +
   'of the license.' + '\n' +
@@ -56,7 +56,7 @@ parser.add_argument ('--latest-date-output_file',
                      help='write the latest Bulletin D date ' +
                      'to the specified file')
 parser.add_argument ('--version', action='version', 
-                     version='parse_bulletin_D 1.2 2024-08-15',
+                     version='parse_bulletin_D 1.3 2025-06-21',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -149,8 +149,10 @@ def process_file (file_name):
         
       stripped_text_line = stripped_text_line.replace('Paris,', 'Paris, ')
       stripped_text_line = stripped_text_line.replace('  ', ' ')
+      # Sometimes the month name is written in French.
       stripped_text_line = stripped_text_line.replace ('Mai', 'May')
       stripped_text_line = stripped_text_line.replace ('Juin', 'June')
+      stripped_text_line = stripped_text_line.replace ('juin', 'June')
       stripped_text_line = stripped_text_line.replace ('Octobre', 'October')
       stripped_text_line = stripped_text_line.replace ('Decembre', 'December')
       
