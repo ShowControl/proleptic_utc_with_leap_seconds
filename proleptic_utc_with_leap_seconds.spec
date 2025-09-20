@@ -1,5 +1,5 @@
 Name:           proleptic_utc_with_leap_seconds
-Version:        2025.08.22
+Version:        2025.09.19
 Release:        1%{?dist}
 Summary:        Schedule leap seconds
 
@@ -11,7 +11,7 @@ BuildArch: noarch
 
 BuildRequires:  gcc
 BuildRequires:  make
-BuildRequires:  python3 >= 3.10
+BuildRequires:  python3 >= 3.13
 BuildRequires:  git
 BuildRequires:  python3-jdcal
 BuildRequires:  python3-numpy
@@ -100,6 +100,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+ * Fri Sep 19 2025 John Sauter <John_Sauter@systemeyescomputerstore.com>
+ - 2025.09.19-1 Adjust future leap seconds starting in 2161.
  * Fri Aug 22 2025 John Sauter <John_Sauter@systemeyescomputerstore.com>
  - 2025.08.22-1 Adjust future leap seconds starting in 2099.
  * Fri Aug 15 2025 John Sauter <John_Sauter@systemeyescomputerstore.com>
