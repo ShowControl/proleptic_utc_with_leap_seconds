@@ -1,4 +1,4 @@
 Start date is 990574.5 = 1 Jan -2000
 End date is 2634166.5 = 1 Jan 2500
-Expiration date is 2461219.5 = 28 Jun 2026
+Expiration date is 2461402.5 = 28 Dec 2026
 Checksum is correct.
