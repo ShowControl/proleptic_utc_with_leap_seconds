@@ -1,9 +1,9 @@
 Name:           proleptic_utc_with_leap_seconds
-Version:        2026.04.10
+Version:        2026.04.17
 Release:        1%{?dist}
 Summary:        Schedule leap seconds
 
-License:        GPLv3+
+License:        GPL-3.0-or-later AND CC-BY-SA-4.0
 URL:            https://github.com/ShowControl/proleptic_UTC_with_leap_seconds
 Source0:        https://github.com/ShowControl/proleptic_utc_with_leap_seconds/blob/master/proleptic_utc_with_leap_seconds-%{version}.tar.gz
                 
@@ -17,8 +17,6 @@ BuildRequires:  python3-jdcal
 BuildRequires:  python3-numpy
 BuildRequires:  python3-scipy
 BuildRequires:  python3-pandas
-
-%global _hardened_build 1
 
 %description
 Schedule leap seconds in the distant past and far future
@@ -100,6 +98,8 @@ includes the RPM spec file.
 %license COPYING
 
 %changelog
+ * Fri Apr 17 2026 John Sauter <John_Sauter@systemeyescomputerstore.com>
+ - 2026.04.17-1 Adjust future leap seconds starting in 2189.
  * Fri Apr 10 2026 John Sauter <John_Sauter@systemeyescomputerstore.com>
  - 2026.04.10-1 Adjust future leap seconds starting in 2071.
  * Fri Mar 20 2026 John Sauter <John_Sauter@systemeyescomputerstore.com>
