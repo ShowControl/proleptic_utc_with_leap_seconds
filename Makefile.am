@@ -1,8 +1,8 @@
-# File: Makefile.am, author: John Sauter, date: January 4, 2025.
+# File: Makefile.am, author: John Sauter, date: May 17, 2026.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
-#   Copyright © 2025 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2026 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ chart5/chart_deltaT.py \
 chart5/Makefile
 
 EXTRA_DIST += \
-references.bib exdays_01.dat exdays_04.dat finals.all \
+references.bib exdays_01.dat exdays_04.dat finals.all.csv \
 ser7.dat bulletinc.dat \
 values_of_delta_T.csv USNO_delta_T.csv plot_extraordinary_days.gnuplot \
 plot_extraordinary_days_since_1500.gnuplot \
@@ -114,7 +114,7 @@ values_of_DTAI_since_1500.tex values_of_DTAI_since_1600.tex \
 values_of_DTAI_since_1700.tex values_of_DTAI_since_1800.tex \
 values_of_DTAI_since_1900.tex values_of_DTAI_since_1950.tex \
 values_of_DTAI_since_2000.tex exdays_01.dat exdays_04.dat \
-finals.all 
+finals.all.csv
 	lualatex ${builddir}/proleptic_UTC.tex
 	lualatex ${builddir}/proleptic_UTC.tex
 	lualatex ${builddir}/proleptic_UTC.tex
@@ -132,7 +132,7 @@ values_of_DTAI_since_1500.tex values_of_DTAI_since_1600.tex \
 values_of_DTAI_since_1700.tex values_of_DTAI_since_1800.tex \
 values_of_DTAI_since_1900.tex values_of_DTAI_since_1950.tex \
 values_of_DTAI_since_2000.tex exdays_01.dat exdays_04.dat \
-finals.all 
+finals.all.csv
 	echo " " >${builddir}/proleptic_UTC.bbl
 	lualatex ${builddir}/proleptic_UTC.tex
 	bibtex ${builddir}/proleptic_UTC.aux
@@ -147,13 +147,11 @@ finals.all
 # of the algorithm which converts Delta T into a schedule of extraordinary
 # days.
 
-# You can download an updated IERS finals.all file from
-# https://maia.usno.navy.mil/ser7/finals.all.
-# The UT1-UTC projections beyond finals.all use a formula
-# in the latest issue of IERS Bulletin A, at
-# https://maia.usno.navy.mil/ser7/ser7.dat.
-# The expiration date is in IERS Bulletin C, at
-# https://hpiers.obspm.fr/iers/bul/bulc/bulletinc.dat
+# You can download an updated IERS finals.all.csv file
+# using the procedure below.
+# The UT1-UTC projections beyond finals.all.csv use a formula
+# in the latest issue of IERS Bulletin A, in ser7.dat.
+# The expiration date is in IERS Bulletin C, in bulletinc.dat.
 
 # The recipe below downloads the three files and
 # prints some information from the bulletins.  It also preserves the
@@ -181,7 +179,7 @@ download:
 # the changes in the schedule of leap seconds.
 # The old value for IERS-projection-days was 1461.
 #
-exdays_05.dat : read_delta_t.py values_of_delta_T.csv finals.all ser7.dat
+exdays_05.dat : read_delta_t.py values_of_delta_T.csv finals.all.csv ser7.dat
 	if [ -f ${builddir}/exdays_05.dat ]; then \
 	   mv ${builddir}/exdays_05.dat ${builddir}/exdays_05_previous.dat ; \
 	fi
@@ -192,7 +190,7 @@ exdays_05.dat : read_delta_t.py values_of_delta_T.csv finals.all ser7.dat
 ${builddir}/exdays_05.dat \
 --latex-output ${builddir}/IERS_delta_t.tex \
 --csv-output ${builddir}/delta_T.csv  \
---IERS-final=${srcdir}/finals.all --Tony-Finch-leaps --IERS-leaps \
+--IERS-final=${srcdir}/finals.all.csv --Tony-Finch-leaps --IERS-leaps \
 --UT1UTC-output=${builddir}/UT1UTC.csv --UT1UTC-start-jdn=2305814 \
 --USNO-delta-t=${srcdir}/USNO_delta_T.csv \
 --IERS-Bulletin-A=${srcdir}/ser7.dat \
@@ -208,7 +206,7 @@ no_parabola_exdays_05.dat : read_delta_t.py values_of_delta_T.csv \
 finals.all ser7.dat
 	python3 ${srcdir}/read_delta_t.py ${srcdir}/values_of_delta_T.csv \
 ${builddir}/no_parabola_exdays_05.dat \
---IERS-final=${srcdir}/finals.all --Tony-Finch-leaps --IERS-leaps \
+--IERS-final=${srcdir}/finals.all.csv --Tony-Finch-leaps --IERS-leaps \
 --UT1UTC-output=${builddir}/UT1UTC.csv --UT1UTC-start-jdn=2305814 \
 --USNO-delta-t=${srcdir}/USNO_delta_T.csv \
 --IERS-Bulletin-A=${srcdir}/ser7.dat \
