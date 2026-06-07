@@ -1,4 +1,4 @@
-# File: Makefile.am, author: John Sauter, date: May 17, 2026.
+# File: Makefile.am, author: John Sauter, date: June 6, 2026.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -108,7 +108,7 @@ EXTRA_DIST += proleptic_utc_with_leap_seconds.spec
 # Run luaLaTeX four times to get the forward references and
 # pdf bytecount right.
 proleptic_UTC.pdf : proleptic_UTC.tex proleptic_UTC.tex.in \
-proleptic_UTC.bbl \
+proleptic_UTC.bbl references.bib \
 delta_t.tex extraordinary_days.tex values_of_DTAI.tex \
 values_of_DTAI_since_1500.tex values_of_DTAI_since_1600.tex \
 values_of_DTAI_since_1700.tex values_of_DTAI_since_1800.tex \
