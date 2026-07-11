@@ -14,10 +14,10 @@ e-mail    : services.iers@obspm.fr
 http://hpiers.obspm.fr/eop-pc
  
  
-                                              Paris, 07 July 2025
+                                              Paris, 06 January 2026
  
  
-                                              Bulletin C 70
+                                              Bulletin C 71
  
                                               To authorities responsible
                                               for the measurement and
@@ -28,14 +28,14 @@ http://hpiers.obspm.fr/eop-pc
                           INFORMATION ON UTC - TAI
  
  
- NO leap second will be introduced at the end of December 2025.
+ NO leap second will be introduced at the end of June 2026.
  The difference between Coordinated Universal Time UTC and the
  International Atomic Time TAI is :
  
      from 2017 January 1, 0h UTC, until further notice : UTC-TAI = -37 s
  
  Leap seconds can be introduced in UTC at the end of the months of December
- or June, depending on the evolution of UT1-TAI. Bulletin C is mailed every
+ or June,  depending on the evolution of UT1-TAI. Bulletin C is mailed every
  six months, either to announce a time step in UTC, or to confirm that there
  will be no time step at the next possible date.
  
