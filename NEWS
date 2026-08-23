@@ -1,6 +1,11 @@
+2026-08-21
+  Adjust future leap seconds starting in 2045.
+  The next leap second is predicted to be on June 30, 2045,
+  and it will be a positive leap second.
+  
 2026-08-14
   Adjust future leap seconds starting in 2045.
-  The next leap second is pedicted to be on December 31, 2045,
+  The next leap second is predicted to be on December 31, 2045,
   and it will be a positive leap second.
   
 2026-08-07
