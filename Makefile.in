@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# File: Makefile.am, author: John Sauter, date: June 6, 2026.
+# File: Makefile.am, author: John Sauter, date: November 9, 2026.
 #
 # Build proleptic_UTC.pdf and extraordinary_days.dat
 
@@ -593,6 +593,9 @@ extraordinary_days.tex \
 verify_files.sh \
 check_output.txt \
 gnuplot.dat \
+set_xtics_500yr.gnuplot \
+set_xtics_400yr.gnuplot \
+set_xtics_300yr.gnuplot \
 set_xtics_200yr.gnuplot \
 set_xtics_025yr.gnuplot \
 set_xtics_030yr.gnuplot \
@@ -1371,7 +1374,7 @@ ${builddir}/exdays_05.dat \
 # used the IERS projection for UT2, make the following file:
 
 no_parabola_exdays_05.dat : read_delta_t.py values_of_delta_T.csv \
-finals.all ser7.dat
+finals.all.csv ser7.dat
 	python3 ${srcdir}/read_delta_t.py ${srcdir}/values_of_delta_T.csv \
 ${builddir}/no_parabola_exdays_05.dat \
 --IERS-final=${srcdir}/finals.all.csv --Tony-Finch-leaps --IERS-leaps \
@@ -1379,6 +1382,32 @@ ${builddir}/no_parabola_exdays_05.dat \
 --USNO-delta-t=${srcdir}/USNO_delta_T.csv \
 --IERS-Bulletin-A=${srcdir}/ser7.dat \
 --IERS-projection-days=-1
+
+# If you want to see how leaping works if we stop leaping by seconds
+# but leap by hours instead, make the following file:
+leap_hours_exdays_05.dat : read_delta_t.py values_of_delta_T.csv \
+finals.all.csv ser7.dat
+	python3 "${srcdir}/read_delta_t.py" "${srcdir}/values_of_delta_T.csv" \
+"${builddir}/leap_hours_exdays_05.dat" \
+--IERS-final="${srcdir}/finals.all.csv" \
+--UT1UTC-output="${builddir}/leap_hours_UT1UTC.csv" \
+--UT1UTC-start-jdn=2305814 \
+--USNO-delta-t="${srcdir}/USNO_delta_T.csv" \
+--IERS-Bulletin-A="${srcdir}/ser7.dat" \
+--IERS-projection-days=-1 --max-abs-delta-t 3600
+
+# If you want to see how leaping works if we stop leaping by seconds
+# but leap by minutes instead, make the following file:
+leap_minutes_exdays_05.dat : read_delta_t.py values_of_delta_T.csv \
+finals.all.csv ser7.dat
+	python3 "${srcdir}/read_delta_t.py" "${srcdir}/values_of_delta_T.csv" \
+"${builddir}/leap_minutes_exdays_05.dat" \
+--IERS-final="${srcdir}/finals.all.csv" \
+--UT1UTC-output="${builddir}/leap_minutes_UT1UTC.csv" \
+--UT1UTC-start-jdn=2305814 \
+--USNO-delta-t="${srcdir}/USNO_delta_T.csv" \
+--IERS-Bulletin-A="${srcdir}/ser7.dat" \
+--IERS-projection-days=-1 --max-abs-delta-t 60
 
 delta_t.tex : reformat_delta_t.py values_of_delta_T.csv
 	python3 ${srcdir}/reformat_delta_t.py \
@@ -1515,12 +1544,20 @@ set_xtics_200yr.gnuplot : build_xtic_labels.py
 	python3 ${srcdir}/build_xtic_labels.py \
 ${builddir}/set_xtics_200yr.gnuplot --interval 200
 
+set_xtics_300yr.gnuplot : build_xtic_labels.py
+	python3 ${srcdir}/build_xtic_labels.py \
+${builddir}/set_xtics_300yr.gnuplot --interval 300
+
+set_xtics_400yr.gnuplot : build_xtic_labels.py
+	python3 ${srcdir}/build_xtic_labels.py \
+${builddir}/set_xtics_400yr.gnuplot --interval 400
+
 set_xtics_500yr.gnuplot : build_xtic_labels.py
 	python3 ${srcdir}/build_xtic_labels.py \
-$dstdir}/set_xtics_500yr.gnuplot --interval 500
+${builddir}/set_xtics_500yr.gnuplot --interval 500
 
 values_of_DTAI.tex : gnuplot.dat plot_extraordinary_days.gnuplot \
-set_xtics_200yr.gnuplot
+set_xtics_500yr.gnuplot
 	gnuplot plot_extraordinary_days.gnuplot
 
 values_of_DTAI_since_1500.tex : gnuplot.dat \

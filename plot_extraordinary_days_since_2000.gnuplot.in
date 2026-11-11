@@ -10,7 +10,7 @@ set xlabel "Date" offset 0,-1
 set ylabel "DTAI"
 set format y "\\num[mode=text]{%g}"
 set xrange [2451545:2488869]
-set yrange [30:60]
+set yrange [30:55]
 load "@builddir@/set_xtics_005yr.gnuplot"
 set nokey
 set xtic rotate by 45

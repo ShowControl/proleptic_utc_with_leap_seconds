@@ -1,5 +1,5 @@
 #
-# Table of Extraordinary Days, last modified October 30, 2026.
+# Table of Extraordinary Days, last modified November 6, 2026.
 #
 # Copyright © 2026 by John Sauter.
 # Licensed under the Creative Commons Attribution-ShareAlike 4.0 International
@@ -7,8 +7,8 @@
 #
 # A program that wishes to measure the time between two dates needs to know
 # the length of each day.  Most days are ordinary days, of 86,400 seconds,
-# but a few have 86,399 or 86,401 seconds, to keep clocks synchronized with
-# the rotation of the Earth.  For dates since 1972, the IERS maintains a
+# but a few have more or less than 86,400 seconds, to keep clocks synchronized
+# with the rotation of the Earth.  For dates since 1972, the IERS maintains a
 # list of extraordinary days.  For earlier dates, we must imagine that
 # current timekeeping rules were in effect and project a list of extraordinary
 # days.  See "Extending Coordinated Universal Time to Dates Before 1972."
@@ -35,10 +35,9 @@
 # DTAI is the difference between International Atomic Time (TAI) and
 # Coordinated Universal Time (UTC).  That difference is defined as 0 seconds
 # on January 1, 1958.  Every extraordinary day changes the value of DTAI
-# at its end by +1 second for days with 86,401 seconds, or -1 second for
-# days with 86,399 seconds.  Since the data lines must be ordered,
-# each will have a DTAI that differs from the preceeding and succeeding line
-# by plus or minus 1 second.
+# at its end by an integer number of seconds.  From 1972 to 2026 that number
+# was always 1 for days with 86,401 seconds.  Starting in 2027 extraordinary
+# days have a larger number of seconds, and the larger number may be negative.
 #
 # The symbols used in this file are as follows:
 #
@@ -65,4 +64,4 @@
 # in case you are updating the file yourself.
 #
 START_DATE=990574       # 1 Jan -2000
-END_DATE=2634166        # 1 Jan 2500
+END_DATE=4277757        # 1 Jan 7000

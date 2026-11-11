@@ -16,4 +16,3 @@ set xtic rotate by 45
 set terminal lua tikz size 12,7 latex
 set output "values_of_DTAI_since_1500.tex"
 plot 'gnuplot.dat' using 1:2
-

@@ -1,3 +1,14 @@
+2026-11-06
+  Extend the preduction to the year 7000.  Rewrite the algorithm
+  that identifies extraordinary days to handle leaps of more
+  than one second.  Adjust nearly all of the predicted leap
+  seconds, past and future.  The next leap second is predicted
+  to be on June 30, 2031, and it will be a positive leap second.
+  
+2026-11-01
+  Extend the prediction another 500 years to the year 3000.
+  Some future leap seconds are adjusted.
+  
 2026-10-30
   Adjust future leap seconds starting in 2030.
   The next leap second is predicted to be on June 30, 2030,

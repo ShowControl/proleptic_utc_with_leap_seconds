@@ -58,7 +58,7 @@ parser.add_argument ('input1_file',
 parser.add_argument ('output_file',
                      help='the resulting list of extraordinary days')
 parser.add_argument ('--version', action='version', 
-                     version='read_Delta_T 9.1 2026-10-31',
+                     version='read_Delta_T 10.0 2026-11-08',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -66,16 +66,19 @@ parser.add_argument ('--USNO-delta-t', metavar='USNO_delta_t_input_file',
                      help='Read Delta T information from the USNO')
 parser.add_argument ('--IERS-Bulletin-A',
                      metavar='IERS_Bulletin_A_input_file',
-                     help='Read UT1-UTC projection formula from IERS Bulletin A')
+                     help='Read UT1-UTC projection formula from ' +
+                     'IERS Bulletin A')
 parser.add_argument ('--IERS-projection-days', type=int, default=0,
                      metavar='IERS_projection_days',
-                     help='Number of days to project delta T using the IERS formula in Bulletin A')
+                     help='Number of days to project delta T using the IERS ' +
+                     'formula in Bulletin A')
 parser.add_argument ('--IERS-final', metavar='IERS_final_input_file',
                      help='Read Delta T information from the IERS')
 parser.add_argument ('--IERS-leaps', action='store_true',
                      help='Use the IERS leap seconds starting in 1972')
 parser.add_argument ('--Tony-Finch-leaps', action='store_true',
-                     help='Use the Tony Finch leap seconds from 1958 through 1971')
+                     help='Use the Tony Finch leap seconds from 1958 ' +
+                     'through 1971')
 parser.add_argument ('--latex-output', metavar='latex_output_file',
                      help='write delta T data as a LaTeX longtable')
 parser.add_argument ('--latex-start-jdn', metavar='latex_start_jdn',
@@ -106,6 +109,9 @@ parser.add_argument ('--UT1UTC-start-jdn', metavar='UT1UTC_start_jdn',
                      help='earliest date to put in the UT1-UTC file')
 parser.add_argument ('--UT1UTC-end-jdn', metavar='UT1UTC_end_jdn',
                      help='latest date to put in the UT1-UTC file')
+parser.add_argument ('--max-abs-delta-t', type=int, default=1,
+                     metavar='max_abs_delta_t',
+                     help='Maximum value for the absolute value of delta T')
 parser.add_argument ('--verbose', type=int, metavar='verbosity level',
                      help='control the amount of output from the program: ' +
                      '1 is normal, 0 suppresses summary messages')
@@ -148,6 +154,7 @@ UT1UTC_start_jdn = 0
 UT1UTC_end_jdn = 0
 have_UT1UTC_start_jdn = 0
 have_UT1UTC_end_jdn = 0
+max_abs_delta_t = 1
 verbosity_level = 1
 error_counter = 0
 
@@ -278,6 +285,9 @@ if (arguments ['UT1UTC_end_jdn'] != None):
   have_UT1UTC_end_jdn = 1
   UT1UTC_end_date = int(arguments ['UT1UTC_end_jdn'])
     
+if (arguments ['max_abs_delta_t'] != None):
+  max_abs_delta_t = int(arguments ['max_abs_delta_t'])
+
 if (arguments ['verbose'] != None):
   verbosity_level = int(arguments ['verbose'])
 
@@ -357,6 +367,24 @@ with open (file_name, 'rt') as csvfile:
         max_year = new_year
         end_date = this_JDN
 
+# Add some dates beyond January 1, 2500 based on wild speculation.
+# These are projections from NASA made in 2005.
+source_name = "Wild Speculation"
+source_dict = dict()
+delta_t_all[source_name] = source_dict
+source_list = source_list + [source_name]
+for the_year in range (2600, 7001):
+  this_JDN = jdn (the_year, 1, 1)
+  this_delta_T = (67.62 + (0.3645 * (the_year - 2015)) +
+                  0.0039755 * ((the_year - 2015) ** 2))
+  delta_t[this_JDN] = this_delta_T
+  source_dict[this_JDN] = this_delta_T
+  delta_t_source[this_JDN] = source_name
+  if (do_trace == 1):
+    tracefile.write ("JDN " + str(this_JDN) + ": Wild Speculation " +
+                     "deltaT " + str(delta_t[this_JDN]) + ".\n")
+  end_date = this_JDN
+        
 # Adjust the values of delta_t so January 1, 1958, is 32.184.
 DTAI_base_date = jdn(1958, 1, 1)
 DTAI_base_dt = delta_t [DTAI_base_date]
@@ -401,13 +429,9 @@ if (do_USNO_delta_t_input):
                            " by " + str(difference) +
                            " to " + str(new_delta_t) + ".\n")
       else:
-        old_delta_t = deltaT(this_JDN)
-        difference = new_delta_t - old_delta_t
         if (do_trace == 1):
-          tracefile.write (greg(this_JDN, " ", 0) + ": Delta T changes" +
-                           " from " + str(old_delta_t) + " (interpolated)" +
-                           " by " + str(difference) +
-                           " to " + str(new_delta_t) + ".\n")
+          tracefile.write (greg(this_JDN, " ", 0) + ": Delta T " +
+                           " set to " + str(new_delta_t) + ".\n")
       delta_t[this_JDN] = new_delta_t
       delta_t_source[this_JDN] = source
       if (source not in delta_t_all):
@@ -545,10 +569,10 @@ if (do_IERS_projections):
   projection_start_JDN = start_MJD + 2400000
   perform_fade = 1
   if (IERS_projection_days < 0):
-    IERS_projection_days = jdn(2500,1,1) - projection_start_JDN
+    IERS_projection_days = jdn(7000,1,1) - projection_start_JDN
     perform_fade = 0
   if (IERS_projection_days == 0):
-    IERS_projection_days = jdn(2200,1,1) - projection_start_JDN
+    IERS_projection_days = jdn(7000,1,1) - projection_start_JDN
   end_MJD = start_MJD + IERS_projection_days
   projection_end_JDN = end_MJD + 2400000
   if (verbosity_level > 0):
@@ -594,13 +618,9 @@ if (do_IERS_projections):
                          " by " + str(difference) +
                          " to " + str(new_delta_t) + ".\n")
     else:
-      old_delta_t = deltaT(target_JDN)
-      difference = new_delta_t - old_delta_t
       if (do_trace == 1):
-        tracefile.write (greg(target_JDN, " ", 0) + ": Delta T changes" +
-                         " from " + str(old_delta_t) + " (interpolated)" +
-                         " by " + str(difference) +
-                         " to " + str(new_delta_t) + ".\n")
+        tracefile.write (greg(target_JDN, " ", 0) + ": Delta T " +
+                         " set to " + str(new_delta_t) + ".\n")
     delta_t [target_JDN] = new_delta_t
     delta_t_source[target_JDN] = source
     delta_t_source[target_JDN+1] = future_source
@@ -636,10 +656,10 @@ if (do_IERS_final_input):
 
   # Read the values of UT1-UTC provided by the IERS.  These are daily
   # values since 1973 up to the present, and predicted for the next
-  # year.  The non-CSV version of the file The file is formatted as follows:
+  # year.  The non-CSV version of the file is formatted as follows:
   
   # Col.#    Format  Quantity
-  # -------  ------  -----------------------------------------------------------
+  # -------  ------  ----------------------------------------------------------
   # 1-2      I2      low two digits of year (to get true calendar year,
   #                  add 1900 for MJD<=51543 or add 2000 for MJD>=51544)
   # 3-4      I2      month number
@@ -663,7 +683,8 @@ if (do_IERS_final_input):
   # 80-86    F7.4    Bull. A LOD (msec. of time) -- NOT ALWAYS FILLED
   # 87-93    F7.4    error in LOD (msec. of time) -- NOT ALWAYS FILLED
   # 94-95    2X      [blanks]
-  # 96       A1      IERS (I) or Prediction (P) flag for Bull. A nutation values
+  # 96       A1      IERS (I) or Prediction (P) flag
+  #                  for Bull. A nutation values
   # 97       X       [blank]
   # 98-106   F9.3    Bull. A dPSI (msec. of arc)
   # 107-115  F9.3    error in dPSI (msec. of arc)
@@ -848,7 +869,8 @@ if (last_delta_T_from_IERS_date > 0):
   if (verbosity_level > 0):
     print ("last delta T from IERS date: " + str(last_delta_T_from_IERS_date) +
            ".5 = " + greg(last_delta_T_from_IERS_date, " ", 0) + ".")
-    print ("last delta T from IERS value: " + str(last_delta_T_from_IERS) + ".")
+    print ("last delta T from IERS value: " + str(last_delta_T_from_IERS) +
+           ".")
     
   if (do_trace > 0):
     tracefile.write ("last delta T from IERS date: " +
@@ -936,8 +958,8 @@ if (last_delta_T_from_IERS_date > 0):
   c = pnormal.coef[0]
 
   if (verbosity_level > 0):
-    print ("Polynomial Parabola a,b,c = " + str(a) + ", " +
-           str(b) + ", " + str(c) + ".")
+    print ("Polynomial Parabola a,b,c = \n" +
+           "  " + str(a) + ", " + str(b) + ", " + str(c) + ".")
 
   if (len(x_vals) == 3):
     (a,b,c) = calc_parabola_vertex (x_vals[0], y_vals[0],
@@ -960,8 +982,10 @@ if (last_delta_T_from_IERS_date > 0):
     astro_and_eclipses_delta_t_dict = dict()
     astro_delta_t_dict = delta_t_all["Astronomical Projection"]
     eclipses_delta_t_dict = delta_t_all["Eclipses and Lunar Occulations"]
+    wild_speculation_delta_t_dict = delta_t_all["Wild Speculation"]
     astro_and_eclipses_delta_t_dict.update(eclipses_delta_t_dict)
     astro_and_eclipses_delta_t_dict.update(astro_delta_t_dict)
+    astro_and_eclipses_delta_t_dict.update(wild_speculation_delta_t_dict)
     if (the_JDN in astro_and_eclipses_delta_t_dict):
       return astro_and_eclipses_delta_t_dict[the_JDN]
     # Fill in missing values using linear interpolation.
@@ -1018,10 +1042,12 @@ if (last_delta_T_from_IERS_date > 0):
       intersection_delta = abs(astro_delta_t - projection_delta_t)
   if (verbosity_level > 0):
     print ("Astro and IERS projection intersection at " +
-           str(intersection_JDN) + " = " + greg(intersection_JDN, "-", 0) + ".")
+           str(intersection_JDN) + " = " + greg(intersection_JDN, "-", 0) +
+           ".")
     print ("intersection delta: " + str(intersection_delta) + ".")
   
-  # The intersection between the astronomical projection and the IERS projection
+  # The intersection between the astronomical projection and the IERS
+  # projection
   # is used as an anchor for stretching the parabola.
   parabola_anchor_X = intersection_JDN
   parabola_anchor_Y = deltaT(parabola_anchor_X)
@@ -1092,7 +1118,8 @@ if (last_delta_T_from_IERS_date > 0):
     tracefile.write (" Meight: " + str(parabola_height) + ".\n")
     tracefile.write (" Width: " + str(parabola_width) + ",\n")
     tracefile.write (" Offset: " + str(parabola_offset) + ".\n")
-    tracefile.write (" Height stretch: " + str(parabola_height_stretch) + ".\n")
+    tracefile.write (" Height stretch: " + str(parabola_height_stretch) +
+                     ".\n")
     tracefile.write (" Width stretch: " + str(parabola_width_stretch) + ".\n")
     tracefile.write (" Anchor_X: " + str(parabola_anchor_X) + ".\n")
     tracefile.write (" delta: " + str(parabola_delta) + ".\n")
@@ -1129,8 +1156,8 @@ if (last_delta_T_from_IERS_date > 0):
     fade_time_2 = date_C - date_B
     if (verbosity_level > 0):
       print ("Fade in is from " + greg(date_A, "-", 0) + " to " +
-             greg(date_B, "-", 0) + " to " + greg(date_C, "-", 0) + " : " +
-             str(fade_time_1) + " and " + str(fade_time_2) + " days.")
+             greg(date_B, "-", 0) + " to " + greg(date_C, "-", 0) + " :\n " +
+             "  " + str(fade_time_1) + " and " + str(fade_time_2) + " days.")
 
     for this_JDN in range (date_A, date_B):
       the_fraction = (this_JDN - date_A) / fade_time_1
@@ -1307,9 +1334,9 @@ if ((do_gnuplot_output == 1) & (error_counter == 0)):
     gnuplot_output_file.close()
 
 #
-# Convert the values of Delta T into a a series of one-second steps,
-# to keep UTC within 0.9 seconds of the rotation of the Earth.
-# The result is a dictionary of days with 86,399 or 86,401 seconds.
+# Convert the values of Delta T into a a series of steps
+# to keep UTC within max_abs_delta_t seconds of the rotation of the Earth.
+# The result is a dictionary of days with more or less than 86,400 seconds.
 #
 jdn_priority = dict()
 last_day = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -1350,8 +1377,8 @@ def deltaTAI (this_JDN):
   if (this_JDN < jdn(-2000,1,1)):
       return (deltaTAI (jdn(-2000,1,1)))
 
-  if (this_JDN > jdn(2500,1,1)):
-    base_date = jdn(2500,1,1)
+  if (this_JDN > jdn(7000,1,1)):
+    base_date = jdn(7000,1,1)
     base_deltaTAI = deltaTAI (base_date)
     increment = base_deltaTAI - deltaTAI (base_date - 1)
     numdays = this_JDN - base_date
@@ -1364,6 +1391,7 @@ def deltaTAI (this_JDN):
                        ", return_val = " + str(return_val) + ".\n")
   else:
     return_val = deltaT (this_JDN) - DTAI_base_dt
+    
   if (do_trace > 1):
     tracefile.write ("deltaTAI of " + greg(this_JDN, " ", 0) + " is " +
                      str(return_val) + ".\n")  
@@ -1374,34 +1402,9 @@ def deltaTAI (this_JDN):
 #
 if (do_trace > 1):
   tracefile.write ("All values of deltaTAI:\n")
-  for this_JDN in range(jdn(-2000,1,1), jdn(2500,1,5)):
+  for this_JDN in range(jdn(-2000,1,1), jdn(7000,1,2)):
     tracefile.write (" " + greg (this_JDN, " ", 0) + "=" +
                      str(deltaTAI(this_JDN)) + ".\n")
-
-#
-# Check for and report big changes in deltaTAI.
-#
-prev_DTAI = deltaTAI(jdn(-2000,1,1))
-max_change_dict = dict()
-
-for this_JDN in range(jdn(-2000,1,1), jdn(2500,1,1)):
-  this_DTAI = deltaTAI(this_JDN)
-  this_change = abs(this_DTAI - prev_DTAI)
-  max_change_dict[this_change] = this_JDN
-  prev_DTAI = this_DTAI
-  
-line_count = 0
-for this_change in sorted(max_change_dict, reverse=True):
-  if (line_count < 5):
-    this_JDN = max_change_dict[this_change]
-    max_change_signed = deltaTAI(this_JDN) - deltaTAI(this_JDN-1)
-    print ("Max " + str(line_count) + " day-to-day change in DTAI is " +
-       format(max_change_signed, ".12f") +
-       " at " + greg(this_JDN, "-", 0) + ".")
-    line_count = line_count + 1
-    
-if (do_trace == 1):
-  pprint.pprint (max_change_dict, tracefile)
   
 #
 # As we go through the timeline, there will be some choice as to
@@ -1503,166 +1506,151 @@ for yearno in range (min_year_int, max_year_int+1):
 
 if (do_trace == 1):
   tracefile.flush()
-#
-# Subroutine to determine if the current difference between UTC
-# and UT1 is within a specified interval.
-# Sign == -1 means the interval is below 0, and so the comparisons
-# are reversed.
-def in_interval (val, base_val, low_limit, high_limit, sign, current_JDN):
-  if ((base_val - val) > 1):
-    print ("in_interval high: " + str(current_JDN) + ", " + str(val) + ", " + 
-           str(base_val))
-    if (do_trace == 1):
-      tracefile.write ("in_interval high: JDN = " + current_JDN +
-                       ", val " + str(val) +
-                       " base_val " + str(base_val) +
-                       " low_limit " + str(low_limit) +
-                       " high_limit " + str(high_limit) +
-                       " sign " + str(sign) + ".\n")
-  if ((base_val - val) < -1):
-    print ("in_interval low: " + str(current_JDN) + ", " + str(val) + ", " + 
-           str(base_val))
-    if (do_trace == 1):
-      tracefile.write ("in_interval low: JDN = " + str(current_JDN) +
-                       ", val " + str(val) +
-                       " base_val " + str(base_val) +
-                       " low_limit " + str(low_limit) +
-                       " high_limit " + str(high_limit) +
-                       " sign " + str(sign) + ".\n")
-  if (sign == 1):
-    if (val < base_val + low_limit):
-      return False
-    if (val > base_val + high_limit):
-      return False
-    return True
-  if (sign == -1):
-    if (val > base_val - low_limit):
-      return False
-    if (val < base_val - high_limit):
-      return False
-    return True
-  return False
 
-#
-# Subroutine to choose the better day for a leap second.
-# Both days have the same priority.
-#
-def choose_jdn (date1_jdn, date2_jdn, base_jdn, sign):
-  # Choose the date whose deltaTAI is closer to half a second from the base.
-  base_dt = deltaTAI (base_jdn)
-  date1_dt = deltaTAI (date1_jdn)
-  date2_dt = deltaTAI (date2_jdn)
-  if (sign == 1):
-    date1_diff = date1_dt - base_dt
-    date2_diff = date2_dt - base_dt
-  if (sign == -1):
-    date1_diff = base_dt - date1_dt
-    date2_diff = base_dt - date2_dt
-  if (date1_diff > 0.5):
-    date1_diff = 1.0 - date1_diff
-  if (date2_diff > 0.5):
-    date2_diff = 1.0 - date2_diff
-  if (date1_diff > date2_diff):
-    return (date1_jdn)
-  return (date2_jdn)
-
-#
-# Run through the timeline, adjusting leap by +1 or -1 to keep UTC
-# within 0.9 seconds of UT1.
-#
-leap = deltaTAI (start_date)
-print ("Initial value of leap is " + str(leap) + ".")
+# Scan through the timeline identifying the extraordinary days.
 jdn_edays = dict ()
 
 #
-# Subroutine to scan an interval of time, inserting a leap second
+# Subroutine to scan an interval of time, inserting leap seconds
 # if necessary.  The return value is the start of the next interval
-# to scan.
+# to scan and the new base_dt.
 #
-def scan_interval (base_jdn, limit_jdn):
-  global leap
-  base_dt = deltaTAI (base_jdn)
-  if (do_trace > 1):
-    tracefile.write (" scan_interval: " + greg(base_jdn, " ", 0) +
-                     " (" + str(deltaTAI(base_jdn)) + ").\n")
-  current_jdn = base_jdn
-  # If UT1 differs from UTC by less than 0.1 seconds, look ahead
-  # to a time when it doesn't.  We can't issue a leap second when
-  # UT1 is already within 0.1 seconds of UTC.
-  if (abs(leap - deltaTAI(current_jdn)) <= 0.1):
-    # Look ahead to when UT1 differs from UTC by at least 0.1 seconds.
-    while ((abs(leap - deltaTAI(current_jdn)) <= 0.1) and
-           (current_jdn <= limit_jdn)):
-      current_jdn = current_jdn + 1
-    if (do_trace > 1):
-      tracefile.write (" no leap possible from " + greg(base_jdn, " ", 0) +
-                       " (" + str(deltaTAI(base_jdn)) + ")" +
-                       " to " + greg(current_jdn-1, " ", 0) +
-                       " (" + str(deltaTAI(current_jdn-1)) + ").\n")
-    return current_jdn
-  # We are at the beginning of an interval which might need a leap second.
-  anchor_jdn = current_jdn
-  anchor_dt = deltaTAI (anchor_jdn)
-  sign = 0
-  if ((anchor_dt - leap) < 0):
-    sign = -1
-  if ((anchor_dt - leap) > 0):
-    sign = 1
-  # Now look ahead to when UT1 differs from UTC by 0.9 seconds
-  # in the same direction.  If the difference declines to 0.1,
-  # stop looking.
-  while ((current_jdn < limit_jdn) and
-         in_interval (deltaTAI (current_jdn), leap, 0.1, 0.9, sign, 
-                      current_jdn)):
-    current_jdn = current_jdn + 1
-  if (current_jdn >= limit_jdn):
-    return current_jdn
-  # If the difference between UTC and UT1 has decreased to below 0.1
-  # seconds, this interval does not need a leap second.
-  if (abs(leap - deltaTAI (current_jdn)) <= 0.1):
-    if (do_trace > 1):
-      tracefile.write (" no leap needed from " + greg(base_jdn, " ", 0) +
-                       " (" + str(deltaTAI(base_jdn)) + ")" +
-                       " to " + greg(current_jdn, " ", 0) +
-                       " (" + str(deltaTAI(current_jdn)) + ").\n")
-    return (current_jdn)
-  # Otherwise we have reached a time when the difference between
-  # UTC and UT1 has reached 0.9 seconds, and has not decreased below
-  # 0.1 seconds since anchor_jdn.  We must issue a leap second.
-  # Find the best time to do that.
-  future_jdn = current_jdn
-  best_jdn = anchor_jdn
-  best_priority = jdn_priority.get(best_jdn, 7)
-  for current_jdn in range (anchor_jdn, future_jdn):
-    current_priority = jdn_priority.get(current_jdn, 7)
-    if (current_priority == best_priority):
-      best_jdn = choose_jdn (best_jdn, current_jdn, anchor_jdn, sign)
-    if (current_priority < best_priority):
-      best_jdn = current_jdn
-      best_priority = current_priority
-  # The best date in the interval becomes an extraordinary day
-  jdn_edays[best_jdn] = 86400 + sign
-  if (do_trace > 1):
-    tracefile.write (" leap " + str(sign) + " (" +
-                     str(leap+sign) + ") at " +
-                     greg(best_jdn, " ", 0) +
-                     " (" + str(deltaTAI(best_jdn)) + ")" +
-                     " priority " + str(best_priority) +
-                     " from " + greg(base_jdn, " ", 0) +
-                     " (" + str(deltaTAI(base_jdn)) + ")" +
-                     " to " + greg (future_jdn, " ", 0) +
-                     " (" + str(deltaTAI(future_jdn)) + ")" +
-                     ".\n")
-  leap = leap + sign
-  # Continue scanning from the next day
-  return (best_jdn + 1)
+def scan_interval (base_dt, start_jdn, limit_jdn, max_deviation):
 
+  start_deltaT = deltaT(start_jdn)
+  start_deviation = base_dt - start_deltaT
+  if (abs(start_deviation) > max_deviation):
+    if (do_trace == 1):
+      tracefile.write ("Start_deviation too large!/n")
+    print ("Start deviation too large!")
+    print (" Base_dt = " + str(base_dt) +
+           ", start_jdn = " + str(start_jdn) +
+           ", its deltaT = " + str(start_deltaT) +
+           ", its deviation = " + str(start_deviation) + ".")
+  if (do_trace >= 1):
+    tracefile.flush()
+    tracefile.write ("\n" + "Scan_interval: base_dt " + str(base_dt) +
+                     " start_jdn " + str(start_jdn) + ": " +
+                     greg(start_jdn, " ", 0) +
+                     " (" + str(deltaT(start_jdn)) + ")\n" +
+                     " limit " + str(limit_jdn) + ": " +
+                     greg(limit_jdn, " ", 0) +
+                     " (" + str(deltaT(limit_jdn)) + ")" +
+                     " initial deviation " + str(base_dt - deltaT(start_jdn)) +
+                     " max deviation " + str(max_deviation) + ".\n")
+    tracefile.flush()
+
+  scan_direction = 1
+  if (limit_jdn < start_jdn):
+    scan_direction = -1
+
+  best_jdn = None
+  for this_jdn in range (start_jdn, limit_jdn + scan_direction,
+                         scan_direction):
+    deviation = base_dt - deltaT(this_jdn)
+    if ((abs(deviation) >= (0.75 * max_deviation)) and (best_jdn != None)):
+      # We need to leap.
+      leap_direction = 1
+      if (deviation > 0):
+        leap_direction = -1
+      # Do a leap of max_deviation at the best place we've found.
+      if (best_jdn not in jdn_edays):
+        jdn_edays[best_jdn] = 86400
+      jdn_edays[best_jdn] = (jdn_edays[best_jdn] +
+                             (leap_direction * scan_direction * max_deviation))
+      new_base_dt = base_dt + (leap_direction * max_deviation)
+      if (do_trace >= 1):
+        old_deviation = base_dt - deltaT(best_jdn)
+        new_deviation = new_base_dt - deltaT(best_jdn)
+        best_priority = jdn_priority.get(best_jdn, 7)
+        tracefile.write ("Make leap:" +
+                         " caused by jdn " + str(this_jdn) +
+                         " with deltaT " + str(deltaT(this_jdn)) + "\n" +
+                         " meaning deviation of " + str(deviation) + ".\n" +
+                         " Leap at jdn " + str(best_jdn) +
+                         " (" + greg(best_jdn, " ", 0) + ") \n" +
+                         " with deltaT " + str(deltaT(best_jdn)) +
+                         " and priority " + str(best_priority) + ".\n" +
+                         " New lod is " + str(jdn_edays[best_jdn]) + "\n" +
+                         " old deviation " + str(old_deviation) +
+                         " new deviation " + str(new_deviation) + "\n" +
+                         " old base_dt " + str(base_dt) +
+                         " new base_dt " + str(new_base_dt) + ".\n")
+      # Continue the scan from the day after the leap.
+      # The next leap may need to be on a day with lower priority.
+      return (best_jdn + scan_direction, new_base_dt)
+
+    if (do_trace == 1):
+      tracefile.write ("Possible leap: JDN " + str(this_jdn) +
+                       " deltaT " + str(deltaT(this_jdn)) + "\n" +
+                       " deviation " + str(deviation) +
+                       " priority " + str(jdn_priority.get(this_jdn, 7)) +
+                       ".\n")         
+    
+    # See if we can leap here.
+    if (abs(deviation) <= (0.15 * max_deviation)):
+      # Do not consider any times before this one when choosing
+      # which day is to contain the leap second.
+      best_jdn = None
+      if (do_trace == 1):
+        tracefile.write (" cannot leap here because abs(deviation) <= " +
+                         str(0.15 * max_deviation) + ".\n")
+      continue
+    
+    if (abs(deviation) <= (0.25 * max_deviation)):
+      # Do not leap when we are close to zero lest we get too close
+      # to max_deviation
+      if (do_trace == 1):
+        tracefile.write (" cannot leap here because abs(deviation) <= " +
+                         str(0.25 * max_deviation) + ".\n")
+      continue
+                         
+    # This is a reasonable place to leap.
+    if (best_jdn == None):
+      best_jdn = this_jdn
+      if (do_trace == 1):
+        tracefile.write (" First fesaible JDN since being close to 0.\n")
+      continue
+    
+    best_priority = jdn_priority.get(best_jdn, 7)
+    this_priority = jdn_priority.get(this_jdn, 7)
+    if (this_priority <= best_priority):
+      best_jdn = this_jdn
+      if (do_trace >= 1):
+        tracefile.write (" better jdn: " + str(best_jdn) +
+                         " with priority " + str(this_priority) + ".\n")
+    else:
+      if (do_trace == 1):
+        tracefile.write (" not a better JDN.\n")
+  
+  # We have completed the scan.
+  if (do_trace >= 1):
+    tracefile.write ("Reached scan limit.  jdn is " +
+                     str(limit_jdn + scan_direction) + ", base_dt is " +
+                     str(base_dt) + ".\n")
+  return (limit_jdn + scan_direction, base_dt)
+  
 #
-# Scan through the timeline, generating leap seconds as needed.
-#
-scan_jdn = start_date
+# Scan through the timeline, generating leaps as needed.
+# We first scan forward from January 1, 1958, to the end date,
+# then scan backward from January 1, 1958, to the start date.
+
+if (do_trace == 1):
+  tracefile.write ("Starting futureward scan.\n")
+
+scan_jdn = jdn(1958,1,1)
+base_dt = deltaT(scan_jdn)
 while (scan_jdn < end_date):
-  scan_jdn = scan_interval (scan_jdn, end_date)
+  (scan_jdn, base_dt) = scan_interval (base_dt, scan_jdn, end_date,
+                                      max_abs_delta_t)
+if (do_trace == 1):
+  tracefile.write ("Starting pastward scan.\n")
+  
+scan_jdn = jdn(1958,1,1)
+base_dt = deltaT(scan_jdn)
+while (scan_jdn > start_date):
+  (scan_jdn, base_dt) = scan_interval (base_dt, scan_jdn, start_date,
+                                       max_abs_delta_t)
 
 #
 # If requested, replace the extraordinary days from January 1, 1958
@@ -1672,14 +1660,14 @@ while (scan_jdn < end_date):
 if (do_Tony_Finch_leaps):
   if (do_trace == 1):
     tracefile.write ("Tony Finch leaps:\n")
-  for clear_jdn in range (jdn(1958,1,1), jdn(1971,12,31)):
+  for clear_jdn in range (jdn(1958,1,1), jdn(1972,1,1)):
     if clear_jdn in jdn_edays:
       if (do_trace == 1):
         tracefile.write (" delete leap at " + greg(clear_jdn, " ", 0) +
                          ".\n")
       del jdn_edays [clear_jdn]
 
-  for fill_jdn in range (jdn(1958,1,1), jdn(1971,12,31)):
+  for fill_jdn in range (jdn(1958,1,1), jdn(1972,1,1)):
     if fill_jdn in jdn_priority:
       if (jdn_priority [fill_jdn] < 3):
         if (do_trace == 1):
@@ -1689,19 +1677,19 @@ if (do_Tony_Finch_leaps):
 
 #
 # If requested, replace the extraordinary days from January 1, 1973
-# to the present with the official days from the IERS.
+# through December 31, 2026 with the official days from the IERS.
 #
 if (do_IERS_leaps):
   if (do_trace == 1):
     tracefile.write ("IERS leaps:\n")
-  for clear_jdn in range (jdn(1972,1,1), jdn(2019,12,31)):
+  for clear_jdn in range (jdn(1972,1,1), jdn(2027,1,1)):
     if clear_jdn in jdn_edays:
       if (do_trace == 1):
         tracefile.write (" delete leap at " + greg(clear_jdn, " ", 0) +
                          ".\n")
       del jdn_edays [clear_jdn]
 
-  for fill_jdn in range (jdn(1972,1,1), jdn(2019,12,31)):
+  for fill_jdn in range (jdn(1972,1,1), jdn(2027,1,1)):
     if fill_jdn in jdn_priority:
       if (jdn_priority [fill_jdn] < 3):
         if (do_trace == 1):
@@ -1722,40 +1710,51 @@ dtai_dict = {}
 dtai0_jdn_tuple = gcal2jd (1957,12,31)
 dtai0_jdn = int(dtai0_jdn_tuple [0] + dtai0_jdn_tuple [1] + 0.5)
 oldest_jdn = dtai0_jdn
+latest_jdn = dtai0_jdn
+
 if (do_trace == 1):
   tracefile.write ("Computing extraordinary days, dtai0_jdn = " +
-                   str(dtai0_jdn) + " = " + greg(dtai0_jdn, "-", 0) + ".\n")
+                   str(dtai0_jdn) + ".5 = " + greg(dtai0_jdn, "-", 0) + ".\n")
 dtai_dict [dtai0_jdn] = 0
 
-# Walk forward from January 1, 1958
+# Walk futureward from January 1, 1958.
 current_dtai = 0
 jdn_list = sorted(jdn_edays.keys())
-for jdn in jdn_list:
-  if (jdn < oldest_jdn):
-    oldest_jdn = jdn
-  if (jdn > dtai0_jdn):
-    lod = jdn_edays [jdn]
+for this_jdn in jdn_list:
+  if (this_jdn < oldest_jdn):
+    oldest_jdn = this_jdn
+  if (this_jdn > latest_jdn):
+    latest_jdn = this_jdn
+  if (this_jdn > dtai0_jdn):
+    lod = jdn_edays [this_jdn]
     current_dtai = current_dtai + lod - 86400
-    dtai_dict [jdn] = current_dtai
+    dtai_dict [this_jdn] = current_dtai
 
-# Walk backward from January 1, 1958
+    if (do_trace == 1):
+      tracefile.write ("Future eday of " + str(current_dtai) + ": " +
+                   str(this_jdn) + " = " + greg(this_jdn, "-", 0) + ".\n")
+
+# Walk pastward from January 1, 1958.
 jdn_list = sorted(jdn_edays.keys(), reverse=1)
-prev_jdn = 0
-for jdn in jdn_list:
-  if (jdn < dtai0_jdn):
-    lod = jdn_edays [prev_jdn]
-    current_dtai = dtai_dict [prev_jdn] - lod + 86400
-    dtai_dict [jdn] = current_dtai
-  prev_jdn = jdn
+current_dtai = 0
+for this_jdn in jdn_list:
+  if (this_jdn < dtai0_jdn):
+    dtai_dict [this_jdn] = current_dtai
+    lod = jdn_edays [this_jdn]
+    current_dtai = dtai_dict [this_jdn] - lod + 86400
+    
+    if (do_trace == 1):
+      tracefile.write ("Past eday of " + str(current_dtai) + ": " +
+                   str(this_jdn) + " = " + greg(this_jdn, "-", 0) + ".\n")
 
 #dtai_dict [oldest_jdn] = current_dtai - 1
 
 # Output the resulting table
-for jdn in sorted(jdn_edays.keys()):
-  lod = jdn_edays [jdn]
-  dtai = dtai_dict [jdn]
-  outfile.write (str(jdn) + "\t" + str(lod) + "\t" + str(dtai) + "\t" +
-                 "# " + greg (jdn, " ", 0) + "\n")
+for this_jdn in sorted(jdn_edays.keys()):
+  lod = jdn_edays [this_jdn]
+  dtai = dtai_dict [this_jdn]
+  outfile.write (str(this_jdn) + "\t" + str(lod) + "\t" + str(dtai) + "\t" +
+                 "# " + greg (this_jdn, " ", 0) + "\n")
 
 outfile.close()
 
@@ -1820,6 +1819,7 @@ if (do_UT1UTC_output):
     else:
       source = previous_source
     UT1UTC_dict [this_JDN] = (year_no, month_no, mday_no, source, leap, UT1UTC)
+
     if (do_trace == 1):
       tracefile.write (" JDN " + str(this_JDN) + " " +
                        " Year " + str(year_no) + " " +
@@ -1833,7 +1833,7 @@ if (do_UT1UTC_output):
     previous_source = source
     leap = next_leap
 
-  # Now that the dataa is collected, output it.
+  # Now that the data is collected, output it.
   UT1UTCfile = open (UT1UTC_output_file_name, "wt")
   UT1UTCfile.write ("JDN;Year;Month;Day;source;leap;UT1-UTC\n")
 

@@ -9,7 +9,8 @@ set title "Values of DTAI"
 set xlabel "Date" offset 0,-1
 set ylabel "DTAI"
 set format y "\\num[mode=text]{%g}"
-load "@builddir@/set_xtics_200yr.gnuplot"
+set xrange [*:4277757]
+load "@builddir@/set_xtics_500yr.gnuplot"
 set nokey
 set xtic rotate by 45
 set terminal lua tikz size 12,7 latex createstyle

@@ -4,7 +4,7 @@
 # write a file to be loaded by gnuplot which defines x-axis labels
 # for Julian Day Numbers.
 
-#   Copyright © 2020 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2026 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ parser = argparse.ArgumentParser (
 parser.add_argument ('output-file', metavar='output_file',
                      help='output file')
 parser.add_argument ('--version', action='version', 
-                     version='build_xtic_labels 2.1 2020-04-17',
+                     version='build_xtic_labels 2.3 2026-11-03',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -57,7 +57,7 @@ parser.add_argument ('--interval',metavar='interval',
 parser.add_argument ('--start-year',metavar='start_year',
                      help='earliest year, default is -2000')
 parser.add_argument ('--end-year',metavar='end_year',
-                     help='last year, default is 2500')
+                     help='last year, default is 5000')
 parser.add_argument ('--verbose', type=int, metavar='verbosity level',
                      help='control the amount of output from the program: ' +
                      '1 is normal, 0 suppresses summary messages')
@@ -123,7 +123,7 @@ else:
 if (arguments ['end_year'] != None):
   end_year = int (arguments['end_year'])
 else:
-  end_year = 2500
+  end_year = 7000
   
 #
 # Write a file which can be loaded by GNUplot which labels the

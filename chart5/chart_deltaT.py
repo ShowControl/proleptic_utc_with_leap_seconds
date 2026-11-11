@@ -3,7 +3,7 @@
 #
 # chart_deltaT plots Delta T.
 #
-#   Copyright © 2024 by John Sauter <John_Sauter@systemeyescomputerstore.com>
+#   Copyright © 2026 by John Sauter <John_Sauter@systemeyescomputerstore.com>
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ parser.add_argument ('input1_file',
 parser.add_argument ('--output-file', metavar='output_file',
                      help='A picture of Delta T over time')
 parser.add_argument ('--version', action='version', 
-                     version='chart_delta_T 2.1 2024-06-01',
+                     version='chart_delta_T 2.2 2026-11-01',
                      help='print the version number and exit')
 parser.add_argument ('--trace', metavar='trace_file',
                      help='write trace output to the specified file')
@@ -146,16 +146,21 @@ data.set_index(["JDN"], inplace=True)
 
 last_JDN = data.index[-1]
 first_JDN = data.index[0]
-print ("JDN range of input file is " + str(first_JDN) + ".5 to "
-       + str(last_JDN) + ".5.")
+print ("JDN range of input file is " + str(first_JDN) + ".5 " +
+       "(" + day_month_and_year (first_JDN, "-") + ") to "
+       + str(last_JDN) + ".5 " +
+       "(" + day_month_and_year(last_JDN, "-") + ").")
 
 if (have_start_JDN == 0):
   start_JDN = first_JDN
 if (have_end_JDN == 0):
   end_JDN = last_JDN
 
-print ("JDN range limited to " + str(start_JDN) + ".5 and "
-       + str(end_JDN) + ".5.")
+print ("JDN range limited to " + str(start_JDN) + ".5 " +
+       "(" + day_month_and_year (start_JDN, "-") + ") to "
+       + str(end_JDN) + ".5 " +
+       "(" + day_month_and_year(end_JDN, "-") + ").")
+
 bottom_deltaT = 69
 top_deltaT = 70
 print ("Domain is " + str(bottom_deltaT) + " to " + str(top_deltaT) + ".")
@@ -199,4 +204,3 @@ if (do_trace == 1):
 
 if (error_counter > 0):
   print ("Encountered " + str(error_counter) + " errors.")
-
